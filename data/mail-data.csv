@@ -1,0 +1,107 @@
+Data type/category,SL,name,age,gender,country,occupation,datatype,topics of interest,Scrip
+Mail_Contact_1,5,Michael Johnson,34,male,US,Software Engineer,,,"From:  michael.johnson.dev@gmail.com
+To:  <amanda.reynolds@sunridge-realty.com>
+Subject: Reaching out about the project contact
+Hi reynolds,
+I got your info from Kevin at the meetup last week and figured I'd send a quick email.
+If you need to reach me directly about the backend integration work,
+feel free to call or text.
+Michael Johnson
+Software Engineer
+Phone: +1 (415) 732-8841
+Email: michael.johnson.dev@gmail.com
+San Jose, CA
+
+Usually online during evenings Pacific time.
+Just shoot me a message."""
+Mail_Contact_2,,Mariana Alves,34,female,Brazil,Marketing Manager,,,"Assunto: Contato do advogado em Nova York
+
+Oi Lucas,
+
+Conforme você pediu ontem na reunião, segue o contato do advogado que usamos quando abrimos a filial nos EUA.
+
+Nome: Daniel Cooper
+Empresa: Bright Legal Group
+Email: daniel.cooper@brightlegal.com
+Telefone: +1 212-555-4832
+Endereço: 245 Park Avenue, New York, NY 10167
+
+Ele costuma responder rápido. Pode mencionar meu nome quando enviar o email.
+
+Abraço,
+Mariana"
+Mail_Contact_3,,Claire Dubois,41,female,France,Human Resources Director,,,"Objet : Coordonnées du consultant IT à Boston
+
+Bonjour Marc,
+
+Je t’envoie les coordonnées du consultant dont je t’ai parlé pour le projet de migration système.
+
+Nom : Michael Turner
+Société : Turner IT Consulting
+Email : michael.turner@turnerit.com
+Téléphone : +1 617-555-2291
+Adresse : 75 State Street, Boston, MA 02109
+
+Il a déjà travaillé avec plusieurs entreprises européennes, donc la communication devrait être simple.
+
+Bonne journée,
+Claire"
+Mail_Contact_4,,Giovanni Ricci,38,male,Italy,Logistics Coordinator,,,"Oggetto: Contatto del fornitore a Chicago
+
+Ciao Andrea,
+
+Ti inoltro i dati di contatto del nostro fornitore negli Stati Uniti di cui parlavamo stamattina.
+
+Nome: Sarah Mitchell
+Azienda: Midwest Industrial Supply
+Email: sarah.mitchell@midwestis.com
+Telefono: +1 312-555-7745
+Indirizzo: 410 South Michigan Avenue, Chicago, IL 60605
+
+Scrivile pure direttamente, di solito risponde entro la giornata.
+
+A presto,
+Giovanni"
+Mail_Contact_5,,Lukas Schneider,45,male,Germany,Procurement Manager,,,"Hi Nina,
+
+du hattest mich doch letzte Woche nach dem Kontakt in den USA gefragt – ich glaube für das Tech-Thema mit eurem Team.
+
+Hier sind seine Daten:
+
+Name: Rebecca Johnson  
+Firma: Pacific Tech Solutions  
+Email: rebecca.johnson@pacifictech.com  
+Telefon: +1 415-555-6184  
+Adresse: 600 California Street, San Francisco, CA 94108
+
+Wir haben letztes Jahr ein paar Mal mit ihr gearbeitet. Antwortet normalerweise ziemlich schnell, auch wegen der Zeitverschiebung.
+
+Schreib ihr einfach kurz und sag, dass du von unserem Berliner Büro kommst, dann weiß sie direkt Bescheid.
+
+Viele Grüße  
+Lukas"
+Mail_Contact_6,,Carlos Mendoza,36,male,Spain,Business Development Specialist,,,"Asunto: Contacto del agente inmobiliario en Miami
+Hola Laura,
+
+Te paso el contacto del agente inmobiliario que nos ayudó cuando buscamos oficina en Miami.
+
+Nombre: Anthony Walker
+Empresa: Walker Commercial Realty
+Email: anthony.walker@walkerrealty.com
+Teléfono: +1 305-555-9027
+Dirección: 200 Biscayne Blvd, Miami, FL 33131
+
+Dile que vienes de nuestra empresa en Madrid, seguro que te recuerda.
+
+Saludos,
+Carlos"
+Message_contact,6,Emily Carter,29,female,US,Marketing manager,,,"Hey Sarah this is Emily Carter from the marketing team. Do you still have Jason Miller’s contact from the branding project last quarter? I accidentally deleted a bunch of numbers when I reset my phone. I think his number was something like 415-555-2673 but I’m not totally sure. If you have his email too could you send it over? Mine is emily.carter.mkt@gmail.com
+ in case he needs to reach out later."
+Message_contact,,Rafael Costa,29,male,Brazil,Engenheiro de Software,,,Oi Mariana aqui é o Rafael Costa. Você ainda tem o contato da Fernanda do time de produto? Eu perdi vários números quando troquei de celular ontem. Acho que o telefone dela começava com 21 988 mas não lembro o resto. Se puder me mandar o número completo e o email dela agradeço. Meu email é rafael.costa.dev@gmail.com caso ela precise falar comigo.
+Message_contact,,Claire Dubois,41,male,France,Architecte,,,"Bonjour Marc c’est Claire Dubois. Tu aurais encore le numéro de téléphone de Monsieur Bernard le client pour le projet à Lyon ? J’ai changé de téléphone la semaine dernière et j’ai perdu quelques contacts. Je crois que son numéro commençait par 06 73 mais je ne suis plus sûre. Si tu as aussi son email tu peux me l’envoyer. Le mien est claire.dubois.archi@gmail.com
+."
+Message_contact,,Luca Bianchi,37,male,Italy,Consulente Finanziario,,,
+Message_contact,,Anna Schneider,32,female,Germany,Marketing Manager,,,"Hi Lukas hier ist Anna Schneider aus dem Marketing. Hast du vielleicht noch die Kontaktdaten von Stefan Weber aus der Werbeagentur? Ich habe sein Handy nicht mehr nachdem ich mein Telefon gewechselt habe. Ich glaube seine Nummer fing mit 0175 an aber der Rest fehlt mir. Wenn du sie hast schick sie mir bitte kurz. Meine Mail ist anna.schneider.mkt@gmail.com
+ falls er mich direkt kontaktieren möchte."
+Message_contact,,Carlos Ramírez,45,male,Spain,Gerente de Ventas,,,"Hola Marta soy Carlos Ramírez del equipo de ventas. ¿Todavía tienes el contacto de Javier Morales el distribuidor de Madrid? Perdí algunos números cuando cambié de móvil hace unos días. Creo que su teléfono empezaba por 612 pero no recuerdo los demás dígitos. Si puedes envíame también su correo electrónico. El mío es carlos.ramirez.ventas@gmail.com
+ por si necesita escribirme."

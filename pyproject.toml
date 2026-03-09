@@ -1,0 +1,29 @@
+[project]
+name = "text-converter"
+version = "0.1.0"
+description = "Bulk text to file conversion tools"
+authors = [
+    {name = "Dylan",email = "dylan@lab3.asia"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "typer>=0.15.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+tc = "text_converter.cli:main"
+
+[tool.poetry]
+packages = [{include = "text_converter", from = "src"}]
+
+[tool.poetry.group.audio]
+optional = true
+
+[tool.poetry.group.audio.dependencies]
+faster-whisper = ">=1.1.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
