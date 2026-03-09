@@ -1,0 +1,15 @@
+"From:  michael.johnson.dev@gmail.com
+To:  <amanda.reynolds@sunridge-realty.com>
+Subject: Reaching out about the project contact
+Hi reynolds,
+I got your info from Kevin at the meetup last week and figured I'd send a quick email.
+If you need to reach me directly about the backend integration work,
+feel free to call or text.
+Michael Johnson
+Software Engineer
+Phone: +1 (415) 732-8841
+Email: michael.johnson.dev@gmail.com
+San Jose, CA
+
+Usually online during evenings Pacific time.
+Just shoot me a message."""

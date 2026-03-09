@@ -22,6 +22,11 @@ def parse(text: str) -> dict:
 
     Raises ValueError if From or To headers are missing.
     """
+    # Strip wrapping quotes if the entire text is quoted (e.g. from CSV export)
+    text = text.strip()
+    if len(text) >= 2 and text[0] == '"' and text[-1] == '"':
+        text = text[1:-1]
+
     lines = text.splitlines()
     result: dict = {}
     body_start = 0
