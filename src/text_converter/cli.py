@@ -40,6 +40,7 @@ def email_batch(
     input_dir: Path = typer.Argument(..., help="Directory with .txt email files"),
     output_dir: Path = typer.Argument(..., help="Directory to write .eml files"),
     glob: str = typer.Option("*.txt", "--glob", "-g", help="File pattern to match"),
+    workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
 ):
     """Convert all plain-text email files in a directory to .eml."""
     from text_converter.email_to_eml import batch_from_dir
@@ -48,7 +49,7 @@ def email_batch(
         console.print(f"[red]Not a directory:[/red] {input_dir}")
         raise typer.Exit(1)
 
-    results = batch_from_dir(input_dir, output_dir, glob=glob)
+    results = batch_from_dir(input_dir, output_dir, glob=glob, max_workers=workers)
 
     table = Table(title=f"Converted {len(results)} file(s)")
     table.add_column("File", style="cyan")
@@ -66,6 +67,7 @@ def email_from_csv(
     category_col: str = typer.Option("Data type/category", "--cat-col", help="Category column name"),
     scrip_col: str = typer.Option("Scrip", "--scrip-col", help="Script column name"),
     category_prefix: list[str] = typer.Option([], "--prefix", "-p", help="Filter by prefix (repeat for multiple). Omit = all rows."),
+    workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
 ):
     """Convert rows from a CSV file to .eml files.
 
@@ -84,6 +86,7 @@ def email_from_csv(
         category_col=category_col,
         scrip_col=scrip_col,
         category_prefix=category_prefix or None,
+        max_workers=workers,
     )
 
     if not results:
@@ -111,6 +114,7 @@ def note_from_csv(
     category_col: str = typer.Option("primary category", "--category-col", help="Category column (used as tag)"),
     data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value (e.g. Note). Empty = all rows."),
+    workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
 ):
     """Convert Script column in a CSV to individual .txt note files."""
     from text_converter.note_to_txt import batch_from_csv
@@ -129,6 +133,7 @@ def note_from_csv(
         category_col=category_col,
         data_type_col=data_type_col,
         data_type_filter=data_type_filter or None,
+        max_workers=workers,
     )
 
     if not results:
@@ -154,6 +159,7 @@ def _csv_from_options(
     data_type_col: str,
     data_type_filter: str,
     batch_fn,
+    workers: int = 1,
 ) -> None:
     if not csv_file.exists():
         console.print(f"[red]File not found:[/red] {csv_file}")
@@ -166,6 +172,7 @@ def _csv_from_options(
         participant_col=participant_col,
         data_type_col=data_type_col,
         data_type_filter=data_type_filter or None,
+        max_workers=workers,
     )
 
     if not results:
@@ -189,10 +196,11 @@ def message_from_csv(
     participant_col: str = typer.Option("participant", "--participant-col"),
     data_type_col: str = typer.Option("Data_type", "--type-col"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
+    workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
 ):
     """Convert message Script rows in a CSV to individual .txt files."""
     from text_converter.message_to_txt import batch_from_csv
-    _csv_from_options("message", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv)
+    _csv_from_options("message", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers)
 
 
 @audio_app.command("from-csv")
@@ -203,10 +211,11 @@ def audio_from_csv(
     participant_col: str = typer.Option("participant", "--participant-col"),
     data_type_col: str = typer.Option("Data_type", "--type-col"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
+    workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
 ):
     """Convert voicemail/audio transcript rows in a CSV to individual .txt files."""
     from text_converter.audio_to_text import batch_from_csv
-    _csv_from_options("transcript", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv)
+    _csv_from_options("transcript", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers)
 
 
 def main():

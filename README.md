@@ -12,10 +12,67 @@ Supports emails, notes, messages, and voicemail/audio transcripts — sourced fr
 
 ## Installation
 
+### macOS / Ubuntu
+
+Run the setup script — detects your OS automatically and handles everything from scratch:
+
 ```bash
-git clone <repo-url>
-cd text-converter
+bash setup.sh
+```
+
+**macOS** — what it does:
+1. Installs [Homebrew](https://brew.sh/) (if not present)
+2. Installs Python 3.13 via Homebrew
+   > ⚠️ The system Python (3.9) bundled with Xcode cannot create virtual environments — use Homebrew's Python instead.
+3. Installs Poetry using Python 3.13
+4. Adds Poetry to `$PATH` and persists it to `~/.zshrc` or `~/.bashrc`
+5. Runs `poetry install`
+6. Verifies with `poetry run tc --help`
+
+**Ubuntu/Debian** — what it does:
+1. Installs Python 3.13 via the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa)
+2. Installs Poetry
+3. Adds Poetry to `$PATH` and persists it to `~/.zshrc` or `~/.bashrc`
+4. Runs `poetry install`
+5. Verifies with `poetry run tc --help`
+
+---
+
+### Windows
+
+Open **PowerShell as Administrator**, then run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File setup.ps1
+```
+
+What it does:
+1. Installs Python 3.13 via `winget` (if not present)
+2. Installs Poetry
+3. Adds Poetry to the user `PATH` permanently
+4. Runs `poetry install`
+5. Verifies with `poetry run tc --help`
+
+> **Requires:** [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) (pre-installed on Windows 10 1709+ / Windows 11)
+
+---
+
+### Manual setup (any OS)
+
+```bash
+# 1. Install Python 3.13 from https://python.org/downloads
+
+# 2. Install Poetry
+curl -sSL https://install.python-poetry.org | python3.13 -
+
+# 3. Add Poetry to PATH
+export PATH="$HOME/.local/bin:$PATH"
+
+# 4. Install dependencies
 poetry install
+
+# 5. Verify
+poetry run tc --help
 ```
 
 ---
@@ -75,6 +132,11 @@ poetry run tc email convert input.txt output.eml
 poetry run tc email batch ./input_emails/ ./output/eml/
 ```
 
+**Convert with parallel workers:**
+```bash
+poetry run tc email batch ./input_emails/ ./output/eml/ --workers 4
+```
+
 **Convert from CSV — all rows:**
 ```bash
 poetry run tc email from-csv data.csv output/eml/
@@ -99,6 +161,11 @@ poetry run tc email from-csv data.csv output/eml/ \
   --cat-col "Data type/category"
 ```
 
+**Convert with parallel workers:**
+```bash
+poetry run tc email from-csv data.csv output/eml/ --workers 4
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -106,6 +173,7 @@ poetry run tc email from-csv data.csv output/eml/ \
 | `--scrip-col` | `Scrip` | Column containing the email script |
 | `--cat-col` | `Data type/category` | Column used for category filtering |
 | `--prefix` / `-p` | _(all rows)_ | Filter rows by category prefix. Repeatable. |
+| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
 
 ---
 
@@ -133,6 +201,11 @@ poetry run tc note from-csv data.csv output/notes/ \
   --type-col "Data_type"
 ```
 
+**Convert with parallel workers:**
+```bash
+poetry run tc note from-csv data.csv output/notes/ --workers 4
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -144,6 +217,7 @@ poetry run tc note from-csv data.csv output/notes/ \
 | `--category-col` | `primary category` | Category column |
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
+| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
 
 ---
 
@@ -170,6 +244,11 @@ poetry run tc message from-csv data.csv output/messages/ \
   --participant-col "participant"
 ```
 
+**Convert with parallel workers:**
+```bash
+poetry run tc message from-csv data.csv output/messages/ --workers 4
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -178,6 +257,7 @@ poetry run tc message from-csv data.csv output/messages/ \
 | `--participant-col` | `participant` | Column used for output filename |
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
+| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
 
 ---
 
@@ -207,6 +287,11 @@ poetry run tc audio from-csv data.csv output/audio/ \
   --participant-col "participant"
 ```
 
+**Convert with parallel workers:**
+```bash
+poetry run tc audio from-csv data.csv output/audio/ --workers 4
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -215,6 +300,7 @@ poetry run tc audio from-csv data.csv output/audio/ \
 | `--participant-col` | `participant` | Column used for output filename |
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
+| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
 
 ---
 

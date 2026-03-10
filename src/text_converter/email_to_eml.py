@@ -2,6 +2,7 @@
 
 import csv
 import re
+from concurrent.futures import ThreadPoolExecutor
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -158,6 +159,7 @@ def batch_from_csv(
     scrip_col: str = "Scrip",
     category_col: str = "Data type/category",
     category_prefix: str | list[str] | None = None,
+    max_workers: int = 1,
 ) -> list[tuple[str, Path]]:
     """Convert email Script rows from a CSV to .eml files.
 
@@ -170,13 +172,13 @@ def batch_from_csv(
         scrip_col: Column containing the raw email script
         category_col: Column used for filtering/naming
         category_prefix: Filter rows by category prefix(es). None = all rows.
+        max_workers: Number of parallel workers for file writing.
 
     Returns:
         List of (category, output_path) tuples for converted files
     """
     csv_path = Path(csv_path)
     output_dir = Path(output_dir)
-    results = []
     skipped = []
 
     if isinstance(category_prefix, str):
@@ -184,6 +186,8 @@ def batch_from_csv(
     else:
         prefixes = [p for p in (category_prefix or []) if p]
 
+    # Phase 1: parse all rows (serial CSV read)
+    items: list[tuple[str, dict, Path]] = []  # (category, fields, output_path)
     with open(csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
@@ -203,25 +207,50 @@ def batch_from_csv(
                 continue
 
             filename = f"{i+1:04d}_{category.lower().replace(' ', '_')}.eml"
-            out = convert(
-                sender=fields["sender"],
-                recipient=fields["recipient"],
-                subject=fields["subject"],
-                body=fields["body"],
-                output_path=output_dir / filename,
-                date=fields.get("date"),
-                cc=fields.get("cc"),
-            )
-            results.append((category, out))
+            items.append((category, fields, output_dir / filename))
 
     if skipped:
         for cat, reason in skipped:
             print(f"[SKIP] {cat}: {reason}")
 
+    if not items:
+        return []
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Phase 2: write .eml files (concurrent)
+    def _convert_item(args: tuple[str, dict, Path]) -> tuple[str, Path]:
+        category, fields, out_path = args
+        out = convert(
+            sender=fields["sender"],
+            recipient=fields["recipient"],
+            subject=fields["subject"],
+            body=fields["body"],
+            output_path=out_path,
+            date=fields.get("date"),
+            cc=fields.get("cc"),
+        )
+        return category, out
+
+    results = []
+    errors = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [(item, executor.submit(_convert_item, item)) for item in items]
+
+    for item, future in futures:
+        try:
+            results.append(future.result())
+        except Exception as exc:
+            errors.append((item[0], exc))
+
+    if errors:
+        for cat, exc in errors:
+            print(f"[SKIP] {cat}: {exc}")
+
     return results
 
 
-def batch_from_dir(input_dir: Path, output_dir: Path, glob: str = "*.txt") -> list[Path]:
+def batch_from_dir(input_dir: Path, output_dir: Path, glob: str = "*.txt", max_workers: int = 1) -> list[Path]:
     """Convert all plain-text email files in a directory to .eml files.
 
     Each .txt file must follow the From/To/Subject + body format.
@@ -229,14 +258,25 @@ def batch_from_dir(input_dir: Path, output_dir: Path, glob: str = "*.txt") -> li
     """
     input_dir = Path(input_dir)
     output_dir = Path(output_dir)
-    results = []
 
-    for txt_file in sorted(input_dir.glob(glob)):
+    txt_files = sorted(input_dir.glob(glob))
+    if not txt_files:
+        return []
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    def _process(txt_file: Path) -> Path:
+        text = txt_file.read_text(encoding="utf-8")
+        out = output_dir / txt_file.with_suffix(".eml").name
+        return from_text(text, out)
+
+    results = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [(f, executor.submit(_process, f)) for f in txt_files]
+
+    for txt_file, future in futures:
         try:
-            text = txt_file.read_text(encoding="utf-8")
-            out = output_dir / txt_file.with_suffix(".eml").name
-            from_text(text, out)
-            results.append(out)
+            results.append(future.result())
         except Exception as exc:
             print(f"[SKIP] {txt_file.name}: {exc}")
 

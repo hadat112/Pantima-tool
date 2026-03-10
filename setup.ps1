@@ -1,0 +1,50 @@
+# Run with: powershell -ExecutionPolicy Bypass -File setup.ps1
+$ErrorActionPreference = "Stop"
+
+$POETRY_BIN = "$env:APPDATA\Python\Scripts\poetry.exe"
+$POETRY_PATH = "$env:APPDATA\Python\Scripts"
+
+Write-Host "==> Checking Python 3.13..."
+$python = Get-Command python -ErrorAction SilentlyContinue
+$pythonVersion = if ($python) { & python --version 2>&1 } else { "" }
+
+if ($pythonVersion -notmatch "3\.13") {
+    Write-Host "    Installing Python 3.13 via winget..."
+    winget install --id Python.Python.3.13 --source winget --silent --accept-package-agreements --accept-source-agreements
+    # Refresh PATH so python is available
+    $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
+                [System.Environment]::GetEnvironmentVariable("PATH", "User")
+} else {
+    Write-Host "    Python 3.13 already installed: $pythonVersion"
+}
+
+Write-Host ""
+Write-Host "==> Checking Poetry..."
+if (-not (Test-Path $POETRY_BIN)) {
+    Write-Host "    Installing Poetry..."
+    (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+} else {
+    $v = & $POETRY_BIN --version
+    Write-Host "    Poetry already installed: $v"
+}
+
+# Export for this session
+$env:PATH = "$POETRY_PATH;$env:PATH"
+
+# Persist to user PATH if not already there
+$userPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
+if ($userPath -notlike "*$POETRY_PATH*") {
+    [System.Environment]::SetEnvironmentVariable("PATH", "$POETRY_PATH;$userPath", "User")
+    Write-Host "    Added Poetry to user PATH (restart terminal to take effect)"
+}
+
+Write-Host ""
+Write-Host "==> Installing project dependencies..."
+& $POETRY_BIN install
+
+Write-Host ""
+Write-Host "==> Done. Verifying..."
+& $POETRY_BIN run tc --help
+
+Write-Host ""
+Write-Host "Ready. Use: poetry run tc <command>"

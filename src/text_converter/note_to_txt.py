@@ -2,6 +2,7 @@
 
 import csv
 import re
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from datetime import datetime
 
@@ -59,6 +60,7 @@ def batch_from_csv(
     category_col: str = "primary category",
     data_type_col: str = "Data_type",
     data_type_filter: str | None = None,
+    max_workers: int = 1,
 ) -> list[Path]:
     """Convert Script column rows from a CSV to individual .txt note files.
 
@@ -73,19 +75,19 @@ def batch_from_csv(
         data_type_col: Column used for filtering by type
         data_type_filter: Only process rows where data_type_col equals this value.
             None = all rows.
+        max_workers: Number of parallel workers for file writing.
 
     Returns:
         List of written .txt file paths
     """
     csv_path = Path(csv_path)
     output_dir = Path(output_dir)
-    results = []
-    errors = []
 
+    # Phase 1: collect work items (serial CSV read)
+    items: list[tuple[int, str, Path]] = []
     with open(csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
-            # Optional data type filter
             if data_type_filter:
                 row_type = (row.get(data_type_col) or "").strip()
                 if row_type != data_type_filter:
@@ -96,27 +98,30 @@ def batch_from_csv(
                 continue
 
             participant = (row.get(participant_col) or f"row_{i+1}").strip()
-            date = (row.get(date_col) or "").strip()
-
-            # Build tags from occupation + category, skip empty values
-            tags = [
-                t for t in [
-                    (row.get(occupation_col) or "").strip(),
-                    (row.get(category_col) or "").strip(),
-                ]
-                if t
-            ]
-
-            title = f"{participant} — {date}" if date else participant
             filename = f"{i+1:04d}_{_slug(participant)}.txt"
+            items.append((i + 1, script, output_dir / filename))
 
-            try:
-                out = output_dir / filename
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_text(script, encoding="utf-8")
-                results.append(out)
-            except Exception as exc:
-                errors.append((i + 1, exc))
+    if not items:
+        return []
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Phase 2: write files (concurrent)
+    def _write(args: tuple[int, str, Path]) -> Path:
+        _, script, out_path = args
+        out_path.write_text(script, encoding="utf-8")
+        return out_path
+
+    results = []
+    errors = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [(item, executor.submit(_write, item)) for item in items]
+
+    for item, future in futures:
+        try:
+            results.append(future.result())
+        except Exception as exc:
+            errors.append((item[0], exc))
 
     if errors:
         for row_num, exc in errors:
