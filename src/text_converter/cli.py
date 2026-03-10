@@ -68,6 +68,7 @@ def email_from_csv(
     scrip_col: str = typer.Option("Scrip", "--scrip-col", help="Script column name"),
     category_prefix: list[str] = typer.Option([], "--prefix", "-p", help="Filter by prefix (repeat for multiple). Omit = all rows."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
+    limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert rows from a CSV file to .eml files.
 
@@ -87,6 +88,7 @@ def email_from_csv(
         scrip_col=scrip_col,
         category_prefix=category_prefix or None,
         max_workers=workers,
+        limit=limit,
     )
 
     if not results:
@@ -115,6 +117,7 @@ def note_from_csv(
     data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value (e.g. Note). Empty = all rows."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
+    limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert Script column in a CSV to individual .txt note files."""
     from text_converter.note_to_txt import batch_from_csv
@@ -134,6 +137,7 @@ def note_from_csv(
         data_type_col=data_type_col,
         data_type_filter=data_type_filter or None,
         max_workers=workers,
+        limit=limit,
     )
 
     if not results:
@@ -160,6 +164,7 @@ def _csv_from_options(
     data_type_filter: str,
     batch_fn,
     workers: int = 1,
+    limit: int = 0,
 ) -> None:
     if not csv_file.exists():
         console.print(f"[red]File not found:[/red] {csv_file}")
@@ -173,6 +178,7 @@ def _csv_from_options(
         data_type_col=data_type_col,
         data_type_filter=data_type_filter or None,
         max_workers=workers,
+        limit=limit,
     )
 
     if not results:
@@ -197,10 +203,11 @@ def message_from_csv(
     data_type_col: str = typer.Option("Data_type", "--type-col"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
+    limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert message Script rows in a CSV to individual .txt files."""
     from text_converter.message_to_txt import batch_from_csv
-    _csv_from_options("message", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers)
+    _csv_from_options("message", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers, limit)
 
 
 @audio_app.command("from-csv")
@@ -212,10 +219,11 @@ def audio_from_csv(
     data_type_col: str = typer.Option("Data_type", "--type-col"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
+    limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert voicemail/audio transcript rows in a CSV to individual .txt files."""
     from text_converter.audio_to_text import batch_from_csv
-    _csv_from_options("transcript", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers)
+    _csv_from_options("transcript", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers, limit)
 
 
 def main():

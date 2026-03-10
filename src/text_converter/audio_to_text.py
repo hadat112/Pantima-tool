@@ -60,6 +60,7 @@ def batch_from_csv(
     data_type_col: str = "Data_type",
     data_type_filter: str | None = None,
     max_workers: int = 1,
+    limit: int = 0,
 ) -> list[Path]:
     """Convert pre-transcribed voicemail/audio note rows from a CSV to .txt files.
 
@@ -75,6 +76,7 @@ def batch_from_csv(
         data_type_filter: Only process rows where data_type_col equals this value.
             None = all rows.
         max_workers: Number of parallel workers for file writing.
+        limit: Max number of rows to process (0 = all).
 
     Returns:
         List of written .txt file paths
@@ -98,6 +100,9 @@ def batch_from_csv(
             participant = (row.get(participant_col) or f"row_{i+1}").strip()
             filename = f"{i+1:04d}_{_slug(participant)}.txt"
             items.append((i + 1, script, output_dir / filename))
+
+    if limit:
+        items = items[:limit]
 
     if not items:
         return []

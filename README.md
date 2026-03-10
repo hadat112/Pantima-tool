@@ -166,6 +166,11 @@ poetry run tc email from-csv data.csv output/eml/ \
 poetry run tc email from-csv data.csv output/eml/ --workers 4
 ```
 
+**Limit rows per run:**
+```bash
+poetry run tc email from-csv data.csv output/eml/ --limit 100
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -174,6 +179,7 @@ poetry run tc email from-csv data.csv output/eml/ --workers 4
 | `--cat-col` | `Data type/category` | Column used for category filtering |
 | `--prefix` / `-p` | _(all rows)_ | Filter rows by category prefix. Repeatable. |
 | `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
+| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
 
 ---
 
@@ -206,6 +212,11 @@ poetry run tc note from-csv data.csv output/notes/ \
 poetry run tc note from-csv data.csv output/notes/ --workers 4
 ```
 
+**Limit rows per run:**
+```bash
+poetry run tc note from-csv data.csv output/notes/ --limit 100
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -218,6 +229,7 @@ poetry run tc note from-csv data.csv output/notes/ --workers 4
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
 | `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
+| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
 
 ---
 
@@ -249,6 +261,11 @@ poetry run tc message from-csv data.csv output/messages/ \
 poetry run tc message from-csv data.csv output/messages/ --workers 4
 ```
 
+**Limit rows per run:**
+```bash
+poetry run tc message from-csv data.csv output/messages/ --limit 100
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -258,6 +275,7 @@ poetry run tc message from-csv data.csv output/messages/ --workers 4
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
 | `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
+| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
 
 ---
 
@@ -292,6 +310,11 @@ poetry run tc audio from-csv data.csv output/audio/ \
 poetry run tc audio from-csv data.csv output/audio/ --workers 4
 ```
 
+**Limit rows per run:**
+```bash
+poetry run tc audio from-csv data.csv output/audio/ --limit 100
+```
+
 ### Options
 
 | Option | Default | Description |
@@ -301,6 +324,7 @@ poetry run tc audio from-csv data.csv output/audio/ --workers 4
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
 | `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
+| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
 
 ---
 

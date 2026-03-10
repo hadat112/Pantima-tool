@@ -160,6 +160,7 @@ def batch_from_csv(
     category_col: str = "Data type/category",
     category_prefix: str | list[str] | None = None,
     max_workers: int = 1,
+    limit: int = 0,
 ) -> list[tuple[str, Path]]:
     """Convert email Script rows from a CSV to .eml files.
 
@@ -173,6 +174,7 @@ def batch_from_csv(
         category_col: Column used for filtering/naming
         category_prefix: Filter rows by category prefix(es). None = all rows.
         max_workers: Number of parallel workers for file writing.
+        limit: Max number of rows to process (0 = all).
 
     Returns:
         List of (category, output_path) tuples for converted files
@@ -212,6 +214,9 @@ def batch_from_csv(
     if skipped:
         for cat, reason in skipped:
             print(f"[SKIP] {cat}: {reason}")
+
+    if limit:
+        items = items[:limit]
 
     if not items:
         return []
