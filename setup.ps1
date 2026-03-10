@@ -9,8 +9,18 @@ $python = Get-Command python -ErrorAction SilentlyContinue
 $pythonVersion = if ($python) { & python --version 2>&1 } else { "" }
 
 if ($pythonVersion -notmatch "3\.13") {
-    Write-Host "    Installing Python 3.13 via winget..."
-    winget install --id Python.Python.3.13 --source winget --silent --accept-package-agreements --accept-source-agreements
+    $winget = Get-Command winget -ErrorAction SilentlyContinue
+    if ($winget) {
+        Write-Host "    Installing Python 3.13 via winget..."
+        winget install --id Python.Python.3.13 --source winget --silent --accept-package-agreements --accept-source-agreements
+    } else {
+        Write-Host "    winget not found. Downloading Python 3.13 installer directly..."
+        $installer = "$env:TEMP\python313.exe"
+        Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe" -OutFile $installer -UseBasicParsing
+        Write-Host "    Running installer (follow the prompts — check 'Add Python to PATH')..."
+        Start-Process -FilePath $installer -ArgumentList "/passive InstallAllUsers=0 PrependPath=1" -Wait
+        Remove-Item $installer
+    }
     # Refresh PATH so python is available
     $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
                 [System.Environment]::GetEnvironmentVariable("PATH", "User")
