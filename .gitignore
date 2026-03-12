@@ -18,6 +18,9 @@ venv/
 # Output files
 output/
 
+# Logs
+logs/
+
 # OS
 .DS_Store
 Thumbs.db

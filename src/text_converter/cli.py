@@ -1,6 +1,7 @@
 """CLI entry point for text-converter tools."""
 
 import typer
+from datetime import datetime
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
@@ -155,6 +156,18 @@ def note_from_csv(
 
     console.print(table)
     console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
+
+    # Write run log
+    log_dir = Path.cwd() / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f"{csv_file.stem}.log"
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(log_file, "a", encoding="utf-8") as lf:
+        lf.write(f"[{timestamp}] source={csv_file.name} total={len(results)}\n")
+        for path in results:
+            lf.write(f"  {path.name}\n")
+        lf.write("\n")
+    console.print(f"[dim]Log saved → {log_file}[/dim]")
 
 
 def _csv_from_options(
