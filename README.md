@@ -24,7 +24,7 @@ bash setup.sh
 
 1. Installs [Homebrew](https://brew.sh/) (if not present)
 2. Installs Python 3.13 via Homebrew
-  > ⚠️ The system Python (3.9) bundled with Xcode cannot create virtual environments — use Homebrew's Python instead.
+   > ⚠️ The system Python (3.9) bundled with Xcode cannot create virtual environments — use Homebrew's Python instead.
 3. Installs Poetry using Python 3.13
 4. Adds Poetry to `$PATH` and persists it to `~/.zshrc` or `~/.bashrc`
 5. Runs `poetry install`
@@ -185,15 +185,13 @@ poetry run tc email from-csv data.csv output/eml/ --limit 100
 
 ### Options
 
-
 | Option             | Default              | Description                                  |
 | ------------------ | -------------------- | -------------------------------------------- |
 | `--scrip-col`      | `Scrip`              | Column containing the email script           |
 | `--cat-col`        | `Data type/category` | Column used for category filtering           |
-| `--prefix` / `-p`  | *(all rows)*         | Filter rows by category prefix. Repeatable.  |
+| `--prefix` / `-p`  | _(all rows)_         | Filter rows by category prefix. Repeatable.  |
 | `--workers` / `-w` | `1`                  | Number of parallel workers for file writing. |
-| `--limit` / `-n`   | `0` *(all)*          | Max number of rows to process per run.       |
-
+| `--limit` / `-n`   | `0` _(all)_          | Max number of rows to process per run.       |
 
 ---
 
@@ -252,7 +250,6 @@ poetry run tc note from-csv data.csv output/notes/ --limit 100
 
 ### Options
 
-
 | Option                  | Default            | Description                                                                                       |
 | ----------------------- | ------------------ | ------------------------------------------------------------------------------------------------- |
 | `--script-col`          | `Script`           | Column containing the note content                                                                |
@@ -261,11 +258,10 @@ poetry run tc note from-csv data.csv output/notes/ --limit 100
 | `--occupation-col`      | `occupation`       | Occupation column                                                                                 |
 | `--category-col`        | `primary category` | Category column                                                                                   |
 | `--type-col`            | `Data_type`        | Column used for `--type` filtering                                                                |
-| `--type` / `-t`         | *(all rows)*       | Only process rows matching this value                                                             |
-| `--accepted-col` / `-a` | *(disabled)*       | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
+| `--type` / `-t`         | _(all rows)_       | Only process rows matching this value                                                             |
+| `--accepted-col` / `-a` | _(disabled)_       | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
 | `--workers` / `-w`      | `1`                | Number of parallel workers for file writing.                                                      |
-| `--limit` / `-n`        | `0` *(all)*        | Max number of rows to process per run.                                                            |
-
+| `--limit` / `-n`        | `0` _(all)_        | Max number of rows to process per run.                                                            |
 
 ---
 
@@ -309,16 +305,14 @@ poetry run tc message from-csv data.csv output/messages/ --limit 100
 
 ### Options
 
-
 | Option              | Default       | Description                                  |
 | ------------------- | ------------- | -------------------------------------------- |
 | `--script-col`      | `Script`      | Column containing the message content        |
 | `--participant-col` | `participant` | Column used for output filename              |
 | `--type-col`        | `Data_type`   | Column used for `--type` filtering           |
-| `--type` / `-t`     | *(all rows)*  | Only process rows matching this value        |
+| `--type` / `-t`     | _(all rows)_  | Only process rows matching this value        |
 | `--workers` / `-w`  | `1`           | Number of parallel workers for file writing. |
-| `--limit` / `-n`    | `0` *(all)*   | Max number of rows to process per run.       |
-
+| `--limit` / `-n`    | `0` _(all)_   | Max number of rows to process per run.       |
 
 ---
 
@@ -365,16 +359,14 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 
 ### Options
 
-
 | Option              | Default       | Description                                  |
 | ------------------- | ------------- | -------------------------------------------- |
 | `--script-col`      | `Script`      | Column containing the transcript content     |
 | `--participant-col` | `participant` | Column used for output filename              |
 | `--type-col`        | `Data_type`   | Column used for `--type` filtering           |
-| `--type` / `-t`     | *(all rows)*  | Only process rows matching this value        |
+| `--type` / `-t`     | _(all rows)_  | Only process rows matching this value        |
 | `--workers` / `-w`  | `1`           | Number of parallel workers for file writing. |
-| `--limit` / `-n`    | `0` *(all)*   | Max number of rows to process per run.       |
-
+| `--limit` / `-n`    | `0` _(all)_   | Max number of rows to process per run.       |
 
 ---
 
@@ -382,15 +374,12 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 
 ### Email CSV (`email from-csv`)
 
-
 | Column               | Required | Notes                                                                           |
 | -------------------- | -------- | ------------------------------------------------------------------------------- |
 | `Scrip`              | Yes      | Must contain `From:`, `To:`, `Subject:` headers. Rows without them are skipped. |
 | `Data type/category` | No       | Used for `--prefix` filtering                                                   |
 
-
 ### Note / Message / Audio CSV (`note`, `message`, `audio from-csv`)
-
 
 | Column             | Required | Notes                                                                                                       |
 | ------------------ | -------- | ----------------------------------------------------------------------------------------------------------- |
@@ -398,13 +387,11 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | `participant`      | No       | Used for output filename                                                                                    |
 | `Date`             | No       | Included in note metadata                                                                                   |
 | `Data_type`        | No       | Used for `--type` filtering                                                                                 |
-| *(any status col)* | No       | Used for `--accepted-col` filtering. Accepted values: `accept`, `accepted`. e.g. `Anno Status`, `QA Status` |
-
+| _(any status col)_ | No       | Used for `--accepted-col` filtering. Accepted values: `accept`, `accepted`. e.g. `Anno Status`, `QA Status` |
 
 ---
 
 ## Output Naming
-
 
 | Module             | Filename pattern            | Example                   |
 | ------------------ | --------------------------- | ------------------------- |
@@ -413,5 +400,3 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | `note from-csv`    | `{index}_{participant}.txt` | `0001_liam.txt`           |
 | `message from-csv` | `{index}_{participant}.txt` | `0007_emily_carter.txt`   |
 | `audio from-csv`   | `{index}_{participant}.txt` | `0003_claire_dubois.txt`  |
-
-
