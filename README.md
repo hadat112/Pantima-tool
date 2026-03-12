@@ -21,15 +21,17 @@ bash setup.sh
 ```
 
 **macOS** — what it does:
+
 1. Installs [Homebrew](https://brew.sh/) (if not present)
 2. Installs Python 3.13 via Homebrew
-   > ⚠️ The system Python (3.9) bundled with Xcode cannot create virtual environments — use Homebrew's Python instead.
+  > ⚠️ The system Python (3.9) bundled with Xcode cannot create virtual environments — use Homebrew's Python instead.
 3. Installs Poetry using Python 3.13
 4. Adds Poetry to `$PATH` and persists it to `~/.zshrc` or `~/.bashrc`
 5. Runs `poetry install`
 6. Verifies with `poetry run tc --help`
 
 **Ubuntu/Debian** — what it does:
+
 1. Installs Python 3.13 via the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa)
 2. Installs Poetry
 3. Adds Poetry to `$PATH` and persists it to `~/.zshrc` or `~/.bashrc`
@@ -47,6 +49,7 @@ powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
 What it does:
+
 1. Installs Python 3.13 via `winget` (if not present)
 2. Installs Poetry
 3. Adds Poetry to the user `PATH` permanently
@@ -123,31 +126,37 @@ Phone: +1 (415) 732-8841
 ### Commands
 
 **Convert a single file:**
+
 ```bash
 poetry run tc email convert input.txt output.eml
 ```
 
 **Convert all `.txt` files in a folder:**
+
 ```bash
 poetry run tc email batch ./input_emails/ ./output/eml/
 ```
 
 **Convert with parallel workers:**
+
 ```bash
 poetry run tc email batch ./input_emails/ ./output/eml/ --workers 4
 ```
 
 **Convert from CSV — all rows:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/
 ```
 
 **Convert from CSV — filter by category prefix:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/ --prefix Mail_Contact
 ```
 
 **Convert from CSV — multiple prefixes:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/ \
   --prefix Mail_Contact \
@@ -155,6 +164,7 @@ poetry run tc email from-csv data.csv output/eml/ \
 ```
 
 **Custom column names:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/ \
   --scrip-col "Scrip" \
@@ -162,24 +172,28 @@ poetry run tc email from-csv data.csv output/eml/ \
 ```
 
 **Convert with parallel workers:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/ --workers 4
 ```
 
 **Limit rows per run:**
+
 ```bash
 poetry run tc email from-csv data.csv output/eml/ --limit 100
 ```
 
 ### Options
 
-| Option | Default | Description |
-|---|---|---|
-| `--scrip-col` | `Scrip` | Column containing the email script |
-| `--cat-col` | `Data type/category` | Column used for category filtering |
-| `--prefix` / `-p` | _(all rows)_ | Filter rows by category prefix. Repeatable. |
-| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
-| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
+
+| Option             | Default              | Description                                  |
+| ------------------ | -------------------- | -------------------------------------------- |
+| `--scrip-col`      | `Scrip`              | Column containing the email script           |
+| `--cat-col`        | `Data type/category` | Column used for category filtering           |
+| `--prefix` / `-p`  | *(all rows)*         | Filter rows by category prefix. Repeatable.  |
+| `--workers` / `-w` | `1`                  | Number of parallel workers for file writing. |
+| `--limit` / `-n`   | `0` *(all)*          | Max number of rows to process per run.       |
+
 
 ---
 
@@ -190,16 +204,19 @@ Each row's script is written as-is into its own `.txt` file, named `{index}_{par
 ### Commands
 
 **Convert all rows:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/
 ```
 
 **Filter by data type:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ --type Note
 ```
 
 **Custom column names:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ \
   --script-col "Script" \
@@ -208,16 +225,19 @@ poetry run tc note from-csv data.csv output/notes/ \
 ```
 
 **Convert with parallel workers:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ --workers 4
 ```
 
 **Export only accepted rows (filter by status column):**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ --accepted-col "QA Status"
 ```
 
 **Combine accepted filter with type filter:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ \
   --type Note \
@@ -225,24 +245,27 @@ poetry run tc note from-csv data.csv output/notes/ \
 ```
 
 **Limit rows per run:**
+
 ```bash
 poetry run tc note from-csv data.csv output/notes/ --limit 100
 ```
 
 ### Options
 
-| Option | Default | Description |
-|---|---|---|
-| `--script-col` | `Script` | Column containing the note content |
-| `--participant-col` | `participant` | Column used for output filename |
-| `--date-col` | `Date` | Date column |
-| `--occupation-col` | `occupation` | Occupation column |
-| `--category-col` | `primary category` | Category column |
-| `--type-col` | `Data_type` | Column used for `--type` filtering |
-| `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
-| `--accepted-col` / `-a` | _(disabled)_ | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
-| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
-| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
+
+| Option                  | Default            | Description                                                                                       |
+| ----------------------- | ------------------ | ------------------------------------------------------------------------------------------------- |
+| `--script-col`          | `Script`           | Column containing the note content                                                                |
+| `--participant-col`     | `participant`      | Column used for output filename                                                                   |
+| `--date-col`            | `Date`             | Date column                                                                                       |
+| `--occupation-col`      | `occupation`       | Occupation column                                                                                 |
+| `--category-col`        | `primary category` | Category column                                                                                   |
+| `--type-col`            | `Data_type`        | Column used for `--type` filtering                                                                |
+| `--type` / `-t`         | *(all rows)*       | Only process rows matching this value                                                             |
+| `--accepted-col` / `-a` | *(disabled)*       | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
+| `--workers` / `-w`      | `1`                | Number of parallel workers for file writing.                                                      |
+| `--limit` / `-n`        | `0` *(all)*        | Max number of rows to process per run.                                                            |
+
 
 ---
 
@@ -253,16 +276,19 @@ Same behavior as Note — script content written directly into individual `.txt`
 ### Commands
 
 **Convert all rows:**
+
 ```bash
 poetry run tc message from-csv data.csv output/messages/
 ```
 
 **Filter by data type:**
+
 ```bash
 poetry run tc message from-csv data.csv output/messages/ --type Message
 ```
 
 **Custom column names:**
+
 ```bash
 poetry run tc message from-csv data.csv output/messages/ \
   --script-col "Script" \
@@ -270,25 +296,29 @@ poetry run tc message from-csv data.csv output/messages/ \
 ```
 
 **Convert with parallel workers:**
+
 ```bash
 poetry run tc message from-csv data.csv output/messages/ --workers 4
 ```
 
 **Limit rows per run:**
+
 ```bash
 poetry run tc message from-csv data.csv output/messages/ --limit 100
 ```
 
 ### Options
 
-| Option | Default | Description |
-|---|---|---|
-| `--script-col` | `Script` | Column containing the message content |
-| `--participant-col` | `participant` | Column used for output filename |
-| `--type-col` | `Data_type` | Column used for `--type` filtering |
-| `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
-| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
-| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
+
+| Option              | Default       | Description                                  |
+| ------------------- | ------------- | -------------------------------------------- |
+| `--script-col`      | `Script`      | Column containing the message content        |
+| `--participant-col` | `participant` | Column used for output filename              |
+| `--type-col`        | `Data_type`   | Column used for `--type` filtering           |
+| `--type` / `-t`     | *(all rows)*  | Only process rows matching this value        |
+| `--workers` / `-w`  | `1`           | Number of parallel workers for file writing. |
+| `--limit` / `-n`    | `0` *(all)*   | Max number of rows to process per run.       |
+
 
 ---
 
@@ -302,16 +332,19 @@ Script content is written directly into individual `.txt` files.
 ### Commands
 
 **Convert all rows:**
+
 ```bash
 poetry run tc audio from-csv data.csv output/audio/
 ```
 
 **Filter by data type:**
+
 ```bash
 poetry run tc audio from-csv data.csv output/audio/ --type Voicemail
 ```
 
 **Custom column names:**
+
 ```bash
 poetry run tc audio from-csv data.csv output/audio/ \
   --script-col "Script" \
@@ -319,25 +352,29 @@ poetry run tc audio from-csv data.csv output/audio/ \
 ```
 
 **Convert with parallel workers:**
+
 ```bash
 poetry run tc audio from-csv data.csv output/audio/ --workers 4
 ```
 
 **Limit rows per run:**
+
 ```bash
 poetry run tc audio from-csv data.csv output/audio/ --limit 100
 ```
 
 ### Options
 
-| Option | Default | Description |
-|---|---|---|
-| `--script-col` | `Script` | Column containing the transcript content |
-| `--participant-col` | `participant` | Column used for output filename |
-| `--type-col` | `Data_type` | Column used for `--type` filtering |
-| `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
-| `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
-| `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
+
+| Option              | Default       | Description                                  |
+| ------------------- | ------------- | -------------------------------------------- |
+| `--script-col`      | `Script`      | Column containing the transcript content     |
+| `--participant-col` | `participant` | Column used for output filename              |
+| `--type-col`        | `Data_type`   | Column used for `--type` filtering           |
+| `--type` / `-t`     | *(all rows)*  | Only process rows matching this value        |
+| `--workers` / `-w`  | `1`           | Number of parallel workers for file writing. |
+| `--limit` / `-n`    | `0` *(all)*   | Max number of rows to process per run.       |
+
 
 ---
 
@@ -345,29 +382,36 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 
 ### Email CSV (`email from-csv`)
 
-| Column | Required | Notes |
-|---|---|---|
-| `Scrip` | Yes | Must contain `From:`, `To:`, `Subject:` headers. Rows without them are skipped. |
-| `Data type/category` | No | Used for `--prefix` filtering |
+
+| Column               | Required | Notes                                                                           |
+| -------------------- | -------- | ------------------------------------------------------------------------------- |
+| `Scrip`              | Yes      | Must contain `From:`, `To:`, `Subject:` headers. Rows without them are skipped. |
+| `Data type/category` | No       | Used for `--prefix` filtering                                                   |
+
 
 ### Note / Message / Audio CSV (`note`, `message`, `audio from-csv`)
 
-| Column | Required | Notes |
-|---|---|---|
-| `Script` | Yes | Raw script content. Empty rows are skipped. |
-| `participant` | No | Used for output filename |
-| `Date` | No | Included in note metadata |
-| `Data_type` | No | Used for `--type` filtering |
-| _(any status col)_ | No | Used for `--accepted-col` filtering. Accepted values: `accept`, `accepted`. e.g. `Anno Status`, `QA Status` |
+
+| Column             | Required | Notes                                                                                                       |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------- |
+| `Script`           | Yes      | Raw script content. Empty rows are skipped.                                                                 |
+| `participant`      | No       | Used for output filename                                                                                    |
+| `Date`             | No       | Included in note metadata                                                                                   |
+| `Data_type`        | No       | Used for `--type` filtering                                                                                 |
+| *(any status col)* | No       | Used for `--accepted-col` filtering. Accepted values: `accept`, `accepted`. e.g. `Anno Status`, `QA Status` |
+
 
 ---
 
 ## Output Naming
 
-| Module | Filename pattern | Example |
-|---|---|---|
-| `email from-csv` | `{index}_{category}.eml` | `0001_mail_contact_1.eml` |
-| `email batch` | `{original_name}.eml` | `email1.eml` |
-| `note from-csv` | `{index}_{participant}.txt` | `0001_liam.txt` |
-| `message from-csv` | `{index}_{participant}.txt` | `0007_emily_carter.txt` |
-| `audio from-csv` | `{index}_{participant}.txt` | `0003_claire_dubois.txt` |
+
+| Module             | Filename pattern            | Example                   |
+| ------------------ | --------------------------- | ------------------------- |
+| `email from-csv`   | `{index}_{category}.eml`    | `0001_mail_contact_1.eml` |
+| `email batch`      | `{original_name}.eml`       | `email1.eml`              |
+| `note from-csv`    | `{index}_{participant}.txt` | `0001_liam.txt`           |
+| `message from-csv` | `{index}_{participant}.txt` | `0007_emily_carter.txt`   |
+| `audio from-csv`   | `{index}_{participant}.txt` | `0003_claire_dubois.txt`  |
+
+
