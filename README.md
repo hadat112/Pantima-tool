@@ -212,6 +212,18 @@ poetry run tc note from-csv data.csv output/notes/ \
 poetry run tc note from-csv data.csv output/notes/ --workers 4
 ```
 
+**Export only accepted rows (filter by status column):**
+```bash
+poetry run tc note from-csv data.csv output/notes/ --accepted-col "QA Status"
+```
+
+**Combine accepted filter with type filter:**
+```bash
+poetry run tc note from-csv data.csv output/notes/ \
+  --type Note \
+  --accepted-col "Anno Status"
+```
+
 **Limit rows per run:**
 ```bash
 poetry run tc note from-csv data.csv output/notes/ --limit 100
@@ -228,6 +240,7 @@ poetry run tc note from-csv data.csv output/notes/ --limit 100
 | `--category-col` | `primary category` | Category column |
 | `--type-col` | `Data_type` | Column used for `--type` filtering |
 | `--type` / `-t` | _(all rows)_ | Only process rows matching this value |
+| `--accepted-col` / `-a` | _(disabled)_ | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
 | `--workers` / `-w` | `1` | Number of parallel workers for file writing. |
 | `--limit` / `-n` | `0` _(all)_ | Max number of rows to process per run. |
 
@@ -345,6 +358,7 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | `participant` | No | Used for output filename |
 | `Date` | No | Included in note metadata |
 | `Data_type` | No | Used for `--type` filtering |
+| _(any status col)_ | No | Used for `--accepted-col` filtering. Accepted values: `accept`, `accepted`. e.g. `Anno Status`, `QA Status` |
 
 ---
 

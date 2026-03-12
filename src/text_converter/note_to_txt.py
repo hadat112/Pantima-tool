@@ -50,6 +50,9 @@ def convert(
     return output_path
 
 
+_ACCEPTED_VALUES = {"accept", "accepted"}
+
+
 def batch_from_csv(
     csv_path: Path,
     output_dir: Path,
@@ -60,6 +63,7 @@ def batch_from_csv(
     category_col: str = "primary category",
     data_type_col: str = "Data_type",
     data_type_filter: str | None = None,
+    accepted_col: str | None = None,
     max_workers: int = 1,
     limit: int = 0,
 ) -> list[Path]:
@@ -76,6 +80,8 @@ def batch_from_csv(
         data_type_col: Column used for filtering by type
         data_type_filter: Only process rows where data_type_col equals this value.
             None = all rows.
+        accepted_col: Column containing accept/reject status. When set, only rows
+            where the value is "accept" or "accepted" (case-insensitive) are exported.
         max_workers: Number of parallel workers for file writing.
         limit: Max number of rows to process (0 = all).
 
@@ -93,6 +99,11 @@ def batch_from_csv(
             if data_type_filter:
                 row_type = (row.get(data_type_col) or "").strip()
                 if row_type != data_type_filter:
+                    continue
+
+            if accepted_col:
+                status = (row.get(accepted_col) or "").strip().lower()
+                if status not in _ACCEPTED_VALUES:
                     continue
 
             script = (row.get(script_col) or "").strip()

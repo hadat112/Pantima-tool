@@ -116,6 +116,7 @@ def note_from_csv(
     category_col: str = typer.Option("primary category", "--category-col", help="Category column (used as tag)"),
     data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value (e.g. Note). Empty = all rows."),
+    accepted_col: str = typer.Option("", "--accepted-col", "-a", help="Column containing accept/reject status. Only rows with 'accept'/'accepted' are exported."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
     limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
@@ -136,6 +137,7 @@ def note_from_csv(
         category_col=category_col,
         data_type_col=data_type_col,
         data_type_filter=data_type_filter or None,
+        accepted_col=accepted_col or None,
         max_workers=workers,
         limit=limit,
     )
@@ -152,6 +154,7 @@ def note_from_csv(
         table.add_row(str(i), path.name, f"{path.stat().st_size} B")
 
     console.print(table)
+    console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
 
 
 def _csv_from_options(
