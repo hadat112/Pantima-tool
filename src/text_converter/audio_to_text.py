@@ -52,6 +52,9 @@ def transcribe(
     return output_path
 
 
+_ACCEPTED_VALUES = {"accept", "accepted"}
+
+
 def batch_from_csv(
     csv_path: Path,
     output_dir: Path,
@@ -59,8 +62,10 @@ def batch_from_csv(
     participant_col: str = "participant",
     data_type_col: str = "Data_type",
     data_type_filter: str | None = None,
+    accepted_col: str | None = None,
     max_workers: int = 1,
     limit: int = 0,
+    export_csv: Path | None = None,
 ) -> list[Path]:
     """Convert pre-transcribed voicemail/audio note rows from a CSV to .txt files.
 
@@ -75,8 +80,11 @@ def batch_from_csv(
         data_type_col: Column used for filtering by type
         data_type_filter: Only process rows where data_type_col equals this value.
             None = all rows.
+        accepted_col: Column containing accept/reject status. When set, only rows
+            where the value is "accept" or "accepted" (case-insensitive) are exported.
         max_workers: Number of parallel workers for file writing.
         limit: Max number of rows to process (0 = all).
+        export_csv: If set, write a CSV of only the exported rows (all columns preserved).
 
     Returns:
         List of written .txt file paths
@@ -86,11 +94,19 @@ def batch_from_csv(
 
     # Phase 1: collect work items (serial CSV read)
     items: list[tuple[int, str, Path]] = []
+    exported_rows: list[dict] = []
+    fieldnames: list[str] = []
     with open(csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames or [])
         for i, row in enumerate(reader):
             if data_type_filter:
                 if (row.get(data_type_col) or "").strip() != data_type_filter:
+                    continue
+
+            if accepted_col:
+                status = (row.get(accepted_col) or "").strip().lower()
+                if status not in _ACCEPTED_VALUES:
                     continue
 
             script = (row.get(script_col) or "").strip()
@@ -100,6 +116,7 @@ def batch_from_csv(
             participant = (row.get(participant_col) or f"row_{i+1}").strip()
             filename = f"{i+1:04d}_{_slug(participant)}.txt"
             items.append((i + 1, script, output_dir / filename))
+            exported_rows.append(dict(row))
 
     if limit:
         items = items[:limit]
@@ -129,6 +146,14 @@ def batch_from_csv(
     if errors:
         for row_num, exc in errors:
             print(f"[SKIP] row {row_num}: {exc}")
+
+    if export_csv and exported_rows:
+        export_csv = Path(export_csv)
+        export_csv.parent.mkdir(parents=True, exist_ok=True)
+        with open(export_csv, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(exported_rows)
 
     return results
 

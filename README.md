@@ -248,6 +248,16 @@ poetry run tc note from-csv data.csv output/notes/ \
 poetry run tc note from-csv data.csv output/notes/ --limit 100
 ```
 
+**Export a CSV of only the exported rows:**
+
+```bash
+poetry run tc note from-csv data.csv output/notes/ \
+  --accepted-col "QA Status" \
+  --export-csv output/exported_rows.csv
+```
+
+The output CSV keeps all columns from the original file, but only includes rows that passed all filters (type, accepted status, non-empty script).
+
 ### Options
 
 | Option                  | Default            | Description                                                                                       |
@@ -260,6 +270,7 @@ poetry run tc note from-csv data.csv output/notes/ --limit 100
 | `--type-col`            | `Data_type`        | Column used for `--type` filtering                                                                |
 | `--type` / `-t`         | _(all rows)_       | Only process rows matching this value                                                             |
 | `--accepted-col` / `-a` | _(disabled)_       | Column containing accept/reject status. Only rows with value `accept` or `accepted` are exported. |
+| `--export-csv`          | _(disabled)_       | Path to write a CSV of only the exported rows, with all original columns preserved.               |
 | `--workers` / `-w`      | `1`                | Number of parallel workers for file writing.                                                      |
 | `--limit` / `-n`        | `0` _(all)_        | Max number of rows to process per run.                                                            |
 

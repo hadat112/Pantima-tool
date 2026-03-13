@@ -118,6 +118,7 @@ def note_from_csv(
     data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value (e.g. Note). Empty = all rows."),
     accepted_col: str = typer.Option("", "--accepted-col", "-a", help="Column containing accept/reject status. Only rows with 'accept'/'accepted' are exported."),
+    export_csv: Path = typer.Option(None, "--export-csv", help="Export a CSV of only the exported rows (all columns preserved)."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
     limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
@@ -141,6 +142,7 @@ def note_from_csv(
         accepted_col=accepted_col or None,
         max_workers=workers,
         limit=limit,
+        export_csv=export_csv,
     )
 
     if not results:
@@ -169,77 +171,109 @@ def note_from_csv(
         lf.write("\n")
     console.print(f"[dim]Log saved → {log_file}[/dim]")
 
+    if export_csv:
+        console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
 
-def _csv_from_options(
-    app_name: str,
-    csv_file: Path,
-    output_dir: Path,
-    script_col: str,
-    participant_col: str,
-    data_type_col: str,
-    data_type_filter: str,
-    batch_fn,
-    workers: int = 1,
-    limit: int = 0,
-) -> None:
-    if not csv_file.exists():
-        console.print(f"[red]File not found:[/red] {csv_file}")
-        raise typer.Exit(1)
-
-    results = batch_fn(
-        csv_path=csv_file,
-        output_dir=output_dir,
-        script_col=script_col,
-        participant_col=participant_col,
-        data_type_col=data_type_col,
-        data_type_filter=data_type_filter or None,
-        max_workers=workers,
-        limit=limit,
-    )
-
-    if not results:
-        console.print("[yellow]No rows found.[/yellow]")
-        raise typer.Exit(0)
-
-    table = Table(title=f"Converted {len(results)} {app_name}(s) → {output_dir}")
-    table.add_column("#", justify="right", style="dim")
-    table.add_column("File", style="cyan")
-    table.add_column("Size", justify="right")
-    for i, path in enumerate(results, 1):
-        table.add_row(str(i), path.name, f"{path.stat().st_size} B")
-    console.print(table)
 
 
 @message_app.command("from-csv")
 def message_from_csv(
     csv_file: Path = typer.Argument(..., help="CSV file with message scripts"),
     output_dir: Path = typer.Argument(..., help="Directory to write .txt files"),
-    script_col: str = typer.Option("Script", "--script-col"),
-    participant_col: str = typer.Option("participant", "--participant-col"),
-    data_type_col: str = typer.Option("Data_type", "--type-col"),
+    script_col: str = typer.Option("Script", "--script-col", help="Script column name"),
+    participant_col: str = typer.Option("participant", "--participant-col", help="Participant column name"),
+    data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
+    accepted_col: str = typer.Option("", "--accepted-col", "-a", help="Column containing accept/reject status. Only rows with 'accept'/'accepted' are exported."),
+    export_csv: Path = typer.Option(None, "--export-csv", help="Export a CSV of only the exported rows (all columns preserved)."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
     limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert message Script rows in a CSV to individual .txt files."""
     from text_converter.message_to_txt import batch_from_csv
-    _csv_from_options("message", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers, limit)
+
+    if not csv_file.exists():
+        console.print(f"[red]File not found:[/red] {csv_file}")
+        raise typer.Exit(1)
+
+    results = batch_from_csv(
+        csv_path=csv_file,
+        output_dir=output_dir,
+        script_col=script_col,
+        participant_col=participant_col,
+        data_type_col=data_type_col,
+        data_type_filter=data_type_filter or None,
+        accepted_col=accepted_col or None,
+        max_workers=workers,
+        limit=limit,
+        export_csv=export_csv,
+    )
+
+    if not results:
+        console.print("[yellow]No rows found.[/yellow]")
+        raise typer.Exit(0)
+
+    table = Table(title=f"Converted {len(results)} message(s) → {output_dir}")
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("File", style="cyan")
+    table.add_column("Size", justify="right")
+    for i, path in enumerate(results, 1):
+        table.add_row(str(i), path.name, f"{path.stat().st_size} B")
+    console.print(table)
+    console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
+
+    if export_csv:
+        console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
 
 
 @audio_app.command("from-csv")
 def audio_from_csv(
     csv_file: Path = typer.Argument(..., help="CSV file with voicemail/audio transcripts"),
     output_dir: Path = typer.Argument(..., help="Directory to write .txt files"),
-    script_col: str = typer.Option("Script", "--script-col"),
-    participant_col: str = typer.Option("participant", "--participant-col"),
-    data_type_col: str = typer.Option("Data_type", "--type-col"),
+    script_col: str = typer.Option("Script", "--script-col", help="Script column name"),
+    participant_col: str = typer.Option("participant", "--participant-col", help="Participant column name"),
+    data_type_col: str = typer.Option("Data_type", "--type-col", help="Data type column for filtering"),
     data_type_filter: str = typer.Option("", "--type", "-t", help="Filter by data type value. Empty = all rows."),
+    accepted_col: str = typer.Option("", "--accepted-col", "-a", help="Column containing accept/reject status. Only rows with 'accept'/'accepted' are exported."),
+    export_csv: Path = typer.Option(None, "--export-csv", help="Export a CSV of only the exported rows (all columns preserved)."),
     workers: int = typer.Option(1, "--workers", "-w", min=1, help="Number of parallel workers"),
     limit: int = typer.Option(0, "--limit", "-n", min=0, help="Max rows to process per run (0 = all)"),
 ):
     """Convert voicemail/audio transcript rows in a CSV to individual .txt files."""
     from text_converter.audio_to_text import batch_from_csv
-    _csv_from_options("transcript", csv_file, output_dir, script_col, participant_col, data_type_col, data_type_filter, batch_from_csv, workers, limit)
+
+    if not csv_file.exists():
+        console.print(f"[red]File not found:[/red] {csv_file}")
+        raise typer.Exit(1)
+
+    results = batch_from_csv(
+        csv_path=csv_file,
+        output_dir=output_dir,
+        script_col=script_col,
+        participant_col=participant_col,
+        data_type_col=data_type_col,
+        data_type_filter=data_type_filter or None,
+        accepted_col=accepted_col or None,
+        max_workers=workers,
+        limit=limit,
+        export_csv=export_csv,
+    )
+
+    if not results:
+        console.print("[yellow]No rows found.[/yellow]")
+        raise typer.Exit(0)
+
+    table = Table(title=f"Converted {len(results)} transcript(s) → {output_dir}")
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("File", style="cyan")
+    table.add_column("Size", justify="right")
+    for i, path in enumerate(results, 1):
+        table.add_row(str(i), path.name, f"{path.stat().st_size} B")
+    console.print(table)
+    console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
+
+    if export_csv:
+        console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
 
 
 def main():

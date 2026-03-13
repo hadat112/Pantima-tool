@@ -66,6 +66,7 @@ def batch_from_csv(
     accepted_col: str | None = None,
     max_workers: int = 1,
     limit: int = 0,
+    export_csv: Path | None = None,
 ) -> list[Path]:
     """Convert Script column rows from a CSV to individual .txt note files.
 
@@ -93,8 +94,11 @@ def batch_from_csv(
 
     # Phase 1: collect work items (serial CSV read)
     items: list[tuple[int, str, Path]] = []
+    exported_rows: list[dict] = []
+    fieldnames: list[str] = []
     with open(csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames or [])
         for i, row in enumerate(reader):
             if data_type_filter:
                 row_type = (row.get(data_type_col) or "").strip()
@@ -113,6 +117,7 @@ def batch_from_csv(
             participant = (row.get(participant_col) or f"row_{i+1}").strip()
             filename = f"{i+1:04d}_{_slug(participant)}.txt"
             items.append((i + 1, script, output_dir / filename))
+            exported_rows.append(dict(row))
 
     if limit:
         items = items[:limit]
@@ -142,6 +147,14 @@ def batch_from_csv(
     if errors:
         for row_num, exc in errors:
             print(f"[SKIP] row {row_num}: {exc}")
+
+    if export_csv and exported_rows:
+        export_csv = Path(export_csv)
+        export_csv.parent.mkdir(parents=True, exist_ok=True)
+        with open(export_csv, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(exported_rows)
 
     return results
 
