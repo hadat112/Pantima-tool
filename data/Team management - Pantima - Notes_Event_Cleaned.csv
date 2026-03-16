@@ -1,4 +1,4 @@
-﻿#,ID Anno,Anno Status ,ID QA,QA Status,Feedback,Double check,"Upload Date
+#,ID Anno,Anno Status ,ID QA,QA Status,Feedback,Double check,"Upload Date
 (YYYY.MM.DD)","Check date
 (YYYY.MM.DD)",% AI,Data_type,participant,Script,age,gender,country,occupation,primary category,secondary category,topics of interest,application used,OS,device info,YYYY.MM.DD
 1,HUNGNV5,,,reject,,,,2026/03/07,,Note,Ryan,Prep for dentist tomorrow.Root canal at Dr. Smith's clinic.Downtown Seattle.Appt is at 2:30 PM.Need to leave work by 1:45 to find parking.Remember to take the antibiotics tonight!- grab ibuprofen from pharmacy- download podcasts for the waiting room- eat a big lunch beforebecause I won't be able to eat after.I am so terrified of this procedure.Hope it doesn't cost a fortune out of pocket.,41,Male,en_US,Accountant,event,,,,,,
@@ -987,8 +987,7 @@ I need to remember to bring my laptop charger to the Team Offsite Planning Day."
 152,HUNGNV5,,,,,,,2026/03/09,17,Note,Melissa Grant,"I have a dentist appointment with Dr. Harper on Monday, May 6. The appointment is at 3:40 PM at the Midtown Dental Clinic. The Midtown Dental Clinic is located at 214 W 47th St, New York.
 I need to remember a things for my dentist appointment with Dr. Harper. I need to bring my insurance card to the dentist appointment with Dr. Harper. I also want to ask Dr. Harper about the sensitivity I have been feeling on my molar.
 I think I might need a cleaning and an x-ray at my dentist appointment with Dr. Harper.
-To get to the Midtown Dental Clinic I can park my car at the parking garage on street it is usually the easiest way to park.
-",29,Female,en_US,Graphic Designer,event,,,,,,
+To get to the Midtown Dental Clinic I can park my car at the parking garage on street it is usually the easiest way to park.",29,Female,en_US,Graphic Designer,event,,,,,,
 153,HUNGNV5,,,,,,,2026/03/09,10,Note,Andrew Phillips,"This Saturday we are going to play basketball at the Riverside Community Gym in Sacramento. The games will start at 9 AM on March 22.
 People who said they might come to the Saturday pickup basketball run are Mike Jordan, Luis and Tyler. Tyler is bringing two coworkers to the Saturday pickup basketball run.
 Maybe we can grab tacos after the Saturday pickup basketball run, at a place.",41,Male,en_US,Auto Mechanic,event,,,,,,

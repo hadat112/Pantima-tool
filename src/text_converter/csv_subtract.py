@@ -30,6 +30,23 @@ def _refs_from_csv_col(ref_path: Path, ref_col: str) -> set[str]:
     return done
 
 
+_AUTO_ID_COLS = ("index", "id")
+
+
+def _detect_ref_col(ref_path: Path) -> str | None:
+    """Return the first column name matching a known ID column, or None."""
+    if ref_path.suffix.lower() != ".csv":
+        return None
+    with open(ref_path, encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        if not reader.fieldnames:
+            return None
+        for col in reader.fieldnames:
+            if col.strip().lower() in _AUTO_ID_COLS:
+                return col.strip()
+    return None
+
+
 def subtract(
     csv_path: Path,
     ref_path: Path,
@@ -41,12 +58,13 @@ def subtract(
 
     Args:
         csv_path:    Original CSV file.
-        ref_path:    Processed-rows file. Two modes:
+        ref_path:    Processed-rows file. Three modes:
                        - CSV with ref_col: reads that column's values as IDs.
+                       - CSV with auto-detected 'index'/'id' column (no ref_col needed).
                        - Log/text with filenames (0071_name.txt): parses leading digits.
         output_path: Destination CSV (created/overwritten).
         ref_col:     Column in ref_path to read IDs from (CSV mode).
-                     None = parse filenames from log/text file.
+                     None = auto-detect 'index'/'id' column, then fall back to filename parsing.
         target_col:  Column in csv_path to match against.
                      None = use first column.
 
@@ -56,6 +74,9 @@ def subtract(
     csv_path = Path(csv_path)
     ref_path = Path(ref_path)
     output_path = Path(output_path)
+
+    if not ref_col:
+        ref_col = _detect_ref_col(ref_path)
 
     if ref_col:
         done = _refs_from_csv_col(ref_path, ref_col)

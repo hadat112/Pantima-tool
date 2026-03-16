@@ -1,4 +1,4 @@
-﻿ ,ID Anno,Anno Status ,ID QA,QA Status,Feedback,Double check,"Upload date
+ ,ID Anno,Anno Status ,ID QA,QA Status,Feedback,Double check,"Upload date
 (YYYY.MM.DD)","Check date 
 (YYYYY.MM.DD)",% AI,Data_type,participant,Script,age,gender,country,occupation,primary category,secondary category,topics of interest,application used,OS,device info,YYYY.MM.DD
 1,HUNGNV5,,,reject,ok,ok,,2026.03.07,0,Note,Liam,Met a guy about the copper piping suply today.His name is David Miller.Works at the new wholesale place downtown.Really good prices on fittings.Need to call him next Tuesday before 10 AM.He said he can get me a 15% discount if I open an account.Cell: +1-555-019-8372Office: +1-555-019-8800 ext 44Email: david.miller@pipewholesaledemo.net (just in case)Don't forget to ask him about the PEX A expansion tools.,34,Male,en_US,Plumber,contact,,,,,,
@@ -1233,8 +1233,7 @@ Friendly guy, talks a lot about classic Mustangs.
 Lives somewhere near Daly City I think.
 If the engine light comes on again, should call Mike first.
 And also ask him about brake pads price.
-Save this so I don’t lose his number again
-",34,Male,en_US,Delivery Driver,contact,,,,,,
+Save this so I don’t lose his number again",34,Male,en_US,Delivery Driver,contact,,,,,,
 112,DuongTC,,,reject,Trùng format,,,2026.03.08,5.7,Note,Melissa Vaughn,"Carla Jennings (freelance graphic designer).
 Phone: +1 303-555-6621.
 Met at the Denver startup meetup last fall.
