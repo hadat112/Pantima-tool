@@ -115,8 +115,13 @@ def batch_from_csv(
                 continue
 
             participant = (row.get(participant_col) or f"row_{i+1}").strip()
-            filename = f"{i+1:04d}_{_slug(participant)}.txt"
-            items.append((i + 1, script, output_dir / filename))
+            first_col_val = (row.get(fieldnames[0]) or "").strip()
+            try:
+                row_id = int(first_col_val)
+            except (ValueError, TypeError):
+                row_id = i + 1
+            filename = f"{row_id:04d}_{_slug(participant)}.txt"
+            items.append((row_id, script, output_dir / filename))
             exported_rows.append(dict(row))
 
     if limit:
