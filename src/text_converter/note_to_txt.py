@@ -121,6 +121,7 @@ def batch_from_csv(
 
     if limit:
         items = items[:limit]
+        exported_rows = exported_rows[:limit]
 
     if not items:
         return []

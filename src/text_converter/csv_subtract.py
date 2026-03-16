@@ -1,61 +1,82 @@
-"""Remove already-processed rows from a CSV using a run log."""
+"""Remove already-processed rows from a CSV."""
 
 import csv
 import re
 from pathlib import Path
 
 
-def _parse_done_indices(log_path: Path) -> set[int]:
-    """Return the set of 1-based row indices recorded in a run log.
-
-    Each data line in the log looks like:
-        0071_daniel.txt
-    The four leading digits are the row index used when the file was created.
-    """
-    done: set[int] = set()
+def _refs_from_log(ref_path: Path) -> set[str]:
+    """Parse filenames like '0071_daniel.txt' → strip leading zeros → {'71', ...}."""
+    done: set[str] = set()
     pattern = re.compile(r"^\s+(\d+)_")
-    for line in log_path.read_text(encoding="utf-8").splitlines():
+    for line in ref_path.read_text(encoding="utf-8").splitlines():
         m = pattern.match(line)
         if m:
-            done.add(int(m.group(1)))
+            val = m.group(1).lstrip("0") or "0"
+            done.add(val)
+    return done
+
+
+def _refs_from_csv_col(ref_path: Path, ref_col: str) -> set[str]:
+    """Read a CSV ref-file and return the set of values in ref_col, stripped of leading zeros."""
+    done: set[str] = set()
+    with open(ref_path, encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            val = (row.get(ref_col) or "").strip()
+            if val:
+                normalized = val.lstrip("0") or "0"
+                done.add(normalized)
     return done
 
 
 def subtract(
     csv_path: Path,
-    log_path: Path,
+    ref_path: Path,
     output_path: Path,
+    ref_col: str | None = None,
+    target_col: str | None = None,
 ) -> tuple[int, int]:
     """Write a new CSV with already-processed rows removed.
 
     Args:
         csv_path:    Original CSV file.
-        log_path:    File listing already-processed rows (.log, .csv, .txt, or any text file).
-        output_path: Destination CSV (will be created / overwritten).
+        ref_path:    Processed-rows file. Two modes:
+                       - CSV with ref_col: reads that column's values as IDs.
+                       - Log/text with filenames (0071_name.txt): parses leading digits.
+        output_path: Destination CSV (created/overwritten).
+        ref_col:     Column in ref_path to read IDs from (CSV mode).
+                     None = parse filenames from log/text file.
+        target_col:  Column in csv_path to match against.
+                     None = use first column.
 
     Returns:
-        (kept, removed) — number of data rows kept and removed.
+        (kept, removed)
     """
     csv_path = Path(csv_path)
-    log_path = Path(log_path)
+    ref_path = Path(ref_path)
     output_path = Path(output_path)
 
-    done = _parse_done_indices(log_path)
+    if ref_col:
+        done = _refs_from_csv_col(ref_path, ref_col)
+    else:
+        done = _refs_from_log(ref_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    kept = 0
-    removed = 0
+    kept = removed = 0
     with (
-        open(csv_path, encoding="utf-8", newline="") as fin,
+        open(csv_path, encoding="utf-8-sig", newline="") as fin,
         open(output_path, "w", encoding="utf-8", newline="") as fout,
     ):
         reader = csv.DictReader(fin)
         fieldnames = list(reader.fieldnames or [])
+        col = target_col if target_col and target_col in fieldnames else fieldnames[0]
         writer = csv.DictWriter(fout, fieldnames=fieldnames)
         writer.writeheader()
-        for i, row in enumerate(reader, start=1):
-            if i in done:
+        for row in reader:
+            val = (row.get(col) or "").strip().lstrip("0") or "0"
+            if val in done:
                 removed += 1
             else:
                 writer.writerow(row)
