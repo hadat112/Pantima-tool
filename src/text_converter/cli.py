@@ -11,11 +11,13 @@ email_app = typer.Typer(help="Convert plain-text emails to .eml files.", no_args
 note_app = typer.Typer(help="Convert notes to .txt files.", no_args_is_help=True)
 message_app = typer.Typer(help="Convert messages to .txt files.", no_args_is_help=True)
 audio_app = typer.Typer(help="Convert voicemail/audio transcripts to .txt files.", no_args_is_help=True)
+csv_app = typer.Typer(help="CSV utilities.", no_args_is_help=True)
 chat_app  = typer.Typer(help="Generate mock chat screenshots (PNG) from CSV scripts.", no_args_is_help=True)
 app.add_typer(email_app, name="email")
 app.add_typer(note_app,  name="note")
 app.add_typer(message_app, name="message")
 app.add_typer(audio_app, name="audio")
+app.add_typer(csv_app, name="csv")
 app.add_typer(chat_app,  name="chat")
 
 console = Console()
@@ -278,6 +280,47 @@ def audio_from_csv(
         console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
 
 
+@csv_app.command("subtract")
+def csv_subtract(
+    csv_file: Path = typer.Argument(..., help="Original CSV file to filter"),
+    ref_file: Path = typer.Argument(..., help="File listing already-processed rows (CSV with id/index col, or .log/.txt with filenames)"),
+    output: Path = typer.Argument(..., help="Output CSV path for remaining rows"),
+    ref_col: str = typer.Option("", "--ref-col", help="Column in ref-file containing the processed IDs (e.g. 'index' or 'id'). Leave empty to parse filenames instead."),
+    target_col: str = typer.Option("", "--target-col", help="Column in original CSV to match against (default: first column)."),
+):
+    """Remove already-processed rows from a CSV.
+
+    Two modes depending on ref-file format:
+
+    \b
+    1. CSV ref-file with an ID column (contact.csv / events.csv style):
+         tc csv subtract notes.csv contact.csv remaining.csv --ref-col index
+         tc csv subtract notes.csv events.csv  remaining.csv --ref-col id
+
+    \b
+    2. Log/text file with filenames (0071_name.txt style):
+         tc csv subtract notes.csv logs/run.log remaining.csv
+    """
+    from text_converter.csv_subtract import subtract
+
+    if not csv_file.exists():
+        console.print(f"[red]File not found:[/red] {csv_file}")
+        raise typer.Exit(1)
+    if not ref_file.exists():
+        console.print(f"[red]File not found:[/red] {ref_file}")
+        raise typer.Exit(1)
+
+    kept, removed = subtract(
+        csv_path=csv_file,
+        ref_path=ref_file,
+        output_path=output,
+        ref_col=ref_col or None,
+        target_col=target_col or None,
+    )
+    console.print(f"[green]✓[/green] Removed [bold]{removed}[/bold] row(s), kept [bold]{kept}[/bold] row(s)")
+    console.print(f"[dim]Output → {output}[/dim]")
+
+
 @chat_app.command("from-csv")
 def chat_from_csv(
     csv_file: Path = typer.Argument(..., help="CSV file with chat scripts"),
@@ -320,7 +363,7 @@ def chat_from_csv(
     results = batch_from_csv(
         csv_path=csv_file,
         output_dir=output_dir,
-        templates_dir=templates_dir,  # None = use bundled package templates
+        templates_dir=templates_dir,
         script_col=script_col,
         id_col=id_col,
         qa_col=qa_col,
@@ -344,7 +387,7 @@ def chat_from_csv(
     console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
 
     # Run log
-    log_dir  = Path.cwd() / "logs"
+    log_dir = Path.cwd() / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / f"{csv_file.stem}.log"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

@@ -98,6 +98,8 @@ tc
 │   └── from-csv      # CSV rows → .txt
 └── chat
     └── from-csv      # CSV rows → PNG (mock chat screenshots)
+└── csv
+    └── subtract      # Remove already-processed rows from a CSV using a processed-rows file
 ```
 
 ---
@@ -383,6 +385,7 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 
 ---
 
+
 ## Chat → `.png` (Mock Screenshots)
 
 Generates mobile chat screenshots (iMessage / WhatsApp style) from conversation scripts.
@@ -456,22 +459,70 @@ poetry run tc chat from-csv data.csv output/png/ \
 
 ### Options
 
-| Option                  | Default             | Description                                                                               |
-| ----------------------- | ------------------- | ----------------------------------------------------------------------------------------- |
-| `--script-col`          | `script`            | Column containing the conversation script                                                 |
-| `--id-col`              | `id`                | Column used as row identifier (also seed for randomisation)                               |
-| `--qa-col`              | `QA`                | Column used in output filename (`{id}_{qa}.png`)                                          |
-| `--accepted-col` / `-a` | _(all)_             | Column with accept/reject status. Only `accept`/`accepted` rows are processed.            |
-| `--export-csv`          | _(off)_             | Path to write a CSV of successfully processed rows (all original columns + `output_file`) |
-| `--workers` / `-w`      | `8`                 | Parallel browser workers                                                                  |
-| `--limit` / `-n`        | `0` _(all)_         | Max rows per run                                                                          |
-| `--templates-dir`       | _(bundled)_         | Override HTML templates directory                                                         |
+| Option                  | Default     | Description                                                                               |
+| ----------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| `--script-col`          | `script`    | Column containing the conversation script                                                 |
+| `--id-col`              | `id`        | Column used as row identifier (also seed for randomisation)                               |
+| `--qa-col`              | `QA`        | Column used in output filename (`{id}_{qa}.png`)                                          |
+| `--accepted-col` / `-a` | _(all)_     | Column with accept/reject status. Only `accept`/`accepted` rows are processed.            |
+| `--export-csv`          | _(off)_     | Path to write a CSV of successfully processed rows (all original columns + `output_file`) |
+| `--workers` / `-w`      | `8`         | Parallel browser workers                                                                  |
+| `--limit` / `-n`        | `0` _(all)_ | Max rows per run                                                                          |
+| `--templates-dir`       | _(bundled)_ | Override HTML templates directory                                                         |
 
 ### Output
 
-| Filename pattern   | Example              |
-| ------------------ | -------------------- |
-| `{id}_{qa}.png`    | `0001_accepted.png`  |
+| Filename pattern | Example             |
+| ---------------- | ------------------- |
+| `{id}_{qa}.png`  | `0001_accepted.png` |
+
+---
+
+## CSV Utilities
+
+### `csv subtract` — Remove already-processed rows
+
+When you run a `from-csv` command, a `.log` file is saved to `logs/` listing every file that was produced.
+Use `csv subtract` to strip those rows out of the original CSV so the next run only processes what remains.
+
+The processed-rows file can be in **any text format** (`.log`, `.csv`, `.txt`, ...) — it just needs to contain lines with filenames like `0071_daniel.txt`.
+
+**Basic usage:**
+
+```bash
+poetry run tc csv subtract original.csv logs/original.log remaining.csv
+```
+
+**Example — strip already-converted notes:**
+
+```bash
+poetry run tc csv subtract \
+  "data/Notes_Event.csv" \
+  "logs/Notes_Event.log" \
+  "data/Notes_Event_remaining.csv"
+# ✓ Removed 967 row(s), kept 923 row(s)
+```
+
+**Works with any processed-rows file format:**
+
+```bash
+# from a .log
+poetry run tc csv subtract data.csv logs/run.log remaining.csv
+
+# from a .csv export
+poetry run tc csv subtract data.csv exports/done.csv remaining.csv
+
+# from a plain .txt list
+poetry run tc csv subtract data.csv lists/processed.txt remaining.csv
+```
+
+### Arguments
+
+| Argument   | Description                                                              |
+| ---------- | ------------------------------------------------------------------------ |
+| `csv_file` | Original CSV file to filter                                              |
+| `log_file` | File listing already-processed rows (any format: `.log`, `.csv`, `.txt`) |
+| `output`   | Output path for the new CSV with processed rows removed                  |
 
 ---
 
@@ -486,11 +537,11 @@ poetry run tc chat from-csv data.csv output/png/ \
 
 ### Chat CSV (`chat from-csv`)
 
-| Column    | Required | Notes                                     |
-| --------- | -------- | ----------------------------------------- |
-| `id`      | Yes      | Row identifier, used in output filename   |
-| `QA`      | No       | Accept/reject status for `--accepted-col` |
-| `script`  | Yes      | Multi-line conversation script            |
+| Column   | Required | Notes                                     |
+| -------- | -------- | ----------------------------------------- |
+| `id`     | Yes      | Row identifier, used in output filename   |
+| `QA`     | No       | Accept/reject status for `--accepted-col` |
+| `script` | Yes      | Multi-line conversation script            |
 
 ### Note / Message / Audio CSV (`note`, `message`, `audio from-csv`)
 
