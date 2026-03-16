@@ -12,11 +12,13 @@ note_app = typer.Typer(help="Convert notes to .txt files.", no_args_is_help=True
 message_app = typer.Typer(help="Convert messages to .txt files.", no_args_is_help=True)
 audio_app = typer.Typer(help="Convert voicemail/audio transcripts to .txt files.", no_args_is_help=True)
 csv_app = typer.Typer(help="CSV utilities.", no_args_is_help=True)
+chat_app  = typer.Typer(help="Generate mock chat screenshots (PNG) from CSV scripts.", no_args_is_help=True)
 app.add_typer(email_app, name="email")
-app.add_typer(note_app, name="note")
+app.add_typer(note_app,  name="note")
 app.add_typer(message_app, name="message")
 app.add_typer(audio_app, name="audio")
 app.add_typer(csv_app, name="csv")
+app.add_typer(chat_app,  name="chat")
 
 console = Console()
 
@@ -291,6 +293,33 @@ def csv_subtract(
     Supports any text format (.log, .csv, .txt, ...) as long as lines contain filenames like 0071_name.txt.
     """
     from text_converter.csv_subtract import subtract
+@chat_app.command("from-csv")
+def chat_from_csv(
+    csv_file: Path = typer.Argument(..., help="CSV file with chat scripts"),
+    output_dir: Path = typer.Argument(..., help="Directory to write PNG screenshots"),
+    script_col: str  = typer.Option("script",  "--script-col",  help="Script column name"),
+    id_col: str      = typer.Option("id",       "--id-col",      help="ID column name"),
+    qa_col: str      = typer.Option("QA",       "--qa-col",      help="QA status column name (used in output filename)"),
+    accepted_col: str = typer.Option("", "--accepted-col", "-a",
+                                     help="Column containing accept/reject status. Only 'accept'/'accepted' rows are exported."),
+    export_csv: Path  = typer.Option(None, "--export-csv",
+                                     help="Save a CSV of successfully processed rows (all columns + output_file path)."),
+    templates_dir: Path = typer.Option(None, "--templates-dir",
+                                       help="Custom templates directory (default: bundled package templates)"),
+    workers: int  = typer.Option(8, "--workers", "-w", min=1, help="Parallel workers (default: 8)"),
+    limit: int    = typer.Option(0, "--limit",   "-n", min=0,  help="Max rows to process (0 = all)"),
+):
+    """Generate mock chat screenshots (PNG) from a CSV of conversation scripts.
+
+    Each row's script must follow the format:
+        A: Xin chào
+        B: Chào bạn
+        C: Chào cả nhà   ← 3+ speakers = auto group chat
+
+    Speaker A is always the sender (right side). Others are receivers (left side).
+    Device, theme, and timestamp are randomised per row.
+    """
+    from text_converter.chat_to_png import batch_from_csv
 
     if not csv_file.exists():
         console.print(f"[red]File not found:[/red] {csv_file}")
@@ -302,6 +331,54 @@ def csv_subtract(
     kept, removed = subtract(csv_file, log_file, output)
     console.print(f"[green]✓[/green] Removed [bold]{removed}[/bold] row(s), kept [bold]{kept}[/bold] row(s)")
     console.print(f"[dim]Output → {output}[/dim]")
+
+    console.print(f"📂  [bold]{csv_file}[/bold]  →  {output_dir}")
+    if accepted_col:
+        console.print(f"[dim]Filter: {accepted_col} = accepted[/dim]")
+    if limit:
+        console.print(f"[dim]Limit: {limit} rows[/dim]")
+    console.print()
+
+    results = batch_from_csv(
+        csv_path=csv_file,
+        output_dir=output_dir,
+        templates_dir=templates_dir,  # None = use bundled package templates
+        script_col=script_col,
+        id_col=id_col,
+        qa_col=qa_col,
+        accepted_col=accepted_col or None,
+        num_workers=workers,
+        limit=limit,
+        export_csv=export_csv,
+    )
+
+    if not results:
+        console.print("[yellow]No rows processed.[/yellow]")
+        raise typer.Exit(0)
+
+    table = Table(title=f"Generated {len(results)} screenshot(s) → {output_dir}")
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("File", style="cyan")
+    table.add_column("Size", justify="right")
+    for i, path in enumerate(results, 1):
+        table.add_row(str(i), path.name, f"{path.stat().st_size // 1024} KB")
+    console.print(table)
+    console.print(f"[bold green]Total: {len(results)} file(s)[/bold green]")
+
+    # Run log
+    log_dir  = Path.cwd() / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f"{csv_file.stem}.log"
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(log_file, "a", encoding="utf-8") as lf:
+        lf.write(f"[{timestamp}] source={csv_file.name} total={len(results)}\n")
+        for path in results:
+            lf.write(f"  {path.name}\n")
+        lf.write("\n")
+    console.print(f"[dim]Log saved → {log_file}[/dim]")
+
+    if export_csv:
+        console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
 
 
 def main():

@@ -1,0 +1,311 @@
+"""
+Core logic for chat screenshot generation.
+Called by `tc chat from-csv` CLI.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import random
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+
+import pandas as pd
+from jinja2 import Environment, FileSystemLoader
+
+# Templates bundled inside the package
+TEMPLATES_DIR = Path(__file__).parent / "templates"
+
+# ── Constants ────────────────────────────────────────────────────────────────
+
+DEVICES = [
+    {"name": "iPhone 15 Pro Max", "width": 430, "height": 932, "scale": 3,
+     "os": "iOS 17",     "template": "ios_imessage.html"},
+    {"name": "iPhone SE",         "width": 375, "height": 667, "scale": 2,
+     "os": "iOS 15",     "template": "ios_imessage.html"},
+    {"name": "Samsung Galaxy S23","width": 360, "height": 800, "scale": 3,
+     "os": "Android 13", "template": "android_whatsapp.html"},
+    {"name": "Google Pixel 7",    "width": 412, "height": 915, "scale": 3,
+     "os": "Android 13", "template": "android_whatsapp.html"},
+    {"name": "iPhone 15 Pro Max", "width": 430, "height": 932, "scale": 3,
+     "os": "iOS 17",     "template": "ios_whatsapp.html"},
+    {"name": "iPhone 14",         "width": 390, "height": 844, "scale": 3,
+     "os": "iOS 16",     "template": "messenger.html"},
+    {"name": "iPhone 13",         "width": 390, "height": 844, "scale": 3,
+     "os": "iOS 15",     "template": "telegram.html"},
+    {"name": "iPhone 15",         "width": 393, "height": 852, "scale": 3,
+     "os": "iOS 17",     "template": "luminati.html"},
+]
+
+VIETNAMESE_NAMES = [
+    "Nguyễn Văn An", "Trần Thị Bích", "Lê Minh Tuấn", "Phạm Lan Anh",
+    "Hoàng Đức Hùng", "Vũ Thị Mai",   "Đặng Quang Khải", "Bùi Thu Hà",
+    "Ngô Thành Nam",  "Dương Thị Linh","Lý Hoàng Phúc",  "Trịnh Thị Ngân",
+    "Phan Văn Đức",   "Đinh Thị Hương","Tô Minh Khoa",   "Cao Thị Thúy",
+]
+
+SPEAKER_COLORS = ["#E91E63", "#9C27B0", "#1976D2", "#00897B", "#E65100", "#5D4037"]
+
+
+# ── Script parser ─────────────────────────────────────────────────────────────
+
+def parse_script(script: str, seed: int) -> dict | None:
+    """
+    Parse script format:
+        A: Xin chào
+        B: Chào bạn
+        C: Chào cả nhà   ← 3+ speakers = group chat
+
+    Returns dict with keys: contact_name, is_group, messages
+    Each message: {role, text, display_name, color}
+    """
+    rng = random.Random(seed)
+
+    lines = [l.strip() for l in script.strip().splitlines() if l.strip()]
+
+    parsed: list[tuple[str, str]] = []
+    speakers_seen: list[str] = []
+    for line in lines:
+        if ":" not in line:
+            continue
+        speaker, _, text = line.partition(":")
+        speaker = speaker.strip()
+        text    = text.strip()
+        if not speaker or not text:
+            continue
+        if speaker not in speakers_seen:
+            speakers_seen.append(speaker)
+        parsed.append((speaker, text))
+
+    if not speakers_seen or not parsed:
+        return None
+
+    # Assign stable random Vietnamese names per conversation
+    name_pool = rng.sample(VIETNAMESE_NAMES, min(len(speakers_seen), len(VIETNAMESE_NAMES)))
+    name_map  = {spk: name_pool[i] for i, spk in enumerate(speakers_seen)}
+    color_map = {spk: SPEAKER_COLORS[i % len(SPEAKER_COLORS)] for i, spk in enumerate(speakers_seen)}
+
+    me       = speakers_seen[0]   # first speaker = "me" (sent side)
+    is_group = len(speakers_seen) >= 3
+
+    if is_group:
+        others       = [name_map[s] for s in speakers_seen if s != me]
+        contact_name = ", ".join(n.split()[-1] for n in others[:3])
+        if len(others) > 3:
+            contact_name += f" +{len(others) - 3}"
+    else:
+        other        = next((s for s in speakers_seen if s != me), me)
+        contact_name = name_map[other]
+
+    messages = [
+        {
+            "role":         "sent" if spk == me else "recv",
+            "text":         text,
+            "display_name": name_map[spk],
+            "color":        color_map[spk],
+        }
+        for spk, text in parsed
+    ]
+
+    return {"contact_name": contact_name, "is_group": is_group, "messages": messages}
+
+
+# ── Time helpers ─────────────────────────────────────────────────────────────
+
+def _random_datetime(seed: int) -> datetime:
+    rng = random.Random(seed + 9999)
+    now = datetime.now()
+    return now - timedelta(
+        days=rng.randint(0, 730),
+        hours=rng.randint(0, 23),
+        minutes=rng.randint(0, 59),
+    )
+
+def _fmt_status(dt: datetime) -> str:
+    s = dt.strftime("%I:%M").lstrip("0")
+    return s or "12:00"
+
+def _fmt_message(dt: datetime) -> str:
+    hour   = _fmt_status(dt)
+    period = dt.strftime("%p").replace("AM", "SA").replace("PM", "CH")
+    return f"Hôm nay, {hour} {period}"
+
+
+# ── Async worker ──────────────────────────────────────────────────────────────
+
+async def _worker(
+    worker_id: int,
+    queue: asyncio.Queue,
+    browser,
+    jinja_env: Environment,
+    output_dir: Path,
+    results: list,
+) -> None:
+    while True:
+        item = await queue.get()
+        if item is None:
+            queue.task_done()
+            break
+
+        row, device = item
+        context = None
+        try:
+            row_id = int(row["_id"])
+            qa     = str(row.get("_qa", "unknown")).strip().lower()
+            script = str(row.get("_script", ""))
+
+            parsed = parse_script(script, seed=row_id)
+            if not parsed:
+                raise ValueError("Script rỗng hoặc không đúng định dạng")
+
+            dt        = _random_datetime(seed=row_id)
+            dark_mode = random.Random(row_id + 42).random() < 0.3
+
+            context = await browser.new_context(
+                viewport={"width": device["width"], "height": device["height"]},
+                device_scale_factor=device["scale"],
+            )
+            page = await context.new_page()
+
+            html = jinja_env.get_template(device["template"]).render(
+                contact_name=parsed["contact_name"],
+                is_group=parsed["is_group"],
+                messages=parsed["messages"],
+                status_time=_fmt_status(dt),
+                message_time=_fmt_message(dt),
+                dark_mode=dark_mode,
+            )
+
+            await page.set_content(html, wait_until="domcontentloaded")
+
+            filename = f"{str(row_id).zfill(4)}_{qa}.png"
+            filepath = output_dir / filename
+            await page.screenshot(path=str(filepath), full_page=False)
+
+            results.append({**row, "_output_file": str(filepath), "_status": "ok"})
+
+            group_tag = " 👥" if parsed["is_group"] else ""
+            dark_tag  = " 🌙" if dark_mode else ""
+            print(f"[W{worker_id:02d}] ✓  {filename}  ({device['name']}{group_tag}{dark_tag})")
+
+        except Exception as exc:
+            results.append({**row, "_output_file": None, "_status": f"error: {exc}"})
+            print(f"[W{worker_id:02d}] ✗  id={row.get('_id', '?')}: {exc}")
+        finally:
+            if context:
+                await context.close()
+            queue.task_done()
+
+
+# ── Async runner ──────────────────────────────────────────────────────────────
+
+async def _run(
+    rows: list[dict],
+    output_dir: Path,
+    templates_dir: Path,
+    num_workers: int,
+) -> list[dict]:
+    from playwright.async_api import async_playwright
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)), autoescape=False)
+
+    queue: asyncio.Queue = asyncio.Queue()
+    for row in rows:
+        queue.put_nowait((row, random.choice(DEVICES)))
+    for _ in range(num_workers):
+        queue.put_nowait(None)
+
+    results: list = []
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        await asyncio.gather(*[
+            asyncio.create_task(_worker(i + 1, queue, browser, jinja_env, output_dir, results))
+            for i in range(num_workers)
+        ])
+        await browser.close()
+    return results
+
+
+# ── Public API ────────────────────────────────────────────────────────────────
+
+def batch_from_csv(
+    csv_path: Path,
+    output_dir: Path,
+    templates_dir: Path | None = None,
+    script_col: str  = "script",
+    id_col: str      = "id",
+    qa_col: str      = "QA",
+    accepted_col: str | None = None,
+    num_workers: int = 8,
+    limit: int       = 0,
+    export_csv: Path | None = None,
+) -> list[Path]:
+    """
+    Read CSV, generate PNG screenshots, return list of output Paths.
+
+    Filters:
+      - accepted_col: if set, only rows where that column == 'accept'/'accepted'
+      - limit: max rows to process (0 = all)
+
+    Export:
+      - export_csv: if set, writes a CSV of successfully processed rows
+    """
+    df = pd.read_csv(csv_path)
+
+    # Filter by accepted status
+    if accepted_col and accepted_col in df.columns:
+        mask = df[accepted_col].astype(str).str.strip().str.lower().isin({"accept", "accepted"})
+        df   = df[mask].reset_index(drop=True)
+
+    # Drop rows with empty script
+    df = df[df[script_col].notna() & (df[script_col].astype(str).str.strip() != "")].reset_index(drop=True)
+
+    # Apply limit
+    if limit > 0:
+        df = df.head(limit)
+
+    if df.empty:
+        return []
+
+    # Normalise into internal row dicts
+    rows = []
+    for _, r in df.iterrows():
+        row = r.to_dict()
+        row["_id"]     = r.get(id_col, _)
+        row["_qa"]     = r.get(qa_col, "unknown")
+        row["_script"] = str(r[script_col])
+        rows.append(row)
+
+    # Each run gets its own timestamped subfolder: output/chat/2026-03-13_21-58-00/
+    run_dir = output_dir / datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    t0      = time.perf_counter()
+    results = asyncio.run(_run(rows, run_dir, templates_dir or TEMPLATES_DIR, num_workers))
+    elapsed = time.perf_counter() - t0
+
+    ok_results   = [r for r in results if r["_status"] == "ok"]
+    ok_paths     = [Path(r["_output_file"]) for r in ok_results]
+    failed_count = len(results) - len(ok_results)
+
+    print(f"\n{'─' * 50}")
+    print(f"✅  Thành công : {len(ok_paths)}/{len(rows)}")
+    if failed_count:
+        print(f"❌  Thất bại   : {failed_count}/{len(rows)}")
+    print(f"⏱️   Thời gian  : {elapsed:.1f}s  |  🚀 {len(ok_paths)/elapsed:.1f} ảnh/giây")
+
+    # Export processed rows CSV
+    if export_csv and ok_results:
+        # Build id→output_file map (worker order is non-deterministic)
+        id_to_file = {r["_id"]: r["_output_file"] for r in ok_results}
+        ok_ids     = set(id_to_file.keys())
+        id_vals    = df[id_col] if id_col in df.columns else df.index
+        export_df  = df[id_vals.isin(ok_ids)].copy()
+        export_df["output_file"] = export_df[id_col].map(id_to_file)
+        export_csv = Path(export_csv)
+        export_csv.parent.mkdir(parents=True, exist_ok=True)
+        export_df.to_csv(export_csv, index=False)
+
+    return ok_paths

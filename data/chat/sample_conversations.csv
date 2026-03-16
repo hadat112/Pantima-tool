@@ -1,0 +1,48 @@
+id,QA,script
+1,accepted,"A: Alo bạn ơi, đi ăn trưa chưa?
+B: Chưa bạn, đi đâu vậy?
+A: Ra quán bún bò gần công ty đi 😋
+B: Ok 10 phút nữa mình ra nha!"
+2,rejected,"A: Bích ơi hôm nay họp lúc mấy giờ vậy?
+B: 2h chiều bạn nhé, phòng họp B
+A: Cảm ơn bạn nhiều!
+B: Không có gì, nhớ chuẩn bị slide nha 😉
+A: Slide xong rồi, yên tâm đi"
+3,accepted,"A: Tối nay có rảnh không bro?
+B: Có, có chuyện gì không?
+A: Ra đây uống cà phê đi, lâu rồi không gặp
+B: Được, 7h tối nha, quán cũ đi
+A: Ngon! Mình đặt chỗ trước nhé"
+4,accepted,"A: Hội đồng ơi cuối tuần đi picnic không?
+B: Đi đi, lâu rồi không tụ 🎉
+C: Mình rảnh nha, đi đâu vậy?
+A: Hồ Tây hoặc công viên Thống Nhất
+B: Vote Hồ Tây đi, view đẹp hơn 🌊
+C: Ok Hồ Tây, mấy giờ tập trung?
+A: 8h sáng, ai trễ thì đi xe ôm lên 😂"
+5,rejected,"A: File báo cáo xong chưa bạn?
+B: Xong rồi, em vừa gửi email
+A: Tốt lắm, chị xem ngay
+B: Dạ, có gì chị nhắn em nhé 🙏
+A: Ổn hết rồi, tốt lắm bạn"
+6,accepted,"A: Team ơi deadline hôm nay mấy giờ?
+B: 5h chiều bạn ơi
+C: Mình đang làm phần frontend rồi
+D: Backend xong rồi, chờ tụi bây thôi 😅
+A: Ok ok, cố lên nào team
+B: Sắp xong rồi, còn fix bug thôi
+C: Done! Bạn D deploy lên staging nhé
+D: Deploy xong, anh em test thử đi"
+7,accepted,"A: Này, thấy phim hôm qua chưa?
+B: Chưa xem, hay không?
+A: Hay lắm bạn ơi, cuối phim khóc luôn 😭
+B: Thật không, thể loại gì vậy?
+A: Tâm lý gia đình, mình xem 2 lần rồi"
+8,rejected,"A: Bạn có thể giúp mình review code không?
+B: Được chứ, gửi link PR đi
+A: Gửi rồi nha, chú ý phần API nhé
+B: Mình xem rồi, có vài chỗ cần sửa
+C: Mình cũng có ý kiến về database query này
+A: Oke cảm ơn cả hai, mình fix ngay
+B: Nhớ viết test nữa nhé 😄
+C: +1, test coverage phải trên 80% đó"
