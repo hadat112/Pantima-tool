@@ -50,7 +50,11 @@ if ($userPath -notlike "*$POETRY_PATH*") {
 
 Write-Host ""
 Write-Host "==> Installing project dependencies..."
-& $POETRY_BIN install
+& $POETRY_BIN install --with chat
+
+Write-Host ""
+Write-Host "==> Installing Playwright browser (Chromium)..."
+& $POETRY_BIN run playwright install chromium
 
 Write-Host ""
 Write-Host "==> Done. Verifying..."
@@ -58,3 +62,4 @@ Write-Host "==> Done. Verifying..."
 
 Write-Host ""
 Write-Host "Ready. Use: poetry run tc <command>"
+Write-Host "  tc chat from-csv data.csv output/png/"

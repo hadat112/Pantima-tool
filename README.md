@@ -94,8 +94,10 @@ tc
 │   └── from-csv      # CSV rows → .txt
 ├── message
 │   └── from-csv      # CSV rows → .txt
-└── audio
-    └── from-csv      # CSV rows → .txt
+├── audio
+│   └── from-csv      # CSV rows → .txt
+└── chat
+    └── from-csv      # CSV rows → PNG (mock chat screenshots)
 ```
 
 ---
@@ -381,6 +383,98 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 
 ---
 
+## Chat → `.png` (Mock Screenshots)
+
+Generates mobile chat screenshots (iMessage / WhatsApp style) from conversation scripts.
+Device, theme (light/dark 30%), and timestamp are randomised per row.
+3+ speakers are automatically rendered as group chats.
+
+### Script format
+
+Each line is `SPEAKER: message`. Speaker A is always the sender (right side).
+
+```
+A: Alo bạn, đi ăn trưa chưa?
+B: Chưa, đi đâu vậy?
+A: Ra quán bún bò đi 😋
+B: Ok, 10 phút nữa ra!
+```
+
+Group chat (3+ speakers):
+
+```
+A: Team ơi deadline hôm nay mấy giờ?
+B: 5h chiều bạn ơi
+C: Mình đang làm frontend rồi
+D: Backend xong rồi, chờ tụi bây thôi 😅
+```
+
+### Commands
+
+**Convert all rows:**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/
+```
+
+**Only accepted rows (filter by QA column):**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/ --accepted-col QA
+```
+
+**Limit rows per run:**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/ --limit 100
+```
+
+**Save CSV of processed rows:**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/ --export-csv output/done.csv
+```
+
+**Parallel workers + all options combined:**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/ \
+  --accepted-col QA \
+  --limit 200 \
+  --workers 10 \
+  --export-csv output/done.csv
+```
+
+**Custom column names:**
+
+```bash
+poetry run tc chat from-csv data.csv output/png/ \
+  --script-col "script" \
+  --id-col "id" \
+  --qa-col "QA"
+```
+
+### Options
+
+| Option                  | Default             | Description                                                                               |
+| ----------------------- | ------------------- | ----------------------------------------------------------------------------------------- |
+| `--script-col`          | `script`            | Column containing the conversation script                                                 |
+| `--id-col`              | `id`                | Column used as row identifier (also seed for randomisation)                               |
+| `--qa-col`              | `QA`                | Column used in output filename (`{id}_{qa}.png`)                                          |
+| `--accepted-col` / `-a` | _(all)_             | Column with accept/reject status. Only `accept`/`accepted` rows are processed.            |
+| `--export-csv`          | _(off)_             | Path to write a CSV of successfully processed rows (all original columns + `output_file`) |
+| `--workers` / `-w`      | `8`                 | Parallel browser workers                                                                  |
+| `--limit` / `-n`        | `0` _(all)_         | Max rows per run                                                                          |
+| `--templates-dir`       | _(bundled)_         | Override HTML templates directory                                                         |
+
+### Output
+
+| Filename pattern   | Example              |
+| ------------------ | -------------------- |
+| `{id}_{qa}.png`    | `0001_accepted.png`  |
+
+---
+
 ## CSV Format Reference
 
 ### Email CSV (`email from-csv`)
@@ -389,6 +483,14 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | -------------------- | -------- | ------------------------------------------------------------------------------- |
 | `Scrip`              | Yes      | Must contain `From:`, `To:`, `Subject:` headers. Rows without them are skipped. |
 | `Data type/category` | No       | Used for `--prefix` filtering                                                   |
+
+### Chat CSV (`chat from-csv`)
+
+| Column    | Required | Notes                                     |
+| --------- | -------- | ----------------------------------------- |
+| `id`      | Yes      | Row identifier, used in output filename   |
+| `QA`      | No       | Accept/reject status for `--accepted-col` |
+| `script`  | Yes      | Multi-line conversation script            |
 
 ### Note / Message / Audio CSV (`note`, `message`, `audio from-csv`)
 
@@ -411,3 +513,4 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | `note from-csv`    | `{index}_{participant}.txt` | `0001_liam.txt`           |
 | `message from-csv` | `{index}_{participant}.txt` | `0007_emily_carter.txt`   |
 | `audio from-csv`   | `{index}_{participant}.txt` | `0003_claire_dubois.txt`  |
+| `chat from-csv`    | `{id}_{qa}.png`             | `0001_accepted.png`       |

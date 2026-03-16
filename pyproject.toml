@@ -24,6 +24,14 @@ optional = true
 [tool.poetry.group.audio.dependencies]
 faster-whisper = ">=1.1.0"
 
+[tool.poetry.group.chat]
+optional = true
+
+[tool.poetry.group.chat.dependencies]
+playwright = ">=1.40.0"
+jinja2     = ">=3.1.0"
+pandas     = ">=2.0.0"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

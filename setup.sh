@@ -107,7 +107,11 @@ fi
 
 echo ""
 echo "==> Installing project dependencies..."
-"$POETRY_BIN" install
+"$POETRY_BIN" install --with chat
+
+echo ""
+echo "==> Installing Playwright browser (Chromium)..."
+"$POETRY_BIN" run playwright install chromium
 
 echo ""
 echo "==> Done. Verifying..."
@@ -115,4 +119,5 @@ echo "==> Done. Verifying..."
 
 echo ""
 echo "Ready. Use: poetry run tc <command>"
+echo "  tc chat from-csv data.csv output/png/"
 echo "Note: restart your terminal (or run 'source $SHELL_RC') for PATH to take effect in new sessions."
