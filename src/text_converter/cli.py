@@ -11,10 +11,12 @@ email_app = typer.Typer(help="Convert plain-text emails to .eml files.", no_args
 note_app = typer.Typer(help="Convert notes to .txt files.", no_args_is_help=True)
 message_app = typer.Typer(help="Convert messages to .txt files.", no_args_is_help=True)
 audio_app = typer.Typer(help="Convert voicemail/audio transcripts to .txt files.", no_args_is_help=True)
+csv_app = typer.Typer(help="CSV utilities.", no_args_is_help=True)
 app.add_typer(email_app, name="email")
 app.add_typer(note_app, name="note")
 app.add_typer(message_app, name="message")
 app.add_typer(audio_app, name="audio")
+app.add_typer(csv_app, name="csv")
 
 console = Console()
 
@@ -274,6 +276,32 @@ def audio_from_csv(
 
     if export_csv:
         console.print(f"[dim]Exported CSV → {export_csv}[/dim]")
+
+
+@csv_app.command("subtract")
+def csv_subtract(
+    csv_file: Path = typer.Argument(..., help="Original CSV file"),
+    log_file: Path = typer.Argument(..., help="File listing already-processed rows (any format: .log, .csv, .txt, ...)"),
+    output: Path = typer.Argument(..., help="Output CSV path for remaining rows"),
+):
+    """Remove already-processed rows from a CSV using a processed-rows file.
+
+    Reads the file to find which row indices were already converted,
+    then writes a new CSV with those rows removed.
+    Supports any text format (.log, .csv, .txt, ...) as long as lines contain filenames like 0071_name.txt.
+    """
+    from text_converter.csv_subtract import subtract
+
+    if not csv_file.exists():
+        console.print(f"[red]File not found:[/red] {csv_file}")
+        raise typer.Exit(1)
+    if not log_file.exists():
+        console.print(f"[red]Log not found:[/red] {log_file}")
+        raise typer.Exit(1)
+
+    kept, removed = subtract(csv_file, log_file, output)
+    console.print(f"[green]✓[/green] Removed [bold]{removed}[/bold] row(s), kept [bold]{kept}[/bold] row(s)")
+    console.print(f"[dim]Output → {output}[/dim]")
 
 
 def main():

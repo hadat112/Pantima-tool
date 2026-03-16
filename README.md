@@ -94,8 +94,10 @@ tc
 │   └── from-csv      # CSV rows → .txt
 ├── message
 │   └── from-csv      # CSV rows → .txt
-└── audio
-    └── from-csv      # CSV rows → .txt
+├── audio
+│   └── from-csv      # CSV rows → .txt
+└── csv
+    └── subtract      # Remove already-processed rows from a CSV using a processed-rows file
 ```
 
 ---
@@ -378,6 +380,54 @@ poetry run tc audio from-csv data.csv output/audio/ --limit 100
 | `--type` / `-t`     | _(all rows)_  | Only process rows matching this value        |
 | `--workers` / `-w`  | `1`           | Number of parallel workers for file writing. |
 | `--limit` / `-n`    | `0` _(all)_   | Max number of rows to process per run.       |
+
+---
+
+## CSV Utilities
+
+### `csv subtract` — Remove already-processed rows
+
+When you run a `from-csv` command, a `.log` file is saved to `logs/` listing every file that was produced.
+Use `csv subtract` to strip those rows out of the original CSV so the next run only processes what remains.
+
+The processed-rows file can be in **any text format** (`.log`, `.csv`, `.txt`, ...) — it just needs to contain lines with filenames like `0071_daniel.txt`.
+
+**Basic usage:**
+
+```bash
+poetry run tc csv subtract original.csv logs/original.log remaining.csv
+```
+
+**Example — strip already-converted notes:**
+
+```bash
+poetry run tc csv subtract \
+  "data/Notes_Event.csv" \
+  "logs/Notes_Event.log" \
+  "data/Notes_Event_remaining.csv"
+# ✓ Removed 967 row(s), kept 923 row(s)
+```
+
+**Works with any processed-rows file format:**
+
+```bash
+# from a .log
+poetry run tc csv subtract data.csv logs/run.log remaining.csv
+
+# from a .csv export
+poetry run tc csv subtract data.csv exports/done.csv remaining.csv
+
+# from a plain .txt list
+poetry run tc csv subtract data.csv lists/processed.txt remaining.csv
+```
+
+### Arguments
+
+| Argument   | Description                                                               |
+| ---------- | ------------------------------------------------------------------------- |
+| `csv_file` | Original CSV file to filter                                               |
+| `log_file` | File listing already-processed rows (any format: `.log`, `.csv`, `.txt`) |
+| `output`   | Output path for the new CSV with processed rows removed                   |
 
 ---
 
