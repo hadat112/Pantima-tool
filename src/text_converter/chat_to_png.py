@@ -51,11 +51,31 @@ COUNTRY_LANG = {
 
 # Localised UI strings per language
 LANG_STRINGS = {
-    "en": {"today": "Today", "am": "AM", "pm": "PM"},
-    "fr": {"today": "Aujourd'hui", "am": "AM", "pm": "PM"},
-    "it": {"today": "Oggi", "am": "AM", "pm": "PM"},
-    "de": {"today": "Heute", "am": "AM", "pm": "PM"},
-    "es": {"today": "Hoy", "am": "AM", "pm": "PM"},
+    "en": {
+        "today": "Today", "yesterday": "Yesterday", "am": "AM", "pm": "PM",
+        "months": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        "weekdays": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    },
+    "fr": {
+        "today": "Aujourd'hui", "yesterday": "Hier", "am": "AM", "pm": "PM",
+        "months": ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."],
+        "weekdays": ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"],
+    },
+    "it": {
+        "today": "Oggi", "yesterday": "Ieri", "am": "AM", "pm": "PM",
+        "months": ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"],
+        "weekdays": ["Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato","Domenica"],
+    },
+    "de": {
+        "today": "Heute", "yesterday": "Gestern", "am": "AM", "pm": "PM",
+        "months": ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
+        "weekdays": ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
+    },
+    "es": {
+        "today": "Hoy", "yesterday": "Ayer", "am": "AM", "pm": "PM",
+        "months": ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],
+        "weekdays": ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"],
+    },
 }
 
 
@@ -135,10 +155,21 @@ def _fmt_status(dt: datetime) -> str:
     return s or "12:00"
 
 def _fmt_message(dt: datetime, lang: str = "en") -> str:
-    hour   = _fmt_status(dt)
+    hour    = _fmt_status(dt)
     strings = LANG_STRINGS.get(lang, LANG_STRINGS["en"])
-    period = strings["am"] if dt.hour < 12 else strings["pm"]
-    return f"{strings['today']}, {hour} {period}"
+    period  = strings["am"] if dt.hour < 12 else strings["pm"]
+    time_str = f"{hour} {period}"
+
+    today     = datetime.now().date()
+    msg_date  = dt.date()
+    delta     = (today - msg_date).days
+
+    if delta < 7:
+        label = strings["weekdays"][msg_date.weekday()]
+    else:
+        label = f"{strings['months'][msg_date.month - 1]} {msg_date.day}"
+
+    return f"{label}, {time_str}"
 
 def _get_lang(country: str) -> str:
     return COUNTRY_LANG.get(country.strip().lower(), "en")
