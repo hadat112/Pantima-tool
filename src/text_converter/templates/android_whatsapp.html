@@ -203,7 +203,7 @@
 
   <div class="input-bar">
     <div class="input-field">
-      <span>Type a message</span>
+      <span>{% if lang == 'fr' %}Saisissez un message{% elif lang == 'it' %}Scrivi un messaggio{% elif lang == 'de' %}Nachricht eingeben{% elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{% endif %}</span>
       <span class="input-icons">😊 📎</span>
     </div>
     <div class="send-btn">🎤</div>

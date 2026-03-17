@@ -38,14 +38,25 @@ DEVICES = [
      "os": "iOS 17",     "template": "luminati.html"},
 ]
 
-VIETNAMESE_NAMES = [
-    "Nguyễn Văn An", "Trần Thị Bích", "Lê Minh Tuấn", "Phạm Lan Anh",
-    "Hoàng Đức Hùng", "Vũ Thị Mai",   "Đặng Quang Khải", "Bùi Thu Hà",
-    "Ngô Thành Nam",  "Dương Thị Linh","Lý Hoàng Phúc",  "Trịnh Thị Ngân",
-    "Phan Văn Đức",   "Đinh Thị Hương","Tô Minh Khoa",   "Cao Thị Thúy",
-]
-
 SPEAKER_COLORS = ["#E91E63", "#9C27B0", "#1976D2", "#00897B", "#E65100", "#5D4037"]
+
+# Country → language code mapping
+COUNTRY_LANG = {
+    "us": "en", "uk": "en", "au": "en", "ca": "en", "nz": "en", "gb": "en",
+    "fr": "fr", "be": "fr", "ch": "fr",
+    "it": "it",
+    "de": "de", "at": "de",
+    "es": "es", "mx": "es", "ar": "es", "co": "es", "cl": "es", "pe": "es",
+}
+
+# Localised UI strings per language
+LANG_STRINGS = {
+    "en": {"today": "Today", "am": "AM", "pm": "PM"},
+    "fr": {"today": "Aujourd'hui", "am": "AM", "pm": "PM"},
+    "it": {"today": "Oggi", "am": "AM", "pm": "PM"},
+    "de": {"today": "Heute", "am": "AM", "pm": "PM"},
+    "es": {"today": "Hoy", "am": "AM", "pm": "PM"},
+}
 
 
 # ── Script parser ─────────────────────────────────────────────────────────────
@@ -123,10 +134,14 @@ def _fmt_status(dt: datetime) -> str:
     s = dt.strftime("%I:%M").lstrip("0")
     return s or "12:00"
 
-def _fmt_message(dt: datetime) -> str:
+def _fmt_message(dt: datetime, lang: str = "en") -> str:
     hour   = _fmt_status(dt)
-    period = dt.strftime("%p").replace("AM", "SA").replace("PM", "CH")
-    return f"Hôm nay, {hour} {period}"
+    strings = LANG_STRINGS.get(lang, LANG_STRINGS["en"])
+    period = strings["am"] if dt.hour < 12 else strings["pm"]
+    return f"{strings['today']}, {hour} {period}"
+
+def _get_lang(country: str) -> str:
+    return COUNTRY_LANG.get(country.strip().lower(), "en")
 
 
 # ── Async worker ──────────────────────────────────────────────────────────────
@@ -148,9 +163,11 @@ async def _worker(
         row, device = item
         context = None
         try:
-            row_id = int(row["_id"])
-            qa     = str(row.get("_qa", "unknown")).strip().lower()
-            script = str(row.get("_script", ""))
+            row_id  = int(row["_id"])
+            qa      = str(row.get("_qa", "unknown")).strip().lower()
+            script  = str(row.get("_script", ""))
+            country = str(row.get("_country", "US")).strip()
+            lang    = _get_lang(country)
 
             parsed = parse_script(script, seed=row_id)
             if not parsed:
@@ -170,8 +187,9 @@ async def _worker(
                 is_group=parsed["is_group"],
                 messages=parsed["messages"],
                 status_time=_fmt_status(dt),
-                message_time=_fmt_message(dt),
+                message_time=_fmt_message(dt, lang=lang),
                 dark_mode=dark_mode,
+                lang=lang,
             )
 
             await page.set_content(html, wait_until="domcontentloaded")
@@ -246,6 +264,7 @@ def batch_from_csv(
     done_csv: Path | None = None,
     participant_col: str = "participant",
     filename_col: str | None = None,
+    country_col: str = "country",
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -278,9 +297,10 @@ def batch_from_csv(
     rows = []
     for _, r in df.iterrows():
         row = r.to_dict()
-        row["_id"]     = r.get(id_col, _)
-        row["_qa"]     = r.get(qa_col, "unknown")
-        row["_script"] = str(r[script_col])
+        row["_id"]      = r.get(id_col, _)
+        row["_qa"]      = r.get(qa_col, "unknown")
+        row["_script"]  = str(r[script_col])
+        row["_country"] = str(r.get(country_col, "US")) if country_col in df.columns else "US"
         if filename_col and filename_col in df.columns:
             row["_filename"] = str(r.get(filename_col, "")).strip()
         rows.append(row)
