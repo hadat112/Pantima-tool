@@ -81,28 +81,25 @@ def parse_script(script: str, seed: int) -> dict | None:
     if not speakers_seen or not parsed:
         return None
 
-    # Assign stable random Vietnamese names per conversation
-    name_pool = rng.sample(VIETNAMESE_NAMES, min(len(speakers_seen), len(VIETNAMESE_NAMES)))
-    name_map  = {spk: name_pool[i] for i, spk in enumerate(speakers_seen)}
     color_map = {spk: SPEAKER_COLORS[i % len(SPEAKER_COLORS)] for i, spk in enumerate(speakers_seen)}
 
     me       = speakers_seen[0]   # first speaker = "me" (sent side)
     is_group = len(speakers_seen) >= 3
 
     if is_group:
-        others       = [name_map[s] for s in speakers_seen if s != me]
+        others       = [s for s in speakers_seen if s != me]
         contact_name = ", ".join(n.split()[-1] for n in others[:3])
         if len(others) > 3:
             contact_name += f" +{len(others) - 3}"
     else:
         other        = next((s for s in speakers_seen if s != me), me)
-        contact_name = name_map[other]
+        contact_name = other
 
     messages = [
         {
             "role":         "sent" if spk == me else "recv",
             "text":         text,
-            "display_name": name_map[spk],
+            "display_name": spk,
             "color":        color_map[spk],
         }
         for spk, text in parsed
@@ -213,7 +210,8 @@ async def _run(
 
     queue: asyncio.Queue = asyncio.Queue()
     for row in rows:
-        queue.put_nowait((row, random.choice(DEVICES)))
+        row_rng = random.Random(int(row["_id"]))
+        queue.put_nowait((row, row_rng.choice(DEVICES)))
     for _ in range(num_workers):
         queue.put_nowait(None)
 
@@ -241,6 +239,8 @@ def batch_from_csv(
     num_workers: int = 8,
     limit: int       = 0,
     export_csv: Path | None = None,
+    done_csv: Path | None = None,
+    participant_col: str = "participant",
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -307,5 +307,22 @@ def batch_from_csv(
         export_csv = Path(export_csv)
         export_csv.parent.mkdir(parents=True, exist_ok=True)
         export_df.to_csv(export_csv, index=False)
+
+    # Append to done-data CSV
+    if done_csv and ok_results:
+        done_csv = Path(done_csv)
+        done_csv.parent.mkdir(parents=True, exist_ok=True)
+        file_exists = done_csv.exists() and done_csv.stat().st_size > 0
+        with open(done_csv, "a", encoding="utf-8", newline="") as f:
+            import csv as csv_mod
+            writer = csv_mod.writer(f)
+            if not file_exists:
+                writer.writerow(["index", "participant", "filename"])
+            for r in sorted(ok_results, key=lambda x: int(x["_id"])):
+                row_id   = str(int(r["_id"])).zfill(4)
+                part     = str(r.get(participant_col, "")).strip().lower()
+                filename = Path(r["_output_file"]).name
+                writer.writerow([row_id, part, filename])
+        print(f"📋  Done-data cập nhật → {done_csv}  (+{len(ok_results)} dòng)")
 
     return ok_paths

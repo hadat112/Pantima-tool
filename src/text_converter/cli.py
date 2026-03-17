@@ -332,6 +332,9 @@ def chat_from_csv(
                                      help="Column containing accept/reject status. Only 'accept'/'accepted' rows are exported."),
     export_csv: Path  = typer.Option(None, "--export-csv",
                                      help="Save a CSV of successfully processed rows (all columns + output_file path)."),
+    done_csv: Path    = typer.Option(None, "--done-csv",
+                                     help="Append processed rows (index, participant, filename) to this CSV."),
+    participant_col: str = typer.Option("participant", "--participant-col", help="Participant column name (used for done-csv)"),
     templates_dir: Path = typer.Option(None, "--templates-dir",
                                        help="Custom templates directory (default: bundled package templates)"),
     workers: int  = typer.Option(8, "--workers", "-w", min=1, help="Parallel workers (default: 8)"),
@@ -371,6 +374,8 @@ def chat_from_csv(
         num_workers=workers,
         limit=limit,
         export_csv=export_csv,
+        done_csv=done_csv,
+        participant_col=participant_col,
     )
 
     if not results:
