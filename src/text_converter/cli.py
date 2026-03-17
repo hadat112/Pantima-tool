@@ -335,6 +335,7 @@ def chat_from_csv(
     done_csv: Path    = typer.Option(None, "--done-csv",
                                      help="Append processed rows (index, participant, filename) to this CSV."),
     participant_col: str = typer.Option("participant", "--participant-col", help="Participant column name (used for done-csv)"),
+    filename_col: str = typer.Option("", "--filename-col", help="Column to use as output filename (instead of auto-generated {id}_{qa}.png)"),
     templates_dir: Path = typer.Option(None, "--templates-dir",
                                        help="Custom templates directory (default: bundled package templates)"),
     workers: int  = typer.Option(8, "--workers", "-w", min=1, help="Parallel workers (default: 8)"),
@@ -376,6 +377,7 @@ def chat_from_csv(
         export_csv=export_csv,
         done_csv=done_csv,
         participant_col=participant_col,
+        filename_col=filename_col or None,
     )
 
     if not results:

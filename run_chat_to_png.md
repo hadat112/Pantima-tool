@@ -1,6 +1,13 @@
 # Chat to PNG — Run Commands (PowerShell)
 
-> Chạy từ thư mục gốc của project. Yêu cầu: `poetry install` đã được chạy trước.
+> Chạy từ thư mục gốc của project.
+
+## Cài đặt (chạy 1 lần)
+
+```powershell
+poetry install --with chat
+poetry run playwright install chromium
+```
 
 ---
 

@@ -176,7 +176,11 @@ async def _worker(
 
             await page.set_content(html, wait_until="domcontentloaded")
 
-            filename = f"{str(row_id).zfill(4)}_{qa}.png"
+            custom_fn = str(row.get("_filename", "")).strip()
+            if custom_fn and custom_fn.lower() != "nan":
+                filename = custom_fn if custom_fn.lower().endswith(".png") else custom_fn + ".png"
+            else:
+                filename = f"{str(row_id).zfill(4)}_{qa}.png"
             filepath = output_dir / filename
             await page.screenshot(path=str(filepath), full_page=False)
 
@@ -241,6 +245,7 @@ def batch_from_csv(
     export_csv: Path | None = None,
     done_csv: Path | None = None,
     participant_col: str = "participant",
+    filename_col: str | None = None,
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -276,6 +281,8 @@ def batch_from_csv(
         row["_id"]     = r.get(id_col, _)
         row["_qa"]     = r.get(qa_col, "unknown")
         row["_script"] = str(r[script_col])
+        if filename_col and filename_col in df.columns:
+            row["_filename"] = str(r.get(filename_col, "")).strip()
         rows.append(row)
 
     # Each run gets its own timestamped subfolder: output/chat/2026-03-13_21-58-00/
