@@ -11,31 +11,31 @@
     }
 
     :root {
-      --bg: #efeae2;
-      --header-bg: #075E54;
+      --bg: #e8edf0;
+      --header-bg: #1c2b3a;
       --header-text: #ffffff;
-      --bubble-sent: #dcf8c6;
+      --bubble-sent: #eeffde;
       --bubble-recv: #ffffff;
-      --text-sent: #111111;
-      --text-recv: #111111;
-      --text-sub: #8696a0;
-      --tick: #53bdeb;
+      --text-sent: #000000;
+      --text-recv: #000000;
+      --text-sub: #8896a0;
+      --tick: #4fae4e;
       --input-bg: #ffffff;
       --input-border: #d1d7db;
     }
 
     html.dark {
-      --bg: #0b141a;
-      --header-bg: rgba(31, 44, 52, 0.8);
-      --header-text: #ffffff;
-      --bubble-sent: rgba(14, 87, 77, 0.7);
-      --bubble-recv: rgba(31, 44, 52, 0.6);
+      --bg: #0e1621;
+      --header-bg: #17212b;
+      --header-text: #e8edf0;
+      --bubble-sent: #2b5278;
+      --bubble-recv: #182533;
       --text-sent: #ffffff;
       --text-recv: #ffffff;
-      --text-sub: rgba(255, 255, 255, 0.2);
-      --tick: #34B7F1;
-      --input-bg: rgba(18, 27, 34, 0.6);
-      --input-border: rgba(32, 32, 32, 0.15);
+      --text-sub: #8896a0;
+      --tick: #5ac8fa;
+      --input-bg: #1c2b3a;
+      --input-border: #2b3e50;
     }
 
     html,
@@ -75,8 +75,6 @@
       align-items: center;
       padding: 8px 12px 10px;
       background: var(--header-bg);
-      backdrop-filter: blur(300px);
-      -webkit-backdrop-filter: blur(300px);
       gap: 10px;
     }
 
@@ -89,7 +87,7 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #25D366;
+      background: #2481cc;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -100,7 +98,7 @@
     }
 
     .avatar.group {
-      background: #128C7E;
+      background: #2481cc;
       font-size: 14px;
     }
 
@@ -120,7 +118,7 @@
 
     .contact-status {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.75);
+      color: rgba(255, 255, 255, 0.65);
     }
 
     .header-icons {
@@ -143,22 +141,22 @@
     }
 
     html.dark .chat-area {
-      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     }
 
     .timestamp-label {
       align-self: center;
-      background: rgba(225, 245, 254, 0.92);
-      color: #54656f;
+      background: rgba(112, 117, 121, 0.25);
+      color: #4b4b4b;
       font-size: 11px;
       padding: 3px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       margin: 4px 0;
     }
 
     html.dark .timestamp-label {
-      background: rgba(17, 27, 33, 0.85);
-      color: #8696a0;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
     }
 
     /* ── Bubbles ── */
@@ -178,26 +176,24 @@
 
     .bubble {
       max-width: 72%;
-      padding: 10px;
-      font-size: 16px;
-      line-height: 1.17;
+      padding: 6px 10px 4px;
+      font-size: 14.5px;
+      line-height: 1.45;
       word-wrap: break-word;
       position: relative;
-      backdrop-filter: blur(250px);
-      -webkit-backdrop-filter: blur(250px);
     }
 
     .bubble.sent {
       background: var(--bubble-sent);
       color: var(--text-sent);
-      border-radius: 16px 0 16px 16px;
+      border-radius: 12px 12px 0 12px;
       margin-right: 2px;
     }
 
     .bubble.recv {
       background: var(--bubble-recv);
       color: var(--text-recv);
-      border-radius: 0 16px 16px 16px;
+      border-radius: 0 12px 12px 12px;
       margin-left: 2px;
     }
 
@@ -259,8 +255,6 @@
       padding: 8px 8px 20px;
       gap: 8px;
       background: var(--bg);
-      backdrop-filter: blur(350px);
-      -webkit-backdrop-filter: blur(350px);
     }
 
     .input-field {
@@ -287,17 +281,13 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: #25D366;
+      background: #2481cc;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
       font-size: 18px;
       flex-shrink: 0;
-    }
-
-    html.dark .send-btn {
-      background: #00927c;
     }
   </style>
 </head>
@@ -321,15 +311,15 @@
         {{ messages | selectattr('role','eq','recv') | map(attribute='display_name') | unique | list | join(', ') |
         truncate(38, true) }}
         {% else %}
-        online
+        {% if lang == 'fr' %}vu récemment{% elif lang == 'it' %}visto di recente{% elif lang == 'de' %}zuletzt online{% elif lang == 'es' %}en línea recientemente{% else %}last seen recently{% endif %}
         {% endif %}
       </div>
     </div>
-    <div class="header-icons"><span>📹</span><span>📞</span><span>⋮</span></div>
+    <div class="header-icons"><span>📞</span><span>⋮</span></div>
   </div>
 
   <div class="chat-area">
-    <div class="timestamp-label">{{ message_time }}</div>
+    {% if message_time %}<div class="timestamp-label">{{ message_time }}</div>{% endif %}
 
     {% for msg in messages %}
     <div class="msg-row {{ msg.role }}">
@@ -349,8 +339,7 @@
 
   <div class="input-bar">
     <div class="input-field">
-      <span>{% if lang == 'fr' %}Saisissez un message{% elif lang == 'it' %}Scrivi un messaggio{% elif lang == 'de'
-        %}Nachricht eingeben{% elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{% endif %}</span>
+      <span>{% if lang == 'fr' %}Message{% elif lang == 'it' %}Messaggio{% elif lang == 'de' %}Nachricht{% elif lang == 'es' %}Mensaje{% else %}Message{% endif %}</span>
       <span class="input-icons">😊 📎</span>
     </div>
     <div class="send-btn">🎤</div>

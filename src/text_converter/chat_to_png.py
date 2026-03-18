@@ -21,22 +21,24 @@ TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 DEVICES = [
     {"name": "iPhone 15 Pro Max", "width": 430, "height": 932, "scale": 3,
-     "os": "iOS 17",     "template": "ios_imessage.html"},
+     "os": "iOS 17",     "application": "iMessage",  "template": "ios_imessage.html"},
     {"name": "iPhone SE",         "width": 375, "height": 667, "scale": 2,
-     "os": "iOS 15",     "template": "ios_imessage.html"},
+     "os": "iOS 15",     "application": "iMessage",  "template": "ios_imessage.html"},
     {"name": "Samsung Galaxy S23","width": 360, "height": 800, "scale": 3,
-     "os": "Android 13", "template": "android_whatsapp.html"},
+     "os": "Android 13", "application": "WhatsApp",  "template": "android_whatsapp.html"},
     {"name": "Google Pixel 7",    "width": 412, "height": 915, "scale": 3,
-     "os": "Android 13", "template": "android_whatsapp.html"},
+     "os": "Android 13", "application": "WhatsApp",  "template": "android_whatsapp.html"},
     {"name": "iPhone 15 Pro Max", "width": 430, "height": 932, "scale": 3,
-     "os": "iOS 17",     "template": "ios_whatsapp.html"},
+     "os": "iOS 17",     "application": "WhatsApp",  "template": "ios_whatsapp.html"},
     {"name": "iPhone 14",         "width": 390, "height": 844, "scale": 3,
-     "os": "iOS 16",     "template": "messenger.html"},
+     "os": "iOS 16",     "application": "Messenger", "template": "messenger.html"},
     {"name": "iPhone 13",         "width": 390, "height": 844, "scale": 3,
-     "os": "iOS 15",     "template": "telegram.html"},
+     "os": "iOS 15",     "application": "Telegram",  "template": "telegram.html"},
     {"name": "iPhone 15",         "width": 393, "height": 852, "scale": 3,
-     "os": "iOS 17",     "template": "luminati.html"},
+     "os": "iOS 17",     "application": "iMessage",  "template": "luminati.html"},
 ]
+
+BATTERY_LEVELS = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 
 SPEAKER_COLORS = ["#E91E63", "#9C27B0", "#1976D2", "#00897B", "#E65100", "#5D4037"]
 
@@ -172,7 +174,13 @@ def _fmt_message(dt: datetime, lang: str = "en") -> str:
     return f"{label}, {time_str}"
 
 def _get_lang(country: str) -> str:
-    return COUNTRY_LANG.get(country.strip().lower(), "en")
+    c = country.strip().lower()
+    # Support locale format: fr_FR, en_US, de_DE, it_IT, es_ES
+    if "_" in c:
+        lang = c.split("_")[0]
+        if lang in LANG_STRINGS:
+            return lang
+    return COUNTRY_LANG.get(c, "en")
 
 
 # ── Async worker ──────────────────────────────────────────────────────────────
@@ -206,6 +214,7 @@ async def _worker(
 
             dt        = _random_datetime(seed=row_id)
             dark_mode = random.Random(row_id + 42).random() < 0.3
+            battery   = random.Random(row_id + 1337).choice(BATTERY_LEVELS)
 
             context = await browser.new_context(
                 viewport={"width": device["width"], "height": device["height"]},
@@ -221,6 +230,8 @@ async def _worker(
                 message_time=_fmt_message(dt, lang=lang),
                 dark_mode=dark_mode,
                 lang=lang,
+                battery=battery,
+                os=device["os"],
             )
 
             await page.set_content(html, wait_until="domcontentloaded")
@@ -233,7 +244,15 @@ async def _worker(
             filepath = output_dir / filename
             await page.screenshot(path=str(filepath), full_page=False)
 
-            results.append({**row, "_output_file": str(filepath), "_status": "ok"})
+            results.append({
+                **row,
+                "_output_file":  str(filepath),
+                "_status":       "ok",
+                "_application":  device["application"],
+                "_os":           device["os"],
+                "_device":       device["name"],
+                "_battery":      battery,
+            })
 
             group_tag = " 👥" if parsed["is_group"] else ""
             dark_tag  = " 🌙" if dark_mode else ""
@@ -348,11 +367,29 @@ def batch_from_csv(
     ok_paths     = [Path(r["_output_file"]) for r in ok_results]
     failed_count = len(results) - len(ok_results)
 
+    # Always write metadata.csv in run_dir
+    if ok_results:
+        import csv as csv_mod
+        meta_path = run_dir / "metadata.csv"
+        with open(meta_path, "w", encoding="utf-8", newline="") as f:
+            writer = csv_mod.writer(f)
+            writer.writerow(["id", "filename", "application", "os", "device"])
+            for r in sorted(ok_results, key=lambda x: int(x["_id"])):
+                writer.writerow([
+                    str(int(r["_id"])).zfill(4),
+                    Path(r["_output_file"]).name,
+                    r.get("_application", ""),
+                    r.get("_os", ""),
+                    r.get("_device", ""),
+                ])
+
     print(f"\n{'─' * 50}")
     print(f"✅  Thành công : {len(ok_paths)}/{len(rows)}")
     if failed_count:
         print(f"❌  Thất bại   : {failed_count}/{len(rows)}")
     print(f"⏱️   Thời gian  : {elapsed:.1f}s  |  🚀 {len(ok_paths)/elapsed:.1f} ảnh/giây")
+    if ok_results:
+        print(f"📊  Metadata   : {meta_path}")
 
     # Export processed rows CSV
     if export_csv and ok_results:
