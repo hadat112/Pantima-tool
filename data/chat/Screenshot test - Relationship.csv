@@ -1,241 +1,95 @@
 Number,participant,Script,age,gender,country,occupation,File name
-1,Emily Carter,"Emily Carter: Hey Marcus, can you grab Ava from Lincoln Elementary today?
- Marcus Hill: Yep, I can. Parent pickup starts at 3:05 right?
- Emily Carter: Yeah, Ms. Jensen said side door by the gym again.
- Marcus Hill: Got it. Does Ava still have dance after school?
- Emily Carter: Not today, they canceled bc the instructor is sick.
- Marcus Hill: Okay cool, I'll take her home and start her math sheet.
- Emily Carter: Thank you. I left her blue folder in the front pocket of her backpack.
- Marcus Hill: Perfect. Do you want me to warm up the pasta from last night too?
- Emily Carter: pls yes, she barely ate lunch.
- Marcus Hill: No problem. I'll text when we're back home.
- Emily Carter: You're saving me this week, seriously.
- Marcus Hill: That's what co-parents are for.",34,Female,US,Elementary School Counselor,
-2,Daniel Kim,"Daniel Kim: Morning Priya, quick heads up I sent the slide deck to the client.
- Priya Patel: Thanks. Did you include Jenna's pricing page this time?
- Daniel Kim: I did, and I added the revised timeline after your notes.
- Priya Patel: Great. Can you stay on the call at 2 in case they ask about rollout?
- Daniel Kim: Yes. Also, do you want me to mention the Denver office staffing plan or leave that to you?
- Priya Patel: Leave that to me. I don't want mixed messaging.
- Daniel Kim: Makes sense.
- Priya Patel: And Daniel, nice recovery on that budget mess yesterday.
- Daniel Kim: lol appreciated, I was sweating.
- Priya Patel: You're doing fine. Just keep the status tracker updated before noon.
- Daniel Kim: Will do, boss.
- Priya Patel: Not boss, just your favorite manager.",29,Male,US,Marketing Analyst,
-3,Sofia Martinez,"Sofia Martinez: Nina are you still okay hosting Sunday dinner?
- Nina Brooks: Yep, backyard if weather holds, inside if not.
- Sofia Martinez: Perfect. My mom asked if she should bring the arroz con pollo.
- Nina Brooks: Please yes, everyone loved it last time.
- Sofia Martinez: My brother Leo is coming too, hope that's okay.
- Nina Brooks: Of course. He can help Aaron with the grill lol.
- Sofia Martinez: Deal. What time should family start showing up?
- Nina Brooks: Around 4:30. We wanna eat by 6 before the kids get feral.
- Sofia Martinez: Accurate.
- Nina Brooks: Also can you remind your aunt that my dog is not scary, he's just loud.
- Sofia Martinez: Haha I will. She still talks about Thanksgiving 2023.
- Nina Brooks: Rico has grown as a person since then.",41,Female,US,Restaurant Manager,
-4,Tyler Johnson,"Tyler Johnson: Yo Ben, are we still on for the Knicks game Friday?
- Ben Wallace: Yeah man, I already bought parking near 33rd.
- Tyler Johnson: Nice. My sister said she can watch Mason till midnight.
- Ben Wallace: Good, bc overtime happens and we both know you'll refuse to leave early.
- Tyler Johnson: Facts. Did you get the tickets from your cousin?
- Ben Wallace: Section 214, row 6. Not bad at all.
- Tyler Johnson: That's solid. I'll pay you back when I see you.
- Ben Wallace: No rush, just buy the first round of pretzels.
- Tyler Johnson: Expensive date but okay.
- Ben Wallace: Also, wear the blue hoodie. Last time you wore that random Celtics thing and I almost disowned you.
- Tyler Johnson: It was laundry day, relax.
- Ben Wallace: Unacceptable behavior from a best friend.",32,Male,US,Auto Mechanic,
-5,Rachel Nguyen,"Rachel Nguyen: Dad, did you talk to Aunt Michelle about Nana's birthday brunch?
- Thomas Nguyen: I did. She can pick up Nana from the apartment at 10:15.
- Rachel Nguyen: Great. I'm bringing the photo album and the lemon cake.
- Thomas Nguyen: Good choice, she likes that one better than chocolate.
- Rachel Nguyen: I know, she tells me every single year.
- Thomas Nguyen: Your brother is coming late after his shift.
- Rachel Nguyen: That's okay, save him a plate this time please.
- Thomas Nguyen: I always do, he just inhales it in the kitchen.
- Rachel Nguyen: lol true. Did you make the reservation under your name or mine?
- Thomas Nguyen: Mine. Table for 8 at Harbor Café, 11:00 sharp.
- Rachel Nguyen: Perfect. Thanks for handling the family wrangling.
- Thomas Nguyen: Oldest child duties got passed down to me a long time ago.",27,Female,US,Graphic Designer,
-6,Jordan Blake,"Jordan Blake: Hey Leah, can you look over my lease renewal? My landlord raised it again.
- Leah Foster: Sure, send pics. How much did he bump it?
- Jordan Blake: From 1850 to 2040. Same apartment, same broken dryer.
- Leah Foster: Oof. Did he give proper notice?
- Jordan Blake: Email came yesterday, renewal starts in 45 days.
- Leah Foster: In California that's usually not enough for that increase, esp over 10%.
- Jordan Blake: That's what I thought but I wanted a sanity check from my favorite lawyer cousin.
- Leah Foster: Flattery noted. Send me the lease and the email thread.
- Jordan Blake: Doing it now. If this gets ugly can I put you down as emergency contact lol
- Leah Foster: Only if you stop ignoring my calls on holidays.
- Jordan Blake: Harsh but fair.
- Leah Foster: Also I'm billing you one coffee, family discount.",38,Male,US,High School Teacher,
-7,Olivia Reed,"Olivia Reed: Sam, can you cover my shift Saturday night?
- Samantha Price: Maybe, what's going on?
- Olivia Reed: My fiancée's parents are flying in from Phoenix and dinner got moved up.
- Samantha Price: Ahh the future in-laws. Important.
- Olivia Reed: Exactly, I cannot be the bartender who shows up late to meet them.
- Samantha Price: What hours is the shift?
- Olivia Reed: 5 to close, probably 11:30 if we're lucky.
- Samantha Price: I can take it if you swap me for next Thursday.
- Olivia Reed: Done. I'll take your patio section too if needed.
- Samantha Price: Bless. Tell Marco to update the schedule though, last time he forgot and double-booked me.
- Olivia Reed: I already texted him and took a screenshot bc trust issues.
- Samantha Price: Smart woman.",26,Female,US,Bartender,
-8,Michael Torres,"Michael Torres: Hey Reverend Ellis, just checking if you still need extra chairs for the youth fundraiser.
- Reverend Ellis: Yes please, Michael. We had 18 more RSVPs come in this morning.
- Michael Torres: Wow okay, I can borrow folding chairs from the community center.
- Reverend Ellis: That would help a lot. Can your son Mateo come early too?
- Michael Torres: He can, but only after his baseball practice at 1.
- Reverend Ellis: That's fine. Setup starts at 2 and doors open at 4.
- Michael Torres: I'll bring the card reader and the raffle tickets like last year.
- Reverend Ellis: Wonderful. And thank your wife for donating the dessert trays.
- Michael Torres: She said the peach cobbler is non-negotiable.
- Reverend Ellis: Then the event is already a success.
- Michael Torres: lol see you Saturday, pastor.
- Reverend Ellis: See you then, my friend.",45,Male,US,Firefighter,
-9,Hannah Miller,"Hannah Miller: Claire, did Ethan finally ask you to be in the wedding?
- Claire Benson: He did, last night on FaceTime. Very dramatic for 9 pm on a Tuesday.
- Hannah Miller: lol that's my brother. So you're officially a bridesmaid now?
- Claire Benson: Apparently yes. He said, and I quote, you've known my chaos long enough.
- Hannah Miller: That's honestly sweet in Ethan language.
- Claire Benson: Your mom already sent me 4 dress color options.
- Hannah Miller: Only four? she's showing restraint.
- Claire Benson: I need to know if ""dusty sage"" is a real color or a cry for help.
- Hannah Miller: It's real. Don't fight it.
- Claire Benson: Fine. Also can you tell your aunt I am not dating the DJ.
- Hannah Miller: No promises, she thrives on misinformation.
- Claire Benson: I'm joining this family against my better judgment.",31,Female,US,Museum Curator,
-10,Brandon Lee,"Brandon Lee: Mom, are you still taking Lily overnight Friday?
- Patricia Lee: Yes honey, I already set up the guest room for her.
- Brandon Lee: Thank you. Jenna and I have that dinner with her new manager.
- Patricia Lee: I remember. Is Lily still obsessed with pancakes for breakfast?
- Brandon Lee: Very much yes, and blueberries if you have them.
- Patricia Lee: I always have them for my granddaughter.
- Brandon Lee: You're the best. Her soccer bag is labeled this time btw.
- Patricia Lee: Good, because last week I sent her home with your niece's shin guards.
- Brandon Lee: We noticed at practice lol.
- Patricia Lee: Bring her by around 6:30. I'll have her favorite blanket washed.
- Brandon Lee: Perfect. She's excited for grandma sleepover night.
- Patricia Lee: Tell her I saved the good cartoon cereal too.",36,Male,US,Software Engineer,
-11,Melissa Carter,"Melissa Carter: Hey Jordan, can you grab Mia from soccer today? I’m stuck in a budget meeting.
- Jordan Patel: Yep, I can get her at 5:30.
- Melissa Carter: Thanks. Her coach said she left her blue hoodie on the bench again.
- Jordan Patel: lol that tracks. I’ll check the lost and found.
- Melissa Carter: Also Emma needs poster board for the science fair tomorrow.
- Jordan Patel: I saw that text from her teacher. I’ll stop by Target after pickup.
- Melissa Carter: You’re saving me this week, seriously.
- Jordan Patel: Team effort. Did you send the camp form to Noah’s class yet?
- Melissa Carter: Not yet, printing it at work rn.
- Jordan Patel: Cool. I’ll start pasta when we get home.
- Melissa Carter: Perfect. Tell the kids I’ll be back before dinner.
- Jordan Patel: Will do, wife. Drive safe.",38,Female,US,Human Resources Manager,
-12,David Nguyen,"David Nguyen: Morning Priya, did you see Mom’s message about Dad’s birthday dinner?
- Priya Raman: Yes, she wants everyone at her house by 6 on Saturday.
- David Nguyen: I can bring the cake if you handle the balloons and plates.
- Priya Raman: Deal. Did you invite Uncle Steve or want me to?
- David Nguyen: I already called him. He said he’s bringing Aunt Carla too.
- Priya Raman: Nice. What are we doing for Dad’s gift?
- David Nguyen: I was thinking the Milwaukee drill set he keeps talking about.
- Priya Raman: Good idea. I’ll split it with you and Lena.
- David Nguyen: Thanks sis. Also can you remind Mom not to make him pick up ice himself again lol.
- Priya Raman: omg yes, last year was chaos.
- David Nguyen: I’ll swing by Costco Friday after work.
- Priya Raman: Perfect, brother of the year points for you.",34,Male,US,Civil Engineer,
-13,Tasha Brooks,"Tasha Brooks: Mr. Ellis, I wanted to ask if you’re still okay being my reference for the grad program.
- Martin Ellis: Of course, Tasha. Deadline still next Thursday?
- Tasha Brooks: Yes, March 21 by 5 pm Eastern.
- Martin Ellis: Send me the link again and your updated resume.
- Tasha Brooks: Will do. I also added the project we did with the Chicago client.
- Martin Ellis: Good, that one shows your leadership well.
- Tasha Brooks: Thank you. I’m nervous tbh.
- Martin Ellis: Don’t be. You earned this. I’ll mention how you trained the new analysts too.
- Tasha Brooks: That means a lot.
- Martin Ellis: Any word from Stanford yet?
- Tasha Brooks: Not yet, just Michigan and Georgetown deadlines first.
- Martin Ellis: Keep me posted, and I’ll get the recommendation in early.",27,Female,US,Data Analyst,
-14,Kevin Morales,"Kevin Morales: Hey Lisa, before Sunday dinner, is Grandma okay with us bringing the dog?
- Lisa Morales: She said yes as long as Benny stays off the couch this time.
- Kevin Morales: no promises lol but I’ll bring his blanket.
- Lisa Morales: Good. Also can you come early and help me set up the folding table?
- Kevin Morales: Yep, I’ll be there around 2.
- Lisa Morales: Thanks. Mom wants the cousins in the family photo before everyone starts eating.
- Kevin Morales: Smart. Last reunion half the kids disappeared to the basement.
- Lisa Morales: exactly. Can you text Mateo and Chloe the updated time?
- Kevin Morales: Already did. Mateo asked if Grandpa still wants the old vinyl player looked at.
- Lisa Morales: He does. Bring your little toolkit thing.
- Kevin Morales: Got it. See you Sunday, sis.
- Lisa Morales: See you then.",31,Male,US,Auto Mechanic,
-15,Hannah Reed,"Hannah Reed: Carlos, do you still want me to watch Sofia Friday night?
- Carlos Mendez: If you can, that would help a ton. Elena and I have that work fundraiser.
- Hannah Reed: No problem. Drop her off after school?
- Carlos Mendez: Yeah around 4:15. She’ll have her backpack and the purple bunny.
- Hannah Reed: Cute. Any homework I need to check?
- Carlos Mendez: Just reading for 20 mins and a spelling sheet.
- Hannah Reed: Easy enough. Does she still only eat the dinosaur nuggets lol.
- Carlos Mendez: pretty much, and apple slices.
- Hannah Reed: Got it. I’ll put on that space movie she likes too.
- Carlos Mendez: You’re the best neighbor ever.
- Hannah Reed: All good. Pick up around 9:30?
- Carlos Mendez: Yep, and I’m bringing you coffee Saturday as payment.",29,Female,US,Elementary School Teacher,
-16,Robert Ellis,"Robert Ellis: Maya, thanks again for hosting us last weekend. Claire still talks about your guest room cookies.
- Maya Thompson: haha tell Claire I baked another batch already.
- Robert Ellis: She’ll take that as an invitation.
- Maya Thompson: It is, but next time you’re both staying longer than one night.
- Robert Ellis: Fair. We got back to Denver so late Sunday, work on Monday was rough.
- Maya Thompson: You made it though. Did Eric ever find his charger?
- Robert Ellis: Yep, it was in my duffel. I’m mailing yours back too, the green sweater.
- Maya Thompson: Oh wow, I thought I left that at the cabin.
- Robert Ellis: Nope, Claire folded it with our stuff by accident.
- Maya Thompson: classic Claire move.
- Robert Ellis: Also tell Ben the chili recipe was elite.
- Maya Thompson: I will. Come visit when baseball season starts again.",42,Male,US,Sales Director,
-17,Olivia Bennett,"Olivia Bennett: Nate, can you review the lease addendum before I sign it?
- Nathan Cole: Sure, send pics of pages 3 and 4. That’s usually where the sneaky stuff is.
- Olivia Bennett: sent.
- Nathan Cole: Looking now. They added a pet cleaning fee, but only if you move in with an animal.
- Olivia Bennett: okay that part’s fine. Anything weird?
- Nathan Cole: Utility language is vague. Ask the landlord whether water is capped or split by building.
- Olivia Bennett: Ugh, thank you. I would’ve missed that.
- Nathan Cole: No problem. Is your brother still helping you move on the 29th?
- Olivia Bennett: Yep, and my cousin Jenna too. We bribed them with pizza.
- Nathan Cole: Solid plan. I can bring the hand truck after work if needed.
- Olivia Bennett: That would help a lot, you’re a lifesaver.
- Nathan Cole: Lawyer friend perks.",30,Female,US,Graphic Designer,
-18,Ethan Price,"Ethan Price: Coach Riley, sorry for texting late. I wanted to ask if I can miss practice Thursday for my sister’s recital.
- Coach Riley: Thanks for letting me know ahead of time. What time is the recital?
- Ethan Price: 6:30 downtown, and my parents need me there early to help her calm down.
- Coach Riley: Family stuff matters. You can miss Thursday, but I need you at film review Wednesday.
- Ethan Price: Absolutely, I’ll be there.
- Coach Riley: Also send me your lifting log. You forgot last week.
- Ethan Price: My bad, I’ll upload it tonight.
- Coach Riley: Appreciate it. How’s your ankle feeling after Saturday?
- Ethan Price: Better now, just sore, not hurt.
- Coach Riley: Good. Ice it after class tomorrow.
- Ethan Price: Will do. Thanks coach.
- Coach Riley: Tell your sister good luck from the team.",20,Male,US,College Student,
-19,Brooke Simmons,"Brooke Simmons: Ava, did you talk to Mom after her flight got delayed?
- Ava Simmons: Yeah, she landed in Phoenix around midnight and sounded exhausted.
- Brooke Simmons: I figured. I’m dropping groceries at her place after my shift.
- Ava Simmons: Thank you. Can you make sure she actually unpacks the meds bag and chargers?
- Brooke Simmons: yes, and I’ll water the plants too.
- Ava Simmons: She also left her blue folder on the kitchen counter. It has the tax stuff.
- Brooke Simmons: I’ll put it by her desk so she sees it.
- Ava Simmons: You always handle the practical things lol.
- Brooke Simmons: Older sister duties.
- Ava Simmons: I can go by tomorrow evening and do laundry if needed.
- Brooke Simmons: Perfect. Let’s both check on her this week so she doesn’t overdo it.
- Ava Simmons: Agreed. Text me when you get there.",36,Female,US,Registered Nurse,
-20,Marcus Holloway,"Marcus Holloway: Renee, are we still on for helping Ben and Tyler paint the nursery Sunday?
- Renee Walker: Yes, 11 am. Ben said wear old clothes because the trim still needs sanding.
- Marcus Holloway: Got it. Do they already have the paint?
- Renee Walker: They bought two shades of green and can’t decide lol.
- Marcus Holloway: very on brand for them.
- Renee Walker: Tyler asked if you still have that tall ladder from the porch project.
- Marcus Holloway: I do. I’ll strap it in the truck.
- Renee Walker: Nice. I’m bringing bagels and coffee since they’ll prob forget breakfast.
- Marcus Holloway: Good call. Is Leah coming too or staying with your mom?
- Renee Walker: Mom’s watching her till 3, bless her.
- Marcus Holloway: Sweet. We’ll knock it out before the baby shower chaos starts next week.
- Renee Walker: That’s the goal. See you Sunday, cousin.",40,Male,US,Firefighter,
+1,Tim Berger,"Tim Berger: Hey Lara 😄 kommst du zum offenen Keramik-Atelier?
+ Lara Neumann: klingt cool! wann?
+ Tim Berger: Samstag 18 Uhr in Dresden
+ Lara Neumann: muss man sich anmelden?
+ Tim Berger: ja hab dich eingetragen 😉
+ Lara Neumann: danke 🙏
+ Tim Berger: kostet 12€ inkl Material
+ Lara Neumann: mega
+ Tim Berger: wird lustig 😂",28,Male,DE,Architect,
+2,Paul,"Paul: Ich habe mit Nähen angefangen 🧵
+ Clara: wow, was machst du?
+ Paul: erstmal einfache Taschen
+ Clara: klingt cool
+ Paul: ist schwieriger als gedacht
+ Clara: Geduld ist wichtig
+ Paul: ich übe jeden Abend
+ Clara: bald machst du Kleidung 😄
+ Paul: hoffentlich!",24,Male,DE,University Student,
+3,Marta León,"Marta León: Buenos días Sr. Vidal, confirmo la sesión de formación.
+ Carlos Vidal: Buenos días Sra. León.
+ Marta León: Será el 16 de mayo a las 10h.
+ Carlos Vidal: Correcto, en sala 2.
+ Marta León: ¿Los asistentes están registrados?
+ Carlos Vidal: Sí, todos confirmados.
+ Marta León: Perfecto, gracias.
+ Carlos Vidal: A usted.
+ Marta León: Hasta entonces.",42,Female,ES,HR Coordinator,
+4,Lucía Herrera,"Lucía Herrera: Mamá ❤️ ¿hiciste ya la tortilla?
+ Carmen Herrera: Sí hija, como te gusta
+ Lucía Herrera: voy saliendo del trabajo
+ Carmen Herrera: te espero para cenar
+ Lucía Herrera: guarda un trozo grande 😋
+ Carmen Herrera: siempre hago de más
+ Lucía Herrera: eres la mejor
+ Carmen Herrera: ven con cuidado",26,Female,ES,Pharmacist,
+5,Julien Moreau,"Julien Moreau: Salut Claire, tu peux m’envoyer les coordonnées de ton plombier ?
+ Claire Dubois: Oui bien sûr, c’est Marc Lefèvre, très fiable.
+ Julien Moreau: Super merci !
+ Claire Dubois: Son numéro c’est +33 6 45 78 92 11
+ Julien Moreau: Et il a un mail ?
+ Claire Dubois: Oui, marc.lefevre.pro@gmail.com
+ Julien Moreau: Parfait, je le contacte aujourd’hui
+ Claire Dubois: Dis-lui que tu viens de ma part
+ Julien Moreau: Merci Claire !",35,Male,FR,Real Estate Agent,
+6,Camille Durand,"Camille Durand: Hey Léo 😄 tu viens au marché nocturne d’artisans samedi ?
+ Léo Martin: Oh oui ça a l’air cool !
+ Camille Durand: C’est à Lyon, quai Saint-Antoine
+ Léo Martin: quelle heure ?
+ Camille Durand: vers 19h, entrée gratuite
+ Léo Martin: parfait 👍
+ Camille Durand: j’ai réservé un atelier poterie à 20h
+ Léo Martin: trop bien, je viens avec toi !
+ Camille Durand: génial 🙌",29,Female,FR,Graphic Designer,
+7,Clara,"Clara: Coucou Manon, tu as fini ta journée ?
+ Manon: Enfin ! Je sors tout juste du bureau.
+ Clara: On va courir un peu au parc pour décompresser ?
+ Manon: Oh oui, j'en ai trop besoin, ma chef m'a épuisée.
+ Clara: Je passe te chercher dans 15 minutes ?
+ Manon: Laisse-moi juste le temps de mettre mes baskets.
+ Clara: Pas de souci, je t'attends en bas.
+ Manon: T'es la meilleure amie du monde !
+ Clara: Je sais, je sais ;)
+ Manon: À tout de suite !
+ Clara: À toute !",31,Female,FR,Marketing Manager,
+8,Stefano Greco,"Stefano Greco: Buongiorno Sig.ra Lombardi, potrebbe fornirmi il contatto del fornitore di vetri speciali?
+ Elena Lombardi: Buongiorno Sig. Greco.
+ Elena Lombardi: Certamente, è la ditta VetroTech.
+ Elena Lombardi: Tel: +39 041 3344556
+ Elena Lombardi: Email: info@vetrotech.it
+ Stefano Greco: Grazie per la disponibilità.
+ Elena Lombardi: Prego.
+ Stefano Greco: Mi metto subito in contatto.
+ Elena Lombardi: Perfetto.",47,Male,IT,Interior Designer,
+9,Chiara Gallo,"Chiara Gallo: Amò 😍 hai preso tu le chiavi della macchina?
+ Sara Leone: Sì, la tua coinquilina organizzata 😂
+ Chiara Gallo: Meno male, le cercavo ovunque
+ Sara Leone: Le ho messe nello zaino
+ Chiara Gallo: Ok, stasera usciamo?
+ Sara Leone: Certo 🍹
+ Chiara Gallo: Offro io
+ Sara Leone: Segnato 🤭",23,Female,IT,Barista,
+10,Lorenzo Moretti,"Lorenzo Moretti: Ciao Chiara, giocherai a FIFA stasera?
+ Chiara Colombo: Sì, voglio vendicarmi della partita di ieri.
+ Lorenzo Moretti: Ahah, io ho vinto facilmente.
+ Chiara Colombo: Ero solo stanca!
+ Lorenzo Moretti: Non accetto scuse.
+ Chiara Colombo: Stasera ti batto, vedrai.
+ Lorenzo Moretti: Sfida accettata.
+ Chiara Colombo: A che ora ci colleghiamo?
+ Lorenzo Moretti: Alle 21:00.
+ Chiara Colombo: Perfetto, preparati a perdere.
+ Lorenzo Moretti: Vedremo.
+ Chiara Colombo: Dopo commentiamo la partita.
+ Lorenzo Moretti: Affare fatto.",22,Male,IT,Software Developer,
