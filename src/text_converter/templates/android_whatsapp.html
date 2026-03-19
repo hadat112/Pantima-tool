@@ -11,21 +11,7 @@
     }
 
     :root {
-      --bg: #efeae2;
-      --header-bg: #075E54;
-      --header-text: #ffffff;
-      --bubble-sent: #dcf8c6;
-      --bubble-recv: #ffffff;
-      --text-sent: #111111;
-      --text-recv: #111111;
-      --text-sub: #8696a0;
-      --tick: #53bdeb;
-      --input-bg: #ffffff;
-      --input-border: #d1d7db;
-    }
-
-    html.dark {
-      --bg: #0b141a;
+      --bg: #9dc3ca;
       --header-bg: rgba(31, 44, 52, 0.8);
       --header-text: #ffffff;
       --bubble-sent: rgba(14, 87, 77, 0.7);
@@ -33,9 +19,13 @@
       --text-sent: #ffffff;
       --text-recv: #ffffff;
       --text-sub: rgba(255, 255, 255, 0.2);
-      --tick: #34B7F1;
       --input-bg: rgba(18, 27, 34, 0.6);
       --input-border: rgba(32, 32, 32, 0.15);
+      --input-bar-bg: rgba(31, 44, 52, 0.8);
+    }
+
+    html.dark {
+      --bg: #0b141a;
     }
 
     html,
@@ -43,7 +33,7 @@
       width: 100%;
       height: 100%;
       background: var(--bg);
-      font-family: "Helvetica Neue", Arial, "Segoe UI", sans-serif;
+      font-family: "Helvetica Neue", Arial, sans-serif;
       overflow: hidden;
     }
 
@@ -51,49 +41,68 @@
     .status-bar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 10px 16px 4px;
+      align-items: flex-end;
+      padding: 0 24px 10px;
+      height: 52px;
       background: var(--header-bg);
+      backdrop-filter: blur(150px);
+      -webkit-backdrop-filter: blur(150px);
       color: var(--header-text);
     }
 
     .status-time {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
+      letter-spacing: 0.14px;
+      color: #fff;
     }
 
     .status-icons {
-      font-size: 11px;
       display: flex;
-      gap: 5px;
+      gap: 4px;
       align-items: center;
+    }
+
+    .status-icons svg {
+      display: block;
     }
 
     /* ── Header ── */
     .header {
       display: flex;
       align-items: center;
-      padding: 8px 12px 10px;
+      padding: 16px 12px;
       background: var(--header-bg);
-      backdrop-filter: blur(300px);
-      -webkit-backdrop-filter: blur(300px);
-      gap: 10px;
+      backdrop-filter: blur(150px);
+      -webkit-backdrop-filter: blur(150px);
+      gap: 4px;
     }
 
     .back-arrow {
-      color: var(--header-text);
-      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .business-details {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
 
     .avatar {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #25D366;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: #fff;
       flex-shrink: 0;
@@ -101,49 +110,52 @@
 
     .avatar.group {
       background: #128C7E;
-      font-size: 14px;
     }
 
-    .contact-info {
-      flex: 1;
+    .business-name-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       min-width: 0;
     }
 
     .contact-name {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--header-text);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
+    .verified-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
     .contact-status {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.75);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .header-icons {
       display: flex;
-      gap: 20px;
-      color: var(--header-text);
-      font-size: 18px;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     /* ── Chat area ── */
     .chat-area {
-      padding: 8px 10px 70px;
+      padding: 5px 4px 75px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
       overflow: hidden;
-      height: calc(100vh - 100px);
-      background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
-
-    html.dark .chat-area {
-      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      height: calc(100vh - 116px);
+      background: var(--bg);
     }
 
     .timestamp-label {
@@ -153,7 +165,7 @@
       font-size: 11px;
       padding: 3px 10px;
       border-radius: 6px;
-      margin: 4px 0;
+      margin: 4px 0 8px;
     }
 
     html.dark .timestamp-label {
@@ -165,7 +177,7 @@
     .msg-row {
       display: flex;
       max-width: 100%;
-      margin-bottom: 1px;
+      padding: 0 15px 15px;
     }
 
     .msg-row.sent {
@@ -176,32 +188,41 @@
       justify-content: flex-start;
     }
 
+    .msg-row:first-of-type {
+      padding-top: 15px;
+    }
+
+    .bubble-wrapper {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+    }
+
     .bubble {
-      max-width: 72%;
+      max-width: 270px;
       padding: 10px;
       font-size: 16px;
-      line-height: 1.17;
+      font-weight: 400;
+      line-height: normal;
       word-wrap: break-word;
       position: relative;
-      backdrop-filter: blur(250px);
-      -webkit-backdrop-filter: blur(250px);
+      backdrop-filter: blur(125px);
+      -webkit-backdrop-filter: blur(125px);
     }
 
     .bubble.sent {
       background: var(--bubble-sent);
       color: var(--text-sent);
       border-radius: 16px 0 16px 16px;
-      margin-right: 2px;
+      text-align: right;
     }
 
     .bubble.recv {
       background: var(--bubble-recv);
       color: var(--text-recv);
       border-radius: 0 16px 16px 16px;
-      margin-left: 2px;
     }
 
-    /* Sender name inside bubble — group only */
     .sender-label {
       font-size: 12px;
       font-weight: 700;
@@ -213,8 +234,9 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: 3px;
-      margin-top: 2px;
+      gap: 5px;
+      margin-top: 5px;
+      width: 100%;
     }
 
     .bubble-time {
@@ -223,29 +245,27 @@
     }
 
     .bubble-tick {
-      font-size: 11px;
-      color: var(--tick);
+      display: flex;
+      align-items: center;
     }
 
     /* Tails */
-    .bubble.sent::after {
-      content: "";
+    .bubble-tail-recv {
       position: absolute;
+      left: -8px;
       top: 0;
-      right: -6px;
-      border: 6px solid transparent;
-      border-top-color: var(--bubble-sent);
-      border-right: 0;
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
     }
 
-    .bubble.recv::after {
-      content: "";
+    .bubble-tail-sent {
       position: absolute;
+      right: -8px;
       top: 0;
-      left: -6px;
-      border: 6px solid transparent;
-      border-top-color: var(--bubble-recv);
-      border-left: 0;
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
     }
 
     /* ── Input bar ── */
@@ -256,104 +276,241 @@
       right: 0;
       display: flex;
       align-items: center;
-      padding: 8px 8px 20px;
-      gap: 8px;
-      background: var(--bg);
-      backdrop-filter: blur(350px);
-      -webkit-backdrop-filter: blur(350px);
+      padding: 10px 19px;
+      gap: 15px;
+      background: var(--input-bar-bg);
+      backdrop-filter: blur(175px);
+      -webkit-backdrop-filter: blur(175px);
+      height: 75px;
     }
 
     .input-field {
       flex: 1;
       background: var(--input-bg);
       border: 1px solid var(--input-border);
-      border-radius: 22px;
-      padding: 9px 14px;
-      font-size: 15px;
-      color: var(--text-sub);
+      border-radius: 36px;
+      padding: 12px 15px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      backdrop-filter: blur(150px);
+      -webkit-backdrop-filter: blur(150px);
     }
 
-    .input-icons {
-      display: flex;
-      gap: 10px;
-      font-size: 18px;
-      color: var(--text-sub);
-    }
-
-    .send-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #25D366;
+    .input-left {
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 18px;
-      flex-shrink: 0;
+      gap: 10px;
     }
 
-    html.dark .send-btn {
-      background: #00927c;
+    .input-placeholder {
+      font-size: 18px;
+      font-weight: 400;
+      color: #9da3a7;
+      white-space: nowrap;
+    }
+
+    .input-right {
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Status Bar -->
   <div class="status-bar">
     <span class="status-time">{{ status_time }}</span>
-    <div class="status-icons"><span>▲▲▲</span><span>WiFi</span><svg width="22" height="11" viewBox="0 0 22 11" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="19" height="10" rx="2" stroke="rgba(255,255,255,0.7)" stroke-width="1"/><path d="M20.5 3.5v4c.8-.2 1.5-.9 1.5-2s-.7-1.8-1.5-2z" fill="rgba(255,255,255,0.7)"/><rect x="2" y="2" width="{{ (battery * 15 // 100) }}" height="7" rx="1" fill="{{ '#FF3B30' if battery <= 20 else 'white' }}"/></svg></div>
+    <div class="status-icons">
+      <!-- WiFi + Signal + Battery from Figma node 601:141 -->
+      <svg width="46" height="15" viewBox="0 0 46 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M8.5 0.416666C5.1 0.416666 2.125 1.90417 0 4.24167L8.5 14.5833L17 4.24167C14.875 1.90417 11.9 0.416666 8.5 0.416666Z"
+          fill="white" />
+        <path d="M31.5833 0.416666L17.4167 14.5833H31.5833V0.416666Z" fill="white" />
+        <path
+          d="M43.5 0H40.5V1.5H39C38.4477 1.5 38 2.00368 38 2.625V13.875C38 14.4963 38.4477 15 39 15H45C45.5523 15 46 14.4963 46 13.875V2.625C46 2.00368 45.5523 1.5 45 1.5H43.5V0Z"
+          fill="white" />
+      </svg>
+    </div>
   </div>
 
+  <!-- Header -->
   <div class="header">
-    <span class="back-arrow">←</span>
-    <div class="avatar {{ 'group' if is_group else '' }}">
-      {% if is_group %}⊕{% else %}{{ contact_name[0] | upper }}{% endif %}
+    <!-- Back arrow — Figma node 601:151 -->
+    <div class="back-arrow">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip_back)">
+          <path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="white" />
+        </g>
+        <defs>
+          <clipPath id="clip_back">
+            <rect width="24" height="24" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
     </div>
-    <div class="contact-info">
-      <div class="contact-name">{{ contact_name }}</div>
-      <div class="contact-status">
-        {% if is_group %}
-        {{ messages | selectattr('role','eq','recv') | map(attribute='display_name') | unique | list | join(', ') |
-        truncate(38, true) }}
-        {% else %}
-        online
-        {% endif %}
+
+    <!-- Business details -->
+    <div class="business-details">
+      <div class="avatar {{ 'group' if is_group else '' }}">
+        {% if is_group %}⊕{% else %}{{ contact_name[0] | upper }}{% endif %}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="business-name-row">
+          <span class="contact-name">{{ contact_name }}</span>
+        </div>
+        <div class="contact-status">
+          {% if is_group %}
+          {{ messages | selectattr('role','eq','recv') | map(attribute='display_name') | unique | list | join(', ') |
+          truncate(38, true) }}
+          {% else %} {% endif %}
+        </div>
       </div>
     </div>
-    <div class="header-icons"><span>📹</span><span>📞</span><span>⋮</span></div>
+
+    <!-- Action buttons — Figma node 601:162 (call + more_vert) -->
+    <div class="header-icons">
+      <svg width="64" height="24" viewBox="0 0 64 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_1_562)">
+          <path d="M20.01 15.38C18.78 15.38 17.59 15.18 16.48 14.82C16.13 14.7 15.74 14.79 15.47 15.06L13.9 17.03C11.07 15.68 8.42 13.13 7.01 10.2L8.96 8.54C9.23 8.26 9.31 7.87 9.2 7.52C8.83 6.41 8.64 5.22 8.64 3.99C8.64 3.45 8.19 3 7.65 3H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21C20.72 21 21 20.37 21 19.82V16.37C21 15.83 20.55 15.38 20.01 15.38Z" fill="white"/>
+          <mask id="mask0_1_562" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="10" y="-2" width="16" height="16">
+            <rect x="10" y="-2" width="16" height="16" fill="#9DA3A7"/>
+          </mask>
+          <g mask="url(#mask0_1_562)">
+            <path d="M17.1167 10.8833V6.88334H13.1167V5.11664H17.1167V1.11664H18.8834V5.11664H22.8834V6.88334H18.8834V10.8833H17.1167Z" fill="white"/>
+          </g>
+        </g>
+        <g clip-path="url(#clip1_1_562)">
+          <path d="M52 8C53.1 8 54 7.1 54 6C54 4.9 53.1 4 52 4C50.9 4 50 4.9 50 6C50 7.1 50.9 8 52 8ZM52 10C50.9 10 50 10.9 50 12C50 13.1 50.9 14 52 14C53.1 14 54 13.1 54 12C54 10.9 53.1 10 52 10ZM52 16C50.9 16 50 16.9 50 18C50 19.1 50.9 20 52 20C53.1 20 54 19.1 54 18C54 16.9 53.1 16 52 16Z" fill="white"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1_562">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+          <clipPath id="clip1_1_562">
+            <rect width="24" height="24" fill="white" transform="translate(40)"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
   </div>
 
+  <!-- Chat area -->
   <div class="chat-area">
     <div class="timestamp-label">{{ message_time }}</div>
 
     {% for msg in messages %}
     <div class="msg-row {{ msg.role }}">
-      <div class="bubble {{ msg.role }}">
-        {% if is_group and msg.role == 'recv' %}
-        <span class="sender-label" style="color: {{ msg.color }}">{{ msg.display_name }}</span>
+      <div class="bubble-wrapper">
+
+        {% if msg.role == 'recv' %}
+        <!-- Recv tail — Figma node I601:172;92:630 -->
+        <svg class="bubble-tail-recv" width="8" height="8" viewBox="0 0 8 8" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8V0C8 0 8 0 2.33235 0C-5.22448 0 8 8 8 8Z" fill="#1F2C34" fill-opacity="0.6" />
+        </svg>
         {% endif %}
-        {{ msg.text }}
-        <div class="bubble-meta">
-          <span class="bubble-time">{{ status_time }}</span>
-          {% if msg.role == 'sent' %}<span class="bubble-tick">✓✓</span>{% endif %}
+
+        <div class="bubble {{ msg.role }}">
+          {% if is_group and msg.role == 'recv' %}
+          <span class="sender-label" style="color:{{ msg.color }}">{{ msg.display_name }}</span>
+          {% endif %}
+          {{ msg.text }}
+          <div class="bubble-meta">
+            <span class="bubble-time">{{ status_time }}</span>
+            {% if msg.role == 'sent' %}
+            <span class="bubble-tick">
+              <!-- Checkmark read — Figma node I601:176;92:681;91:558 -->
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M11.0416 1.00396L4.29834 9.32832L3.7547 10L3.14196 9.39132L0 6.26969L1.09948 5.16208L3.62971 7.67503L9.82827 0.0223555L11.0416 1.00396ZM15.7057 1.02632L8.44223 9.35068L7.89859 9.97358L7.3082 9.39437L6.24632 8.35383L7.3397 7.24012L7.80917 7.70044L14.529 0L15.7057 1.02632Z"
+                  fill="#34B7F1" />
+              </svg>
+            </span>
+            {% endif %}
+          </div>
         </div>
+
+        {% if msg.role == 'sent' %}
+        <!-- Sent tail — Figma node I601:176;92:682 -->
+        <svg class="bubble-tail-sent" width="8" height="8" viewBox="0 0 8 8" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8V0C0 0 2.38419e-06 0 5.66765 0C13.2245 0 0 8 0 8Z" fill="#0E574D" fill-opacity="0.7" />
+        </svg>
+        {% endif %}
+
       </div>
     </div>
     {% endfor %}
   </div>
 
+  <!-- Input bar -->
   <div class="input-bar">
     <div class="input-field">
-      <span>{% if lang == 'fr' %}Saisissez un message{% elif lang == 'it' %}Scrivi un messaggio{% elif lang == 'de'
-        %}Nachricht eingeben{% elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{% endif %}</span>
-      <span class="input-icons">😊 📎</span>
+      <div class="input-left">
+        <!-- Add icon — Figma node 601:185 -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <mask id="mask_add" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-5" y="-5" width="34" height="34">
+            <rect x="-4.78665" y="-4.78666" width="33.5733" height="33.5733" fill="#9DA3A7" />
+          </mask>
+          <g mask="url(#mask_add)">
+            <path d="M10.1433 24V13.8567H0V10.1433H10.1433V0H13.8567V10.1433H24V13.8567H13.8567V24H10.1433Z"
+              fill="#9DA3A7" />
+          </g>
+        </svg>
+        <span class="input-placeholder">
+          {% if lang == 'fr' %}Saisissez un message{% elif lang == 'it' %}Scrivi un messaggio{% elif lang == 'de'
+          %}Nachricht eingeben{% elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{% endif %}
+        </span>
+      </div>
+      <div class="input-right">
+        <!-- Emoji + Camera icons — Figma node 601:189 -->
+        <svg width="56" height="24" viewBox="0 0 56 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip_emoji)">
+            <mask id="mask_emoji" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-2" y="-1" width="24"
+              height="25">
+              <rect x="-2" y="-0.5" width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask_emoji)">
+              <path
+                d="M9.991 2.5C5.023 2.5 1 6.532 1 11.5C1 16.468 5.023 20.5 9.991 20.5C14.968 20.5 19 16.468 19 11.5C19 6.532 14.968 2.5 9.991 2.5ZM10 18.7C6.022 18.7 2.8 15.478 2.8 11.5C2.8 7.522 6.022 4.3 10 4.3C13.978 4.3 17.2 7.522 17.2 11.5C17.2 15.478 13.978 18.7 10 18.7ZM13.15 10.6C13.897 10.6 14.5 9.997 14.5 9.25C14.5 8.503 13.897 7.9 13.15 7.9C12.403 7.9 11.8 8.503 11.8 9.25C11.8 9.997 12.403 10.6 13.15 10.6ZM6.85 10.6C7.597 10.6 8.2 9.997 8.2 9.25C8.2 8.503 7.597 7.9 6.85 7.9C6.103 7.9 5.5 8.503 5.5 9.25C5.5 9.997 6.103 10.6 6.85 10.6ZM10 16.45C12.097 16.45 13.879 15.136 14.599 13.3H5.401C6.121 15.136 7.903 16.45 10 16.45Z"
+                fill="#87949C" />
+            </g>
+          </g>
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M39.2885 4.74872L39.6267 4.31443C39.923 3.92075 40.3044 3.59038 40.7518 3.35828C41.2052 3.12309 41.7095 2.99791 42.2263 3.00003H45.7737C46.2905 2.99791 46.7948 3.1231 47.2482 3.35828C47.6956 3.59038 48.077 3.92075 48.3733 4.31443L48.7115 4.74872L48.7166 4.75546H49.8333C50.9945 4.75546 52.0705 5.26612 52.8363 6.11143C53.5971 6.95129 54 8.05807 54 9.18177V16.7938C54 17.9175 53.5971 19.0242 52.8363 19.8641C52.0705 20.7094 50.9945 21.2201 49.8333 21.2201H38.1667C37.0055 21.2201 35.9295 20.7094 35.1637 19.8641C34.4029 19.0242 34 17.9175 34 16.7938V9.18177C34 8.05807 34.4029 6.95129 35.1637 6.11143C35.9295 5.26612 37.0055 4.75546 38.1667 4.75546H39.2834L39.2885 4.74872ZM39.3403 6.42213H38.1667C37.5036 6.42213 36.8677 6.71288 36.3989 7.23041C35.9301 7.74794 35.6667 8.44986 35.6667 9.18177V16.7938C35.6667 17.5257 35.9301 18.2276 36.3989 18.7451C36.8677 19.2627 37.5036 19.5534 38.1667 19.5534H49.8333C50.4964 19.5534 51.1323 19.2627 51.6011 18.7451C52.0699 18.2276 52.3333 17.5257 52.3333 16.7938V9.18177C52.3333 8.44986 52.0699 7.74794 51.6011 7.23041C51.1323 6.71288 50.4964 6.42213 49.8333 6.42213H48.6597C48.4171 6.42145 48.1776 6.36206 47.958 6.24816C47.7385 6.13426 47.5442 5.96862 47.3889 5.76288L47.0486 5.32594C46.8946 5.11857 46.7006 4.95178 46.4807 4.83773C46.2609 4.72367 46.0207 4.66524 45.7778 4.66669H42.2222C41.9793 4.66524 41.7391 4.72367 41.5193 4.83773C41.2994 4.95178 41.1054 5.11857 40.9514 5.32594L40.6111 5.76288C40.4558 5.96862 40.2615 6.13426 40.042 6.24816C39.8224 6.36206 39.5829 6.42145 39.3403 6.42213Z"
+            fill="#87949C" />
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M43.9191 9.54533C42.2345 9.54533 40.8689 10.9109 40.8689 12.5955C40.8689 14.28 42.2345 15.6457 43.9191 15.6457C45.6037 15.6457 46.9693 14.28 46.9693 12.5955C46.9693 10.9109 45.6037 9.54533 43.9191 9.54533ZM39.2023 12.5955C39.2023 9.99046 41.3141 7.87866 43.9191 7.87866C46.5241 7.87866 48.6359 9.99046 48.6359 12.5955C48.6359 15.2005 46.5241 17.3123 43.9191 17.3123C41.3141 17.3123 39.2023 15.2005 39.2023 12.5955Z"
+            fill="#87949C" />
+          <defs>
+            <clipPath id="clip_emoji">
+              <rect width="20" height="20" fill="white" transform="translate(0 2)" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
     </div>
-    <div class="send-btn">🎤</div>
+
+    <!-- Mic button — Figma node 601:193 -->
+    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style="flex-shrink:0;">
+      <rect width="45" height="45" rx="22.5" fill="#00927C" fill-opacity="0.6" />
+      <rect x="0.5" y="0.5" width="44" height="44" rx="22" stroke="#00927C" stroke-opacity="0.3" />
+      <g clip-path="url(#clip_mic)">
+        <path
+          d="M22.3563 24.3249C24.1304 24.3249 25.5518 22.8928 25.5518 21.1187L25.5625 14.7062C25.5625 12.9321 24.1304 11.4999 22.3563 11.4999C20.5821 11.4999 19.15 12.9321 19.15 14.7062V21.1187C19.15 22.8928 20.5821 24.3249 22.3563 24.3249ZM28.0206 21.1187C28.0206 24.3249 25.306 26.5693 22.3563 26.5693C19.4065 26.5693 16.6919 24.3249 16.6919 21.1187H14.875C14.875 24.7631 17.782 27.777 21.2875 28.3007V31.8062H23.425V28.3007C26.9305 27.7877 29.8375 24.7738 29.8375 21.1187H28.0206Z"
+          fill="white" />
+      </g>
+      <defs>
+        <clipPath id="clip_mic">
+          <rect width="25.65" height="25.65" fill="white" transform="translate(9.67499 9.67499)" />
+        </clipPath>
+      </defs>
+    </svg>
   </div>
 
 </body>

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en" class="{{ 'dark' if dark_mode else '' }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Messenger - {{ contact_name }}</title>
+    <style>
+      /* ── Reset ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      /* ── Google Fonts: Roboto ── */
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+      /* ── Design tokens from Figma ── */
+      :root {
+        /* Light theme */
+        --bg-primary:       #F3F4F9;
+        --on-surface-20:    #001E2F;
+        --on-surface-40:    #44474E;
+        --on-surface-60:    #74777F;
+        --bubble-sent:      #1B72C0;
+        --bubble-sent-text: #FFFFFF;
+        --bubble-recv:      #FFFFFF;
+        --bubble-recv-text: #001E2F;
+        --input-bg:         #FFFFFF;
+        --input-text:       #74777F;
+        --icon-color:       #001E2F;
+        --statusbar-text:   #1F1F1F;
+        --link-card-bg:     #FFFFFF;
+        --link-card-text:   #001E2F;
+        --link-card-sub:    #74777F;
+      }
+
+      .dark {
+        /* Dark theme */
+        --bg-primary:       #0E181E;
+        --on-surface-20:    #E0F1FF;
+        --on-surface-40:    #BFC6DA;
+        --on-surface-60:    #A8ADBD;
+        --bubble-sent:      #A2C9FF;
+        --bubble-sent-text: #13232C;
+        --bubble-recv:      #1E2A32;
+        --bubble-recv-text: #E0F1FF;
+        --input-bg:         #1E2A32;
+        --input-text:       #A8ADBD;
+        --icon-color:       #FFFFFF;
+        --statusbar-text:   #FFFFFF;
+        --link-card-bg:     #1E2A32;
+        --link-card-text:   #E0F1FF;
+        --link-card-sub:    #A8ADBD;
+      }
+
+      /* ── Base ── */
+      html, body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        background: var(--bg-primary);
+        color: var(--on-surface-20);
+        overflow: hidden;
+      }
+
+      .screen {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100dvh;
+        background: var(--bg-primary);
+        overflow: hidden;
+      }
+
+      /* ── Status Bar ── */
+      .statusbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 10px 24px;
+        height: 52px;
+        flex-shrink: 0;
+        background: var(--bg-primary);
+      }
+
+      .statusbar-time {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.43;
+        letter-spacing: 0.14px;
+        color: var(--statusbar-text);
+      }
+
+      .statusbar-icons {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 17px;
+      }
+
+      .statusbar-icons svg {
+        fill: var(--statusbar-text);
+      }
+
+      /* ── Top App Bar ── */
+      .topbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 64px;
+        padding: 0 16px;
+        background: var(--bg-primary);
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      .topbar-back {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .topbar-back svg,
+      .topbar-actions svg {
+        fill: var(--icon-color);
+      }
+
+      .topbar-title {
+        font-size: 22px;
+        font-weight: 500;
+        line-height: 1.27;
+        color: var(--on-surface-20);
+        margin-left: 16px;
+        flex: 1;
+      }
+
+      .topbar-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 24px;
+        margin-left: auto;
+      }
+
+      .topbar-actions button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ── Messages area ── */
+      .messages-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        scrollbar-width: none;
+      }
+
+      .messages-area::-webkit-scrollbar { display: none; }
+
+      /* ── Timestamp ── */
+      .timestamp {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        align-self: stretch;
+      }
+
+      .timestamp span {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.67;
+        letter-spacing: 0.25px;
+        color: var(--on-surface-40);
+        text-align: center;
+      }
+
+      /* ── Message rows ── */
+      .msg-row-recv {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 16px;
+        width: 100%;
+      }
+
+      .msg-row-sent {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        align-self: stretch;
+        padding: 0 16px;
+        width: 100%;
+      }
+
+      .msg-frame-recv {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .msg-frame-sent {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 8px;
+        width: 100%;
+      }
+
+      /* ── Avatar ── */
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        overflow: hidden;
+      }
+
+      /* ── Bubble ── */
+      .bubble {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 22px;
+        max-width: calc(100% - 60px);
+      }
+
+      .bubble-recv {
+        background: var(--bubble-recv);
+        color: var(--bubble-recv-text);
+      }
+
+      .bubble-sent {
+        background: var(--bubble-sent);
+        color: var(--bubble-sent-text);
+      }
+
+      .bubble-text {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── Link card (website preview) ── */
+      .link-card {
+        border-radius: 24px;
+        overflow: hidden;
+        max-width: calc(100% - 60px);
+        background: var(--link-card-bg);
+      }
+
+      .link-card-image {
+        width: 100%;
+        height: 151px;
+        object-fit: cover;
+        background: #ccc;
+        display: block;
+      }
+
+      .link-card-image-placeholder {
+        width: 100%;
+        height: 151px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+      }
+
+      .link-card-body {
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .link-card-title {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.43;
+        letter-spacing: 0.25px;
+        color: var(--link-card-text);
+      }
+
+      .link-card-url {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.67;
+        letter-spacing: 0.25px;
+        color: var(--link-card-sub);
+      }
+
+      /* ── Input bar ── */
+      .input-bar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: var(--bg-primary);
+        flex-shrink: 0;
+      }
+
+      .input-bar-icon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .input-bar-icon svg {
+        fill: var(--icon-color);
+      }
+
+      .input-field {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: var(--input-bg);
+        border-radius: 32px;
+      }
+
+      .input-field-text {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: 0.15px;
+        color: var(--input-text);
+        flex: 1;
+      }
+
+      /* ── Home indicator ── */
+      .home-indicator {
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+        flex-shrink: 0;
+      }
+
+      .home-indicator-bar {
+        width: 72px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--on-surface-20);
+        opacity: 0.2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="screen {{ 'dark' if dark_mode else '' }}">
+
+      <!-- Status Bar -->
+      <div class="statusbar">
+        <span class="statusbar-time">{{ status_time }}</span>
+        <div class="statusbar-icons">
+          <!-- Signal bars (Android style) -->
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="8" width="3" height="4" rx="0.5" fill="currentColor" style="color: var(--statusbar-text)"/>
+            <rect x="4" y="6" width="3" height="6" rx="0.5" fill="currentColor" style="color: var(--statusbar-text)"/>
+            <rect x="8" y="3" width="3" height="9" rx="0.5" fill="currentColor" style="color: var(--statusbar-text)"/>
+            <rect x="12" y="0" width="3" height="12" rx="0.5" fill="currentColor" style="color: var(--statusbar-text)"/>
+          </svg>
+          <!-- WiFi icon -->
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2.5C10.2 2.5 12.2 3.35 13.7 4.75L15.1 3.35C13.2 1.55 10.7 0.5 8 0.5C5.3 0.5 2.8 1.55 0.9 3.35L2.3 4.75C3.8 3.35 5.8 2.5 8 2.5ZM8 6.5C9.4 6.5 10.65 7.05 11.6 7.95L13 6.55C11.7 5.35 9.95 4.5 8 4.5C6.05 4.5 4.3 5.35 3 6.55L4.4 7.95C5.35 7.05 6.6 6.5 8 6.5ZM10 9.5C10 10.6 9.1 11.5 8 11.5C6.9 11.5 6 10.6 6 9.5C6 8.4 6.9 7.5 8 7.5C9.1 7.5 10 8.4 10 9.5Z" fill="currentColor" style="color: var(--statusbar-text)"/>
+          </svg>
+          <!-- Battery icon -->
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect opacity="0.35" x="0.5" y="0.5" width="21" height="10.333" rx="2.167" stroke="currentColor" style="color: var(--statusbar-text)"/>
+            <path opacity="0.4" d="M23 3.667V7.667C23.805 7.328 24.328 6.54 24.328 5.667C24.328 4.794 23.805 4.005 23 3.667Z" fill="currentColor" style="color: var(--statusbar-text)"/>
+            <rect x="2" y="2" width="18" height="7.333" rx="1.333" fill="currentColor" style="color: var(--statusbar-text)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Top App Bar -->
+      <div class="topbar">
+        <div class="topbar-back">
+          <!-- Back icon from Figma -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_603_100" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+              <rect width="24" height="24" fill="#D9D9D9"/>
+            </mask>
+            <g mask="url(#mask0_603_100)">
+              <path d="M10.875 19.3L4.275 12.7C4.175 12.6 4.104 12.4917 4.062 12.375C4.02067 12.2583 4 12.1333 4 12C4 11.8667 4.02067 11.7417 4.062 11.625C4.104 11.5083 4.175 11.4 4.275 11.3L10.875 4.7C11.0583 4.51667 11.2873 4.42067 11.562 4.412C11.8373 4.404 12.075 4.5 12.275 4.7C12.475 4.88333 12.5793 5.11233 12.588 5.387C12.596 5.66233 12.5 5.9 12.3 6.1L7.4 11H18.575C18.8583 11 19.096 11.0957 19.288 11.287C19.4793 11.479 19.575 11.7167 19.575 12C19.575 12.2833 19.4793 12.5207 19.288 12.712C19.096 12.904 18.8583 13 18.575 13H7.4L12.3 17.9C12.4833 18.0833 12.5793 18.3167 12.588 18.6C12.596 18.8833 12.5 19.1167 12.3 19.3C12.1167 19.5 11.8833 19.6 11.6 19.6C11.3167 19.6 11.075 19.5 10.875 19.3Z" fill="var(--icon-color)"/>
+            </g>
+          </svg>
+        </div>
+        <span class="topbar-title">{{ contact_name }}</span>
+        <div class="topbar-actions">
+          <!-- Call icon from Figma -->
+          <button aria-label="Call">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <mask id="mask0_603_104" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                <rect width="24" height="24" fill="#D9D9D9"/>
+              </mask>
+              <g mask="url(#mask0_603_104)">
+                <path d="M19.95 21C17.8 21 15.7043 20.5207 13.663 19.562C11.621 18.604 9.81267 17.3373 8.238 15.762C6.66267 14.1873 5.396 12.379 4.438 10.337C3.47933 8.29567 3 6.2 3 4.05C3 3.75 3.1 3.5 3.3 3.3C3.5 3.1 3.75 3 4.05 3H8.1C8.33333 3 8.54167 3.075 8.725 3.225C8.90833 3.375 9.01667 3.56667 9.05 3.8L9.7 7.3C9.73333 7.53333 9.72933 7.74567 9.688 7.937C9.646 8.129 9.55 8.3 9.4 8.45L6.975 10.9C7.675 12.1 8.55433 13.225 9.613 14.275C10.671 15.325 11.8333 16.2333 13.1 17L15.45 14.65C15.6 14.5 15.796 14.3873 16.038 14.312C16.2793 14.2373 16.5167 14.2167 16.75 14.25L20.2 14.95C20.4333 15 20.625 15.1123 20.775 15.287C20.925 15.4623 21 15.6667 21 15.9V19.95C21 20.25 20.9 20.5 20.7 20.7C20.5 20.9 20.25 21 19.95 21Z" fill="var(--icon-color)"/>
+              </g>
+            </svg>
+          </button>
+          <!-- Search icon from Figma -->
+          <button aria-label="Search">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <mask id="mask0_603_107" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                <rect width="24" height="24" fill="#D9D9D9"/>
+              </mask>
+              <g mask="url(#mask0_603_107)">
+                <path d="M18.9 20.3L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.146 15.371 4.888 14.113C3.62933 12.8543 3 11.3167 3 9.5C3 7.68333 3.62933 6.14567 4.888 4.887C6.146 3.629 7.68333 3 9.5 3C11.3167 3 12.8543 3.629 14.113 4.887C15.371 6.14567 16 7.68333 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L20.325 18.925C20.5083 19.1083 20.6 19.3333 20.6 19.6C20.6 19.8667 20.5 20.1 20.3 20.3C20.1167 20.4833 19.8833 20.575 19.6 20.575C19.3167 20.575 19.0833 20.4833 18.9 20.3ZM9.5 14C10.75 14 11.8127 13.5627 12.688 12.688C13.5627 11.8127 14 10.75 14 9.5C14 8.25 13.5627 7.18733 12.688 6.312C11.8127 5.43733 10.75 5 9.5 5C8.25 5 7.18733 5.43733 6.312 6.312C5.43733 7.18733 5 8.25 5 9.5C5 10.75 5.43733 11.8127 6.312 12.688C7.18733 13.5627 8.25 14 9.5 14Z" fill="var(--icon-color)"/>
+              </g>
+            </svg>
+          </button>
+          <!-- More icon from Figma -->
+          <button aria-label="More">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <mask id="mask0_603_110" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                <rect width="24" height="24" fill="#D9D9D9"/>
+              </mask>
+              <g mask="url(#mask0_603_110)">
+                <path d="M12 20C11.45 20 10.9793 19.8043 10.588 19.413C10.196 19.021 10 18.55 10 18C10 17.45 10.196 16.979 10.588 16.587C10.9793 16.1957 11.45 16 12 16C12.55 16 13.021 16.1957 13.413 16.587C13.8043 16.979 14 17.45 14 18C14 18.55 13.8043 19.021 13.413 19.413C13.021 19.8043 12.55 20 12 20ZM12 14C11.45 14 10.9793 13.804 10.588 13.412C10.196 13.0207 10 12.55 10 12C10 11.45 10.196 10.979 10.588 10.587C10.9793 10.1957 11.45 10 12 10C12.55 10 13.021 10.1957 13.413 10.587C13.8043 10.979 14 11.45 14 12C14 12.55 13.8043 13.0207 13.413 13.412C13.021 13.804 12.55 14 12 14ZM12 8C11.45 8 10.9793 7.804 10.588 7.412C10.196 7.02067 10 6.55 10 6C10 5.45 10.196 4.97933 10.588 4.588C10.9793 4.196 11.45 4 12 4C12.55 4 13.021 4.196 13.413 4.588C13.8043 4.97933 14 5.45 14 6C14 6.55 13.8043 7.02067 13.413 7.412C13.021 7.804 12.55 8 12 8Z" fill="var(--icon-color)"/>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-area">
+
+        {% if message_time %}
+        <div class="timestamp">
+          <span>{{ message_time }}</span>
+        </div>
+        {% endif %}
+
+        {% for msg in messages %}
+          {% if msg.role == "sent" %}
+          <div class="msg-row-sent">
+            <div class="msg-frame-sent">
+              <div class="bubble bubble-sent">
+                <span class="bubble-text">{{ msg.text }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="msg-row-recv">
+            <div class="msg-frame-recv">
+              <div class="avatar" style="background-color: {{ msg.color }}">
+                {{ msg.display_name[0] | upper if msg.display_name else "?" }}
+              </div>
+              <div class="bubble bubble-recv">
+                <span class="bubble-text">{{ msg.text }}</span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+
+      <!-- Input Bar -->
+      <div class="input-bar">
+        <!-- Camera icon from Figma -->
+        <div class="input-bar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_603_153" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+              <rect width="24" height="24" fill="#D9D9D9"/>
+            </mask>
+            <g mask="url(#mask0_603_153)">
+              <path d="M12 17.5C13.25 17.5 14.3127 17.0627 15.188 16.188C16.0627 15.3127 16.5 14.25 16.5 13C16.5 11.75 16.0627 10.6873 15.188 9.812C14.3127 8.93733 13.25 8.5 12 8.5C10.75 8.5 9.68733 8.93733 8.812 9.812C7.93733 10.6873 7.5 11.75 7.5 13C7.5 14.25 7.93733 15.3127 8.812 16.188C9.68733 17.0627 10.75 17.5 12 17.5ZM4 21C3.45 21 2.97933 20.8043 2.588 20.413C2.196 20.021 2 19.55 2 19V7C2 6.45 2.196 5.97933 2.588 5.588C2.97933 5.196 3.45 5 4 5H7.15L8.4 3.65C8.58333 3.43333 8.804 3.27067 9.062 3.162C9.32067 3.054 9.59167 3 9.875 3H14.125C14.4083 3 14.6793 3.054 14.938 3.162C15.196 3.27067 15.4167 3.43333 15.6 3.65L16.85 5H20C20.55 5 21.021 5.196 21.413 5.588C21.8043 5.97933 22 6.45 22 7V19C22 19.55 21.8043 20.021 21.413 20.413C21.021 20.8043 20.55 21 20 21H4Z" fill="var(--icon-color)"/>
+            </g>
+          </svg>
+        </div>
+        <!-- Image icon from Figma -->
+        <div class="input-bar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_603_157" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+              <rect width="24" height="24" fill="#D9D9D9"/>
+            </mask>
+            <g mask="url(#mask0_603_157)">
+              <path d="M7 17H17C17.2 17 17.35 16.9083 17.45 16.725C17.55 16.5417 17.5333 16.3667 17.4 16.2L14.65 12.525C14.55 12.3917 14.4167 12.325 14.25 12.325C14.0833 12.325 13.95 12.3917 13.85 12.525L11.25 16L9.4 13.525C9.3 13.3917 9.16667 13.325 9 13.325C8.83333 13.325 8.7 13.3917 8.6 13.525L6.6 16.2C6.46667 16.3667 6.45 16.5417 6.55 16.725C6.65 16.9083 6.8 17 7 17ZM5 21C4.45 21 3.979 20.8043 3.587 20.413C3.19567 20.021 3 19.55 3 19V5C3 4.45 3.19567 3.979 3.587 3.587C3.979 3.19567 4.45 3 5 3H19C19.55 3 20.021 3.19567 20.413 3.587C20.8043 3.979 21 4.45 21 5V19C21 19.55 20.8043 20.021 20.413 20.413C20.021 20.8043 19.55 21 19 21H5Z" fill="var(--icon-color)"/>
+            </g>
+          </svg>
+        </div>
+        <!-- Message input field -->
+        <div class="input-field">
+          <span class="input-field-text">Message</span>
+        </div>
+      </div>
+
+      <!-- Home Indicator (Android nav bar) -->
+      <div class="home-indicator">
+        <div class="home-indicator-bar"></div>
+      </div>
+
+    </div>
+  </body>
+</html>

@@ -30,21 +30,21 @@ for port in "${PORTS[@]}"; do
 done
 sleep 1
 
-poetry run python preview_template.py ios_imessage      8901 &
-poetry run python preview_template.py ios_whatsapp      8902 &
-poetry run python preview_template.py android_whatsapp  8903 &
-poetry run python preview_template.py telegram          8904 &
-poetry run python preview_template.py messenger         8905 &
-poetry run python preview_template.py luminati          8906 &
+poetry run python preview_template.py ios_imessage       8901 &
+poetry run python preview_template.py ios_whatsapp       8902 &
+poetry run python preview_template.py android_whatsapp   8903 &
+poetry run python preview_template.py telegram           8904 &
+poetry run python preview_template.py messenger          8905 &
+poetry run python preview_template.py android_messenger  8906 &
 
 echo ""
 echo "=== All templates running ==="
-echo "  ios_imessage      → http://localhost:8901"
-echo "  ios_whatsapp      → http://localhost:8902"
-echo "  android_whatsapp  → http://localhost:8903"
-echo "  telegram          → http://localhost:8904"
-echo "  messenger         → http://localhost:8905"
-echo "  luminati          → http://localhost:8906"
+echo "  ios_imessage       → http://localhost:8901"
+echo "  ios_whatsapp       → http://localhost:8902"
+echo "  android_whatsapp   → http://localhost:8903"
+echo "  telegram           → http://localhost:8904"
+echo "  messenger          → http://localhost:8905"
+echo "  android_messenger  → http://localhost:8906"
 echo ""
 echo "Press Ctrl+C to stop all."
 wait

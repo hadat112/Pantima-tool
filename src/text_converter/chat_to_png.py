@@ -32,10 +32,10 @@ DEVICES = [
      "os": "iOS 17",     "application": "WhatsApp",  "template": "ios_whatsapp.html"},
     {"name": "iPhone 14",         "width": 390, "height": 844, "scale": 3,
      "os": "iOS 16",     "application": "Messenger", "template": "messenger.html"},
+    # {"name": "Samsung Galaxy S24","width": 360, "height": 780, "scale": 3,
+    #  "os": "Android 14", "application": "Messenger", "template": "android_messenger.html"},
     {"name": "iPhone 13",         "width": 390, "height": 844, "scale": 3,
      "os": "iOS 15",     "application": "Telegram",  "template": "telegram.html"},
-    {"name": "iPhone 15",         "width": 393, "height": 852, "scale": 3,
-     "os": "iOS 17",     "application": "iMessage",  "template": "luminati.html"},
 ]
 
 BATTERY_LEVELS = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
