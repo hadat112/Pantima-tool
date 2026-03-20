@@ -4,6 +4,34 @@
 
 ---
 
+## NOTES - Contact (60 records)
+
+```powershell
+poetry run tc note from-csv `
+  "data/NOTES - Contact.csv" `
+  output/notes_contact_new `
+  --script-col "Script" `
+  --workers 6 `
+  --limit 60 `
+  --export-csv output/notes_contact_new_accepted.csv
+```
+
+---
+
+## NOTES - Event (60 records)
+
+```powershell
+poetry run tc note from-csv `
+  "data/NOTES - Event.csv" `
+  output/notes_event_new `
+  --script-col "Script" `
+  --workers 6 `
+  --limit 60 `
+  --export-csv output/notes_event_new_accepted.csv
+```
+
+---
+
 ## Contact (232 records)
 
 ```powershell

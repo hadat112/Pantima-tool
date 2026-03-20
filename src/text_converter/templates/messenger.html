@@ -2393,9 +2393,16 @@
       }
     </style>
     <style>
-      .py-\[7\.5px\] { padding-top: 7.5px; padding-bottom: 7.5px; }
-      .leading-\[1\.19\] { line-height: 1.19; }
-      .tracking-\[-0\.41px\] { letter-spacing: -0.41px; }
+      .py-\[7\.5px\] {
+        padding-top: 7.5px;
+        padding-bottom: 7.5px;
+      }
+      .leading-\[1\.19\] {
+        line-height: 1.19;
+      }
+      .tracking-\[-0\.41px\] {
+        letter-spacing: -0.41px;
+      }
     </style>
   </head>
 
@@ -2404,11 +2411,15 @@
   >
     <div hidden=""><!--$--><!--/$--></div>
     <div class="h-dvh overflow-hidden">
-      <div class="h-full w-full overflow-hidden {{ 'bg-black' if dark_mode else 'bg-white' }}">
+      <div
+        class="h-full w-full overflow-hidden {{ 'bg-black' if dark_mode else 'bg-white' }}"
+      >
         <main
           class="relative flex h-full flex-col {{ 'bg-black text-white' if dark_mode else 'bg-white text-black' }} font-sf-pro-text"
         >
-          <div class="relative {{ 'bg-black' if dark_mode else 'bg-white' }} shadow-sm">
+          <div
+            class="relative {{ 'bg-black' if dark_mode else 'bg-white' }} shadow-sm"
+          >
             <header
               role="banner"
               aria-label="Device status"
@@ -2417,44 +2428,68 @@
               <time
                 role="timer"
                 aria-live="off"
-                class="text-[15px] font-semibold tabular-nums leading-none"
+                class="text-[14px] font-semibold tabular-nums leading-none"
                 >{{ status_time }}</time
               >
               <div class="flex items-center gap-1">
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
+                <svg
                   width="17"
                   height="11"
-                  decoding="async"
-                  data-nimg="1"
-                  class=""
-                  style="color: transparent"
-                  src="data:image/svg+xml;base64,{% if dark_mode %}PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNyAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE2IDBIMTVDMTQuNDQ3NyAwIDE0IDAuNDQ3NzE1IDE0IDFWOS42NjY2N0MxNCAxMC4yMTkgMTQuNDQ3NyAxMC42NjY3IDE1IDEwLjY2NjdIMTZDMTYuNTUyMyAxMC42NjY3IDE3IDEwLjIxOSAxNyA5LjY2NjY3VjFDMTcgMC40NDc3MTUgMTYuNTUyMyAwIDE2IDBaTTEwLjMzMzMgMi4zMzMyNUgxMS4zMzMzQzExLjg4NTYgMi4zMzMyNSAxMi4zMzMzIDIuNzgwOTcgMTIuMzMzMyAzLjMzMzI1VjkuNjY2NTlDMTIuMzMzMyAxMC4yMTg5IDExLjg4NTYgMTAuNjY2NiAxMS4zMzMzIDEwLjY2NjZIMTAuMzMzM0M5Ljc4MTAzIDEwLjY2NjYgOS4zMzMzMSAxMC4yMTg5IDkuMzMzMzEgOS42NjY1OVYzLjMzMzI1QzkuMzMzMzEgMi43ODA5NyA5Ljc4MTAzIDIuMzMzMjUgMTAuMzMzMyAyLjMzMzI1Wk02LjY2NjY5IDQuNjY2NzVINS42NjY2OUM1LjExNDQgNC42NjY3NSA0LjY2NjY5IDUuMTE0NDYgNC42NjY2OSA1LjY2Njc1VjkuNjY2NzVDNC42NjY2OSAxMC4yMTkgNS4xMTQ0IDEwLjY2NjcgNS42NjY2OSAxMC42NjY3SDYuNjY2NjlDNy4yMTg5NyAxMC42NjY3IDcuNjY2NjkgMTAuMjE5IDcuNjY2NjkgOS42NjY3NVY1LjY2Njc1QzcuNjY2NjkgNS4xMTQ0NiA3LjIxODk3IDQuNjY2NzUgNi42NjY2OSA0LjY2Njc1Wk0yIDYuNjY2NzVIMUMwLjQ0NzcxNSA2LjY2Njc1IDAgNy4xMTQ0NiAwIDcuNjY2NzVWOS42NjY3NUMwIDEwLjIxOSAwLjQ0NzcxNSAxMC42NjY3IDEgMTAuNjY2N0gyQzIuNTUyMjggMTAuNjY2NyAzIDEwLjIxOSAzIDkuNjY2NzVWNy42NjY3NUMzIDcuMTE0NDYgMi41NTIyOCA2LjY2Njc1IDIgNi42NjY3NVoiIGZpbGw9IndoaXRlIi8+PC9zdmc+{% else %}PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNyAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE2IDBIMTVDMTQuNDQ3NyAwIDE0IDAuNDQ3NzE1IDE0IDFWOS42NjY2N0MxNCAxMC4yMTkgMTQuNDQ3NyAxMC42NjY3IDE1IDEwLjY2NjdIMTZDMTYuNTUyMyAxMC42NjY3IDE3IDEwLjIxOSAxNyA5LjY2NjY3VjFDMTcgMC40NDc3MTUgMTYuNTUyMyAwIDE2IDBaTTEwLjMzMzMgMi4zMzMyNUgxMS4zMzMzQzExLjg4NTYgMi4zMzMyNSAxMi4zMzMzIDIuNzgwOTcgMTIuMzMzMyAzLjMzMzI1VjkuNjY2NTlDMTIuMzMzMyAxMC4yMTg5IDExLjg4NTYgMTAuNjY2NiAxMS4zMzMzIDEwLjY2NjZIMTAuMzMzM0M5Ljc4MTAzIDEwLjY2NjYgOS4zMzMzMSAxMC4yMTg5IDkuMzMzMzEgOS42NjY1OVYzLjMzMzI1QzkuMzMzMzEgMi43ODA5NyA5Ljc4MTAzIDIuMzMzMjUgMTAuMzMzMyAyLjMzMzI1Wk02LjY2NjY5IDQuNjY2NzVINS42NjY2OUM1LjExNDQgNC42NjY3NSA0LjY2NjY5IDUuMTE0NDYgNC42NjY2OSA1LjY2Njc1VjkuNjY2NzVDNC42NjY2OSAxMC4yMTkgNS4xMTQ0IDEwLjY2NjcgNS42NjY2OSAxMC42NjY3SDYuNjY2NjlDNy4yMTg5NyAxMC42NjY3IDcuNjY2NjkgMTAuMjE5IDcuNjY2NjkgOS42NjY3NVY1LjY2Njc1QzcuNjY2NjkgNS4xMTQ0NiA3LjIxODk3IDQuNjY2NzUgNi42NjY2OSA0LjY2Njc1Wk0yIDYuNjY2NzVIMUMwLjQ0NzcxNSA2LjY2Njc1IDAgNy4xMTQ0NiAwIDcuNjY2NzVWOS42NjY3NUMwIDEwLjIxOSAwLjQ0NzcxNSAxMC42NjY3IDEgMTAuNjY2N0gyQzIuNTUyMjggMTAuNjY2NyAzIDEwLjIxOSAzIDkuNjY2NzVWNy42NjY3NUMzIDcuMTE0NDYgMi41NTIyOCA2LjY2Njc1IDIgNi42NjY3NVoiIGZpbGw9IiMwNjA2MDYiLz48L3N2Zz4={% endif %}"
-                /><img
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
+                  viewBox="0 0 17 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 0H15C14.4477 0 14 0.447715 14 1V9.66667C14 10.219 14.4477 10.6667 15 10.6667H16C16.5523 10.6667 17 10.219 17 9.66667V1C17 0.447715 16.5523 0 16 0ZM10.3333 2.33333H11.3333C11.8856 2.33333 12.3333 2.78105 12.3333 3.33333V9.66667C12.3333 10.219 11.8856 10.6667 11.3333 10.6667H10.3333C9.78105 10.6667 9.33333 10.219 9.33333 9.66667V3.33333C9.33333 2.78105 9.78105 2.33333 10.3333 2.33333ZM6.66667 4.66667H5.66667C5.11438 4.66667 4.66667 5.11438 4.66667 5.66667V9.66667C4.66667 10.219 5.11438 10.6667 5.66667 10.6667H6.66667C7.21895 10.6667 7.66667 10.219 7.66667 9.66667V5.66667C7.66667 5.11438 7.21895 4.66667 6.66667 4.66667ZM2 6.66667H1C0.447715 6.66667 0 7.11438 0 7.66667V9.66667C0 10.219 0.447715 10.6667 1 10.6667H2C2.55228 10.6667 3 10.219 3 9.66667V7.66667C3 7.11438 2.55228 6.66667 2 6.66667Z"
+                    fill="black"
+                  />
+                </svg>
+                <svg
                   width="16"
                   height="11"
-                  decoding="async"
-                  data-nimg="1"
-                  class=""
-                  style="color: transparent"
-                  src="data:image/svg+xml;base64,{% if dark_mode %}PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNiAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNjY3MDcgMi4yODQ0OEM5Ljg5MTggMi4yODQ1NyAxMi4wMzE1IDMuMTM4NjkgMTMuNjQzOCA0LjY3MDI4QzEzLjc2NTIgNC43ODg1MiAxMy45NTkzIDQuNzg3MDMgMTQuMDc4OSA0LjY2NjkzTDE1LjIzOTUgMy40OTY2QzE1LjMgMy40MzU2OSAxNS4zMzM4IDMuMzUzMTggMTUuMzMzMyAzLjI2NzMzQzE1LjMzMjggMy4xODE0OCAxNS4yOTgxIDMuMDk5MzcgMTUuMjM2OCAzLjAzOTE3QzExLjAwNDkgLTEuMDEzMDYgNC4zMjg1NyAtMS4wMTMwNiAwLjA5NjY1NjUgMy4wMzkxN0MwLjAzNTM1NDQgMy4wOTkzMyAwLjAwMDU3MjI3NCAzLjE4MTQxIDYuOTk4NTllLTA2IDMuMjY3MjZDLTAuMDAwNTU4Mjc3IDMuMzUzMTEgMC4wMzMxMzk5IDMuNDM1NjUgMC4wOTM2NDQ2IDMuNDk2NkwxLjI1NDU5IDQuNjY2OTNDMS4zNzQwOSA0Ljc4NzIxIDEuNTY4MzEgNC43ODg3IDEuNjg5NjUgNC42NzAyOEMzLjMwMjIxIDMuMTM4NTkgNS40NDIxMiAyLjI4NDQ3IDcuNjY3MDcgMi4yODQ0OFpNNy42NjcwNSA2LjA5MjAyQzguODg5NCA2LjA5MTk0IDEwLjA2ODEgNi41NDU5IDEwLjk3NDIgNy4zNjU2N0MxMS4wOTY3IDcuNDgyMDEgMTEuMjg5OCA3LjQ3OTQ5IDExLjQwOTMgNy4zNTk5OUwxMi41Njg1IDYuMTg5NjZDMTIuNjI5NiA2LjEyODI3IDEyLjY2MzUgNi4wNDQ5OSAxMi42NjI2IDUuOTU4NDZDMTIuNjYxNyA1Ljg3MTkyIDEyLjYyNjEgNS43ODkzNSAxMi41NjM4IDUuNzI5MjFDOS44MDQ2OCAzLjE2NDgxIDUuNTMxNzcgMy4xNjQ4MSAyLjc3MjYxIDUuNzI5MjFDMi43MTAyOCA1Ljc4OTM1IDIuNjc0NzIgNS44NzE5NiAyLjY3MzkgNS45NTg1MkMyLjY3MzA5IDYuMDQ1MDkgMi43MDcwOCA2LjEyODM2IDIuNzY4MjYgNi4xODk2NkwzLjkyNzE5IDcuMzU5OTlDNC4wNDY2NiA3LjQ3OTQ5IDQuMjM5NzEgNy40ODIwMSA0LjM2MjI2IDcuMzY1NjdDNS4yNjc3MyA2LjU0NjQ0IDYuNDQ1NTIgNi4wOTI1MiA3LjY2NzA1IDYuMDkyMDJaTTkuOTg5MjkgOC42NTM4OUM5Ljk5MTA2IDguNzQwNjcgOS45NTY5MiA4LjgyNDMzIDkuODk0OTIgOC44ODUxM0w3Ljg4OTYyIDEwLjkwNzFDNy44MzA4MyAxMC45NjY1IDcuNzUwNjkgMTEgNy42NjcwNyAxMUM3LjU4MzQ0IDExIDcuNTAzMyAxMC45NjY1IDcuNDQ0NTIgMTAuOTA3MUw1LjQzODg4IDguODg1MTNDNS4zNzY5MiA4LjgyNDI5IDUuMzQyODQgOC43NDA2IDUuMzQ0NjggOC42NTM4MkM1LjM0NjUxIDguNTY3MDQgNS4zODQxMSA4LjQ4NDg2IDUuNDQ4NTggOC40MjY2OUM2LjcyOTI0IDcuMzQ0NDIgOC42MDQ4OSA3LjM0NDQyIDkuODg1NTUgOC40MjY2OUM5Ljk0OTk4IDguNDg0OTEgOS45ODc1MSA4LjU2NzExIDkuOTg5MjkgOC42NTM4OVoiIGZpbGw9IndoaXRlIi8+PC9zdmc+{% else %}PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNiAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNjY3MDcgMi4yODQ0OEM5Ljg5MTggMi4yODQ1NyAxMi4wMzE1IDMuMTM4NjkgMTMuNjQzOCA0LjY3MDI4QzEzLjc2NTIgNC43ODg1MiAxMy45NTkzIDQuNzg3MDMgMTQuMDc4OSA0LjY2NjkzTDE1LjIzOTUgMy40OTY2QzE1LjMgMy40MzU2OSAxNS4zMzM4IDMuMzUzMTggMTUuMzMzMyAzLjI2NzMzQzE1LjMzMjggMy4xODE0OCAxNS4yOTgxIDMuMDk5MzcgMTUuMjM2OCAzLjAzOTE3QzExLjAwNDkgLTEuMDEzMDYgNC4zMjg1NyAtMS4wMTMwNiAwLjA5NjY1NjUgMy4wMzkxN0MwLjAzNTM1NDQgMy4wOTkzMyAwLjAwMDU3MjI3NCAzLjE4MTQxIDYuOTk4NTllLTA2IDMuMjY3MjZDLTAuMDAwNTU4Mjc3IDMuMzUzMTEgMC4wMzMxMzk5IDMuNDM1NjUgMC4wOTM2NDQ2IDMuNDk2NkwxLjI1NDU5IDQuNjY2OTNDMS4zNzQwOSA0Ljc4NzIxIDEuNTY4MzEgNC43ODg3IDEuNjg5NjUgNC42NzAyOEMzLjMwMjIxIDMuMTM4NTkgNS40NDIxMiAyLjI4NDQ3IDcuNjY3MDcgMi4yODQ0OFpNNy42NjcwNSA2LjA5MjAyQzguODg5NCA2LjA5MTk0IDEwLjA2ODEgNi41NDU5IDEwLjk3NDIgNy4zNjU2N0MxMS4wOTY3IDcuNDgyMDEgMTEuMjg5OCA3LjQ3OTQ5IDExLjQwOTMgNy4zNTk5OUwxMi41Njg1IDYuMTg5NjZDMTIuNjI5NiA2LjEyODI3IDEyLjY2MzUgNi4wNDQ5OSAxMi42NjI2IDUuOTU4NDZDMTIuNjYxNyA1Ljg3MTkyIDEyLjYyNjEgNS43ODkzNSAxMi41NjM4IDUuNzI5MjFDOS44MDQ2OCAzLjE2NDgxIDUuNTMxNzcgMy4xNjQ4MSAyLjc3MjYxIDUuNzI5MjFDMi43MTAyOCA1Ljc4OTM1IDIuNjc0NzIgNS44NzE5NiAyLjY3MzkgNS45NTg1MkMyLjY3MzA5IDYuMDQ1MDkgMi43MDcwOCA2LjEyODM2IDIuNzY4MjYgNi4xODk2NkwzLjkyNzE5IDcuMzU5OTlDNC4wNDY2NiA3LjQ3OTQ5IDQuMjM5NzEgNy40ODIwMSA0LjM2MjI2IDcuMzY1NjdDNS4yNjc3MyA2LjU0NjQ0IDYuNDQ1NTIgNi4wOTI1MiA3LjY2NzA1IDYuMDkyMDJaTTkuOTg5MjkgOC42NTM4OUM5Ljk5MTA2IDguNzQwNjcgOS45NTY5MiA4LjgyNDMzIDkuODk0OTIgOC44ODUxM0w3Ljg4OTYyIDEwLjkwNzFDNy44MzA4MyAxMC45NjY1IDcuNzUwNjkgMTEgNy42NjcwNyAxMUM3LjU4MzQ0IDExIDcuNTAzMyAxMC45NjY1IDcuNDQ0NTIgMTAuOTA3MUw1LjQzODg4IDguODg1MTNDNS4zNzY5MiA4LjgyNDI5IDUuMzQyODQgOC43NDA2IDUuMzQ0NjggOC42NTM4MkM1LjM0NjUxIDguNTY3MDQgNS4zODQxMSA4LjQ4NDg2IDUuNDQ4NTggOC40MjY2OUM2LjcyOTI0IDcuMzQ0NDIgOC42MDQ4OSA3LjM0NDQyIDkuODg1NTUgOC40MjY2OUM5Ljk0OTk4IDguNDg0OTEgOS45ODc1MSA4LjU2NzExIDkuOTg5MjkgOC42NTM4OVoiIGZpbGw9IiMwNjA2MDYiLz48L3N2Zz4={% endif %}"
-                /><img
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
+                  viewBox="0 0 16 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M7.63661 2.27733C9.8525 2.27742 11.9837 3.12886 13.5896 4.65566C13.7105 4.77354 13.9038 4.77205 14.0229 4.65233L15.1789 3.48566C15.2392 3.42494 15.2729 3.34269 15.2724 3.25711C15.2719 3.17153 15.2373 3.08967 15.1763 3.02966C10.9612 -1.00989 4.31137 -1.00989 0.0962725 3.02966C0.0352139 3.08963 0.00057 3.17146 6.97078e-06 3.25704C-0.000556058 3.34262 0.0330082 3.42489 0.0932725 3.48566L1.24961 4.65233C1.36863 4.77223 1.56208 4.77372 1.68294 4.65566C3.28909 3.12876 5.4205 2.27732 7.63661 2.27733ZM7.63661 6.07299C8.8541 6.07292 10.0281 6.52545 10.9306 7.34266C11.0527 7.45864 11.245 7.45613 11.3639 7.33699L12.5186 6.17033C12.5794 6.10913 12.6132 6.02612 12.6123 5.93985C12.6114 5.85359 12.576 5.77127 12.5139 5.71133C9.76574 3.15494 5.5098 3.15494 2.76161 5.71133C2.69953 5.77127 2.66411 5.85363 2.6633 5.93992C2.66248 6.02621 2.69634 6.10922 2.75727 6.17033L3.91161 7.33699C4.03059 7.45613 4.22288 7.45864 4.34494 7.34266C5.24681 6.52599 6.41992 6.0735 7.63661 6.07299ZM9.9496 8.62681C9.95137 8.71332 9.91736 8.79672 9.85561 8.85733L7.85827 10.873C7.79972 10.9322 7.7199 10.9656 7.63661 10.9656C7.55332 10.9656 7.47349 10.9322 7.41494 10.873L5.41727 8.85733C5.35556 8.79668 5.32161 8.71325 5.32344 8.62674C5.32527 8.54023 5.36272 8.45831 5.42694 8.40033C6.70251 7.32144 8.5707 7.32144 9.84627 8.40033C9.91045 8.45836 9.94783 8.54031 9.9496 8.62681Z"
+                    fill="black"
+                  />
+                </svg>
+                <svg
                   width="25"
                   height="12"
-                  decoding="async"
-                  data-nimg="1"
-                  class=""
-                  style="color: transparent"
-                  src="data:image/svg+xml;base64,{% if dark_mode %}PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAyNSAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBvcGFjaXR5PSIwLjM1IiB4PSIwLjUiIHk9IjAuNSIgd2lkdGg9IjIxIiBoZWlnaHQ9IjEwLjMzMzMiIHJ4PSIyLjE2NjY3IiBzdHJva2U9IndoaXRlIi8+PHBhdGggb3BhY2l0eT0iMC40IiBkPSJNMjMgMy42NjY2OVY3LjY2NjY5QzIzLjgwNDcgNy4zMjc5MSAyNC4zMjggNi41Mzk4MiAyNC4zMjggNS42NjY2OUMyNC4zMjggNC43OTM1NSAyMy44MDQ3IDQuMDA1NDYgMjMgMy42NjY2OVoiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjcuMzMzMzMiIHJ4PSIxLjMzMzMzIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg=={% else %}PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAyNSAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBvcGFjaXR5PSIwLjM1IiB4PSIwLjUiIHk9IjAuNSIgd2lkdGg9IjIxIiBoZWlnaHQ9IjEwLjMzMzMiIHJ4PSIyLjE2NjY3IiBzdHJva2U9IiMwNjA2MDYiLz48cGF0aCBvcGFjaXR5PSIwLjQiIGQ9Ik0yMyAzLjY2NjY5VjcuNjY2NjlDMjMuODA0NyA3LjMyNzkxIDI0LjMyOCA2LjUzOTgyIDI0LjMyOCA1LjY2NjY5QzI0LjMyOCA0Ljc5MzU1IDIzLjgwNDcgNC4wMDU0NiAyMyAzLjY2NjY5WiIgZmlsbD0iIzA2MDYwNiIvPjxyZWN0IHg9IjIiIHk9IjIiIHdpZHRoPSIxOCIgaGVpZ2h0PSI3LjMzMzMzIiByeD0iMS4zMzMzMyIgZmlsbD0iIzA2MDYwNiIvPjwvc3ZnPg=={% endif %}"
-                />
+                  viewBox="0 0 25 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    opacity="0.35"
+                    x="0.5"
+                    y="0.5"
+                    width="21"
+                    height="10.3333"
+                    rx="2.16667"
+                    stroke="black"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M23 3.66667V7.66667C23.8047 7.32789 24.328 6.5398 24.328 5.66667C24.328 4.79353 23.8047 4.00544 23 3.66667Z"
+                    fill="black"
+                  />
+                  <rect
+                    x="2"
+                    y="1.66667"
+                    width="{{ (battery * 18 // 100) }}"
+                    height="8"
+                    rx="1.33333"
+                    fill="{{ '#FF3B30' if battery <= 20 else 'black' }}"
+                  />
+                </svg>
               </div>
             </header>
             <a
@@ -2515,9 +2550,17 @@
               </div>
             </header>
           </div>
-          <section class="flex-1 overflow-y-auto px-4 py-4 space-y-3 {{ 'bg-black' if dark_mode else 'bg-white' }}">
+          <section
+            class="flex-1 overflow-y-auto px-4 py-4 space-y-3 {{ 'bg-black' if dark_mode else 'bg-white' }}"
+          >
             {% if message_time %}
-            <div class="pt-2 flex justify-center"><span class="text-[12px] font-medium leading-[1.19]" style="color: {{ 'rgba(255,255,255,0.5)' if dark_mode else 'rgba(0,0,0,0.3)' }};">{{ message_time }}</span></div>
+            <div class="pt-2 flex justify-center">
+              <span
+                class="text-[12px] font-medium leading-[1.19]"
+                style="color: {{ 'rgba(255,255,255,0.5)' if dark_mode else 'rgba(0,0,0,0.3)' }};"
+                >{{ message_time }}</span
+              >
+            </div>
             {% endif %}{% for msg in messages %}{% if msg.role == "sent" %}
             <div class="flex justify-end">
               <div

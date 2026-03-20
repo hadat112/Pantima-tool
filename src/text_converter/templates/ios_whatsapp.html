@@ -2338,24 +2338,66 @@
         <div class="relative z-10 border-b border-black/10 backdrop-blur-xl" style="background-color: #F2F2F2;">
           <header role="banner" aria-label="Device status"
             class="flex h-[44px] shrink-0 items-center justify-between px-6 pt-[env(safe-area-inset-top)] bg-transparent text-zinc-900">
-            <time role="timer" aria-live="off" class="text-[15px] font-semibold tabular-nums leading-none">{{
+            <time role="timer" aria-live="off" class="text-[14px] font-semibold tabular-nums leading-none">{{
               status_time }}</time>
             <div class="flex items-center gap-1">
-              <img alt="" aria-hidden="true" loading="lazy" width="16" height="11" decoding="async" data-nimg="1"
-                class="" style="color: transparent"
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNyAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xIDYuNjY2NjdIMkMyLjU1MjI4IDYuNjY2NjcgMyA3LjExNDM4IDMgNy42NjY2N1Y5LjY2NjY3QzMgMTAuMjE5IDIuNTUyMjggMTAuNjY2NyAyIDEwLjY2NjdIMUMwLjQ0NzcxNSAxMC42NjY3IDAgMTAuMjE5IDAgOS42NjY2N1Y3LjY2NjY3QzAgNy4xMTQzOCAwLjQ0NzcxNSA2LjY2NjY3IDEgNi42NjY2N1pNNS42NjY2NyA0LjY2NjY3SDYuNjY2NjdDNy4yMTg5NSA0LjY2NjY3IDcuNjY2NjcgNS4xMTQzOCA3LjY2NjY3IDUuNjY2NjdWOS42NjY2N0M3LjY2NjY3IDEwLjIxOSA3LjIxODk1IDEwLjY2NjcgNi42NjY2NyAxMC42NjY3SDUuNjY2NjdDNS4xMTQzOCAxMC42NjY3IDQuNjY2NjcgMTAuMjE5IDQuNjY2NjcgOS42NjY2N1Y1LjY2NjY3QzQuNjY2NjcgNS4xMTQzOCA1LjExNDM4IDQuNjY2NjcgNS42NjY2NyA0LjY2NjY3Wk0xMC4zMzMzIDIuMzMzMzNIMTEuMzMzM0MxMS44ODU2IDIuMzMzMzMgMTIuMzMzMyAyLjc4MTA1IDEyLjMzMzMgMy4zMzMzM1Y5LjY2NjY3QzEyLjMzMzMgMTAuMjE5IDExLjg4NTYgMTAuNjY2NyAxMS4zMzMzIDEwLjY2NjdIMTAuMzMzM0M5Ljc4MTA1IDEwLjY2NjcgOS4zMzMzMyAxMC4yMTkgOS4zMzMzMyA5LjY2NjY3VjMuMzMzMzNDOS4zMzMzMyAyLjc4MTA1IDkuNzgxMDUgMi4zMzMzMyAxMC4zMzMzIDIuMzMzMzNaTTE1IDBIMTZDMTYuNTUyMyAwIDE3IDAuNDQ3NzE1IDE3IDFWOS42NjY2N0MxNyAxMC4yMTkgMTYuNTUyMyAxMC42NjY3IDE2IDEwLjY2NjdIMTVDMTQuNDQ3NyAxMC42NjY3IDE0IDEwLjIxOSAxNCA5LjY2NjY3VjFDMTQgMC40NDc3MTUgMTQuNDQ3NyAwIDE1IDBaIiBmaWxsPSIjMDYwNjA2Ii8+Cjwvc3ZnPgo=" /><img
-                alt="" aria-hidden="true" loading="lazy" width="16" height="11" decoding="async" data-nimg="1" class=""
-                style="color: transparent"
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNiAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjYzNjYxIDIuMjc3MzNDOS44NTI1IDIuMjc3NDIgMTEuOTgzNyAzLjEyODg2IDEzLjU4OTYgNC42NTU2NkMxMy43MTA1IDQuNzczNTQgMTMuOTAzOCA0Ljc3MjA1IDE0LjAyMjkgNC42NTIzM0wxNS4xNzg5IDMuNDg1NjZDMTUuMjM5MiAzLjQyNDk0IDE1LjI3MjkgMy4zNDI2OSAxNS4yNzI0IDMuMjU3MTFDMTUuMjcxOSAzLjE3MTUzIDE1LjIzNzMgMy4wODk2NyAxNS4xNzYzIDMuMDI5NjZDMTAuOTYxMiAtMS4wMDk4OSA0LjMxMTM3IC0xLjAwOTg5IDAuMDk2MjcyNSAzLjAyOTY2QzAuMDM1MjEzOSAzLjA4OTYzIDAuMDAwNTcgMy4xNzE0NiA2Ljk3MDc4ZS0wNiAzLjI1NzA0Qy0wLjAwMDU1NjA1OCAzLjM0MjYyIDAuMDMzMDA4MiAzLjQyNDg5IDAuMDkzMjcyNSAzLjQ4NTY2TDEuMjQ5NjEgNC42NTIzM0MxLjM2ODYzIDQuNzcyMjMgMS41NjIwOCA0Ljc3MzcyIDEuNjgyOTQgNC42NTU2NkMzLjI4OTA5IDMuMTI4NzYgNS40MjA1IDIuMjc3MzIgNy42MzY2MSAyLjI3NzMzWk03LjYzNjYxIDYuMDcyOTlDOC44NTQxIDYuMDcyOTIgMTAuMDI4MSA2LjUyNTQ1IDEwLjkzMDYgNy4zNDI2NkMxMS4wNTI3IDcuNDU4NjQgMTEuMjQ1IDcuNDU2MTMgMTEuMzYzOSA3LjMzNjk5TDEyLjUxODYgNi4xNzAzM0MxMi41Nzk0IDYuMTA5MTMgMTIuNjEzMiA2LjAyNjEyIDEyLjYxMjMgNS45Mzk4NUMxMi42MTE0IDUuODUzNTkgMTIuNTc2IDUuNzcxMjcgMTIuNTEzOSA1LjcxMTMzQzkuNzY1NzQgMy4xNTQ5NCA1LjUwOTggMy4xNTQ5NCAyLjc2MTYxIDUuNzExMzNDMi42OTk1MyA1Ljc3MTI3IDIuNjY0MTEgNS44NTM2MyAyLjY2MzMgNS45Mzk5MkMyLjY2MjQ4IDYuMDI2MjEgMi42OTYzNCA2LjEwOTIyIDIuNzU3MjcgNi4xNzAzM0wzLjkxMTYxIDcuMzM2OTlDNC4wMzA1OSA3LjQ1NjEzIDQuMjIyODggNy40NTg2NCA0LjM0NDk0IDcuMzQyNjZDNS4yNDY4MSA2LjUyNTk5IDYuNDE5OTIgNi4wNzM1IDcuNjM2NjEgNi4wNzI5OVpNOS44NTU2MSA4Ljg1NzMzQzkuOTE3MzYgOC43OTY3MiA5Ljk1MTM3IDguNzEzMzIgOS45NDk2IDguNjI2ODFDOS45NDc4MyA4LjU0MDMxIDkuOTEwNDUgOC40NTgzNiA5Ljg0NjI3IDguNDAwMzNDOC41NzA3IDcuMzIxNDQgNi43MDI1MSA3LjMyMTQ0IDUuNDI2OTQgOC40MDAzM0M1LjM2MjcyIDguNDU4MzEgNS4zMjUyNyA4LjU0MDIzIDUuMzIzNDQgOC42MjY3NEM1LjMyMTYxIDguNzEzMjUgNS4zNTU1NiA4Ljc5NjY4IDUuNDE3MjcgOC44NTczM0w3LjQxNDk0IDEwLjg3M0M3LjQ3MzQ5IDEwLjkzMjIgNy41NTMzMiAxMC45NjU2IDcuNjM2NjEgMTAuOTY1NkM3LjcxOTkgMTAuOTY1NiA3Ljc5OTcyIDEwLjkzMjIgNy44NTgyNyAxMC44NzNMOS44NTU2MSA4Ljg1NzMzWiIgZmlsbD0iIzA2MDYwNiIvPgo8L3N2Zz4K" /><svg
-                width="25" height="11" viewBox="0 0 25 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M2.5 0C1.11929 0 0 1.11929 0 2.5V8C0 9.38071 1.11929 10.5 2.5 10.5H18.4687H19.5C20.8807 10.5 22 9.38071 22 8V2.5C22 1.11929 20.8807 0 19.5 0H2.5ZM3 1C1.89543 1 1 1.89543 1 3V7.5C1 8.60457 1.89543 9.5 3 9.5H17.4687H19C20.1046 9.5 21 8.60457 21 7.5V3C21 1.89543 20.1046 1 19 1H3Z"
-                  fill="#ABABAB" />
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M23 7.37398C23.8626 7.15196 24.5 6.36891 24.5 5.43699C24.5 4.50507 23.8626 3.72202 23 3.5V7.37398Z"
-                  fill="#ABABAB" />
-                <rect x="2" y="2" width="{{ (battery * 18 // 100) }}" height="6.5" rx="1"
-                  fill="{{ '#FF3B30' if battery <= 20 else '#060606' }}" />
+              <svg
+                width="17"
+                height="11"
+                viewBox="0 0 17 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M16 0H15C14.4477 0 14 0.447715 14 1V9.66667C14 10.219 14.4477 10.6667 15 10.6667H16C16.5523 10.6667 17 10.219 17 9.66667V1C17 0.447715 16.5523 0 16 0ZM10.3333 2.33333H11.3333C11.8856 2.33333 12.3333 2.78105 12.3333 3.33333V9.66667C12.3333 10.219 11.8856 10.6667 11.3333 10.6667H10.3333C9.78105 10.6667 9.33333 10.219 9.33333 9.66667V3.33333C9.33333 2.78105 9.78105 2.33333 10.3333 2.33333ZM6.66667 4.66667H5.66667C5.11438 4.66667 4.66667 5.11438 4.66667 5.66667V9.66667C4.66667 10.219 5.11438 10.6667 5.66667 10.6667H6.66667C7.21895 10.6667 7.66667 10.219 7.66667 9.66667V5.66667C7.66667 5.11438 7.21895 4.66667 6.66667 4.66667ZM2 6.66667H1C0.447715 6.66667 0 7.11438 0 7.66667V9.66667C0 10.219 0.447715 10.6667 1 10.6667H2C2.55228 10.6667 3 10.219 3 9.66667V7.66667C3 7.11438 2.55228 6.66667 2 6.66667Z"
+                  fill="black"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="11"
+                viewBox="0 0 16 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.63661 2.27733C9.8525 2.27742 11.9837 3.12886 13.5896 4.65566C13.7105 4.77354 13.9038 4.77205 14.0229 4.65233L15.1789 3.48566C15.2392 3.42494 15.2729 3.34269 15.2724 3.25711C15.2719 3.17153 15.2373 3.08967 15.1763 3.02966C10.9612 -1.00989 4.31137 -1.00989 0.0962725 3.02966C0.0352139 3.08963 0.00057 3.17146 6.97078e-06 3.25704C-0.000556058 3.34262 0.0330082 3.42489 0.0932725 3.48566L1.24961 4.65233C1.36863 4.77223 1.56208 4.77372 1.68294 4.65566C3.28909 3.12876 5.4205 2.27732 7.63661 2.27733ZM7.63661 6.07299C8.8541 6.07292 10.0281 6.52545 10.9306 7.34266C11.0527 7.45864 11.245 7.45613 11.3639 7.33699L12.5186 6.17033C12.5794 6.10913 12.6132 6.02612 12.6123 5.93985C12.6114 5.85359 12.576 5.77127 12.5139 5.71133C9.76574 3.15494 5.5098 3.15494 2.76161 5.71133C2.69953 5.77127 2.66411 5.85363 2.6633 5.93992C2.66248 6.02621 2.69634 6.10922 2.75727 6.17033L3.91161 7.33699C4.03059 7.45613 4.22288 7.45864 4.34494 7.34266C5.24681 6.52599 6.41992 6.0735 7.63661 6.07299ZM9.9496 8.62681C9.95137 8.71332 9.91736 8.79672 9.85561 8.85733L7.85827 10.873C7.79972 10.9322 7.7199 10.9656 7.63661 10.9656C7.55332 10.9656 7.47349 10.9322 7.41494 10.873L5.41727 8.85733C5.35556 8.79668 5.32161 8.71325 5.32344 8.62674C5.32527 8.54023 5.36272 8.45831 5.42694 8.40033C6.70251 7.32144 8.5707 7.32144 9.84627 8.40033C9.91045 8.45836 9.94783 8.54031 9.9496 8.62681Z"
+                  fill="black"
+                />
+              </svg>
+              <svg
+                width="25"
+                height="12"
+                viewBox="0 0 25 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  opacity="0.35"
+                  x="0.5"
+                  y="0.5"
+                  width="21"
+                  height="10.3333"
+                  rx="2.16667"
+                  stroke="black"
+                />
+                <path
+                  opacity="0.4"
+                  d="M23 3.66667V7.66667C23.8047 7.32789 24.328 6.5398 24.328 5.66667C24.328 4.79353 23.8047 4.00544 23 3.66667Z"
+                  fill="black"
+                />
+                <rect
+                  x="2"
+                  y="1.66667"
+                  width="{{ (battery * 18 // 100) }}"
+                  height="8"
+                  rx="1.33333"
+                  fill="{{ '#FF3B30' if battery <= 20 else 'black' }}"
+                />
               </svg>
             </div>
           </header>
