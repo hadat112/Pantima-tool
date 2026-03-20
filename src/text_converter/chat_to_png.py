@@ -36,7 +36,31 @@ DEVICES = [
     #  "os": "Android 14", "application": "Messenger", "template": "android_messenger.html"},
     {"name": "iPhone 13",         "width": 390, "height": 844, "scale": 3,
      "os": "iOS 15",     "application": "Telegram",  "template": "telegram.html"},
+    {"name": "iPhone 15",         "width": 393, "height": 852, "scale": 3,
+     "os": "iOS 17",     "application": "iMessage",  "template": "ios_imessage.html"},
 ]
+
+
+def _find_device(application: str, os_name: str, device_name: str, seed: int) -> dict:
+    """Look up a DEVICE entry matching the CSV columns. Fall back to random."""
+    candidates = [
+        d for d in DEVICES
+        if d["application"] == application and d["os"] == os_name and d["name"] == device_name
+    ]
+    if candidates:
+        return candidates[0]
+    # Partial match: application + device name
+    candidates = [
+        d for d in DEVICES
+        if d["application"] == application and d["name"] == device_name
+    ]
+    if candidates:
+        return candidates[0]
+    # Partial match: application only
+    candidates = [d for d in DEVICES if d["application"] == application]
+    if candidates:
+        return random.Random(seed).choice(candidates)
+    return random.Random(seed).choice(DEVICES)
 
 BATTERY_LEVELS = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 
@@ -282,8 +306,15 @@ async def _run(
 
     queue: asyncio.Queue = asyncio.Queue()
     for row in rows:
-        row_rng = random.Random(int(row["_id"]))
-        queue.put_nowait((row, row_rng.choice(DEVICES)))
+        row_id = int(row["_id"])
+        app    = str(row.get("_application_csv", "")).strip()
+        os_csv = str(row.get("_os_csv", "")).strip()
+        dev    = str(row.get("_device_csv", "")).strip()
+        if app and app.lower() != "nan":
+            device = _find_device(app, os_csv, dev, seed=row_id)
+        else:
+            device = random.Random(row_id).choice(DEVICES)
+        queue.put_nowait((row, device))
     for _ in range(num_workers):
         queue.put_nowait(None)
 
@@ -315,6 +346,9 @@ def batch_from_csv(
     participant_col: str = "participant",
     filename_col: str | None = None,
     country_col: str = "country",
+    application_col: str = "application used",
+    os_col: str = "OS",
+    device_col: str = "device info",
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -353,6 +387,12 @@ def batch_from_csv(
         row["_country"] = str(r.get(country_col, "US")) if country_col in df.columns else "US"
         if filename_col and filename_col in df.columns:
             row["_filename"] = str(r.get(filename_col, "")).strip()
+        if application_col in df.columns:
+            row["_application_csv"] = str(r.get(application_col, "")).strip()
+        if os_col in df.columns:
+            row["_os_csv"] = str(r.get(os_col, "")).strip()
+        if device_col in df.columns:
+            row["_device_csv"] = str(r.get(device_col, "")).strip()
         rows.append(row)
 
     # Each run gets its own timestamped subfolder: output/chat/2026-03-13_21-58-00/

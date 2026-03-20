@@ -337,6 +337,9 @@ def chat_from_csv(
     participant_col: str = typer.Option("participant", "--participant-col", help="Participant column name (used for done-csv)"),
     filename_col: str = typer.Option("", "--filename-col", help="Column to use as output filename (instead of auto-generated {id}_{qa}.png)"),
     country_col: str = typer.Option("country", "--country-col", help="Country column for language localisation (EN/FR/IT/DE/ES)"),
+    application_col: str = typer.Option("application used", "--application-col", help="Column for application name (iMessage/WhatsApp/Messenger/Telegram)"),
+    os_col: str = typer.Option("OS", "--os-col", help="Column for OS info (iOS 17/Android 13/...)"),
+    device_col: str = typer.Option("device info", "--device-col", help="Column for device name (iPhone 15 Pro Max/Samsung Galaxy S23/...)"),
     templates_dir: Path = typer.Option(None, "--templates-dir",
                                        help="Custom templates directory (default: bundled package templates)"),
     workers: int  = typer.Option(8, "--workers", "-w", min=1, help="Parallel workers (default: 8)"),
@@ -350,7 +353,7 @@ def chat_from_csv(
         C: Chào cả nhà   ← 3+ speakers = auto group chat
 
     Speaker A is always the sender (right side). Others are receivers (left side).
-    Device, theme, and timestamp are randomised per row.
+    Device, theme, and timestamp are randomised per row unless CSV has device columns.
     """
     from text_converter.chat_to_png import batch_from_csv
 
@@ -380,6 +383,9 @@ def chat_from_csv(
         participant_col=participant_col,
         filename_col=filename_col or None,
         country_col=country_col,
+        application_col=application_col,
+        os_col=os_col,
+        device_col=device_col,
     )
 
     if not results:
