@@ -58,7 +58,7 @@
 
       .status-icons {
         display: flex;
-        gap: 4px;
+        gap: 0px;
         align-items: center;
       }
 
@@ -348,6 +348,7 @@
         <!-- ── Samsung OneUI: wifi | signal bars | vertical battery ── -->
         <!-- WiFi (Samsung style, split paths for signal level) -->
         <svg
+          style="margin-right: 4px"
           width="16"
           height="16"
           viewBox="0 0 18 18"
@@ -384,6 +385,7 @@
         </svg>
         <!-- Signal bars (Samsung style, split paths for signal level) -->
         <svg
+          style="margin-right: 4px"
           width="16"
           height="16"
           viewBox="0 0 18 18"
@@ -419,7 +421,13 @@
           />
         </svg>
 
-        <span style="font-size: 13px; font-weight: 400; color: white"
+        <span
+          style="
+            font-size: 13px;
+            font-weight: 400;
+            color: white;
+            margin-right: 4px;
+          "
           >{{battery}}%</span
         >
         <!-- Vertical battery (Samsung style) -->
@@ -483,6 +491,7 @@
         </svg>
         <!-- Signal bar (Pixel style) -->
         <svg
+          style="margin-right: 4px"
           width="14"
           height="14"
           viewBox="0 0 18 18"
