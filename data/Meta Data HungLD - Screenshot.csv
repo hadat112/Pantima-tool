@@ -1,4 +1,6 @@
-#,,,,ngày giao cho khách,file,participant,Script,age,gender,country,occupation,primary category,secondary category,topics of interest,application used,OS,device info,MM/DD/YYYY
+#,,,,"Delivery Date
+(MM/DD/YYYY)",file,participant,Script,age,gender,country,occupation,primary category,secondary category,topics of interest,application used,OS,device info,"Creation Date
+(MM/DD/YYYY)"
 1,,,,03/23/2026,en_US_Screenshot_Contact_0001,Sarah Jenkins,"Sarah: the pipe under my sink is leaking everywhere! can you come today? 😭
 Mark: oh no! i can swing by around 3 pm. what's the address again?
 Sarah: 442 Maple Lane, apt 3B. please hurry!
@@ -7,7 +9,7 @@ Sarah: what is it?
 Mark: markplumber.882@gmail.com
 Sarah: okay sending them now. is your number still +1 415 829 4012?
 Mark: yep, that's the one. call me if the water gets worse.
-Sarah: just called the building manager too, see you at 3.",34,Female,en_US,Marketing Manager,contact,,,iMessage,iOS 15,iPhone SE,3/28/2022
+Sarah: just called the building manager too, see you at 3.",34,Female,en_US,Marketing Manager,contact,,,iMessage,iOS 15,iPhone SE,03/28/2022
 2,,,,03/23/2026,en_US_Screenshot_Contact_0002,David Miller,"David Miller: Good morning, Susan. I hope this message finds you well.
 Susan Vance: Good morning, David. How can I assist you today?
 David Miller: I need to finalize the vendor agreement. Could you provide the updated contact details for our legal representation?
@@ -17,7 +19,7 @@ Susan Vance: Yes, his direct line is +1 212 948 2054.
 David Miller: Excellent, I will forward the documents to him immediately.
 Susan Vance: Please let me know if you need anything else to process the contract.
 David Miller: Will do. Have a productive day.
-Susan Vance: You as well, David.",42,Male,en_US,Procurement Director,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,7/11/2023
+Susan Vance: You as well, David.",42,Male,en_US,Procurement Director,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,07/11/2023
 3,,,,03/23/2026,en_US_Screenshot_Contact_0003,Emily Davis,"Emily: are we still on for watching Leo tomorrow night? 👶
 Jessica: yes absolutely! what time should i come over?
 Emily: around 6:30 pm would be perfect. he usually sleeps by 8. 😴
@@ -26,7 +28,7 @@ Emily: sure, but actually could you also email me your venmo or zelle info? i wa
 Jessica: yeah my email is jessicaclark91@hotmail.com 💸
 Emily: perfect. my husband might call you if he gets off work early, his number is +1 310 492 8571.
 Jessica: got it saved! see you tomorrow night 😊
-Emily: thanks jess, you're a lifesaver!",29,Female,en_US,Registered Nurse,contact,,,WhatsApp,Android 13,Google Pixel 7,5/13/2021
+Emily: thanks jess, you're a lifesaver!",29,Female,en_US,Registered Nurse,contact,,,WhatsApp,Android 13,Google Pixel 7,05/13/2021
 4,,,,03/23/2026,en_US_Screenshot_Contact_0004,Michael Chang,"Rachel Green: Good afternoon, Michael. Thank you for your application to our firm.
 Michael Chang: Good afternoon, Rachel. It is a pleasure to connect with you.
 Rachel Green: We would like to invite you for a virtual interview this Thursday at 10 AM EST.
@@ -35,7 +37,7 @@ Rachel Green: I will send a Microsoft Teams link to your email. Please confirm i
 Michael Chang: Yes, that is my current email address.
 Rachel Green: Excellent. If you experience any technical difficulties on the day of the interview, please call our IT support at +1 617 839 2045.
 Michael Chang: I have noted the number down. I look forward to speaking with the team.
-Rachel Green: We look forward to it as well. Have a wonderful rest of your day.",26,Male,en_US,Software Engineer,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,2/11/2025
+Rachel Green: We look forward to it as well. Have a wonderful rest of your day.",26,Male,en_US,Software Engineer,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,02/11/2025
 5,,,,03/23/2026,en_US_Screenshot_Contact_0005,Chris Taylor,"Chris: dude did you get the new amp yet? 🎸
 Alex: yeah it just arrived! sounds totally killer.
 Chris: sick! bring it to practice this weekend. we moving to the new garage?
@@ -44,7 +46,7 @@ Chris: dope. i need to give him the rental deposit though, how do i contact him?
 Alex: just email him at robert.smith1975@outlook.com or text him directly.
 Chris: what's his number? 🤔
 Alex: +1 713 582 9104.
-Chris: thanks man, hitting him up right now. 🤘",22,Male,en_US,College Student,contact,,,Messenger,iOS 16,iPhone 14,3/22/2023
+Chris: thanks man, hitting him up right now. 🤘",22,Male,en_US,College Student,contact,,,Messenger,iOS 16,iPhone 14,03/22/2023
 6,,,,03/23/2026,en_US_Screenshot_Contact_0006,Jessica Walsh,"Jessica Walsh: Hello Thomas. I am following up regarding the commercial property listing on 5th Avenue.
 Thomas: Good morning, Jessica. I appreciate you reaching out. Are you interested in scheduling a viewing?
 Jessica Walsh: Yes, I would like to arrange a tour for early next week if possible.
@@ -53,7 +55,7 @@ Jessica Walsh: Tuesday at 2 PM is acceptable. Where should we meet?
 Thomas: Please meet me at the main lobby of 880 5th Ave, New York.
 Jessica Walsh: Understood. Should I need to reschedule, what is the best way to reach you?
 Thomas: You can contact my office directly at +1 212 748 3920 or via email at thomas.realtor@outlook.com.
-Jessica Walsh: Thank you for the information. I will see you on Tuesday.",38,Female,en_US,Business Owner,contact,,,Telegram,iOS 15,iPhone 13,5/7/2021
+Jessica Walsh: Thank you for the information. I will see you on Tuesday.",38,Female,en_US,Business Owner,contact,,,Telegram,iOS 15,iPhone 13,05/07/2021
 7,,,,03/23/2026,en_US_Screenshot_Contact_0007,Amanda Perez,"Amanda: buster is looking super scruffy, do you have any open slots this week? 🐶
 Chloe: hey amanda! i can squeeze him in on friday at 1pm if that works?
 Amanda: friday is perfect! are you still at the same location?
@@ -62,7 +64,7 @@ Amanda: oh wow! send me the new details pls.
 Chloe: it's 2309 Riverside Drive, Austin. right next to the coffee shop.
 Amanda: got it! should i bring his special shampoo?
 Chloe: yes please! and if you get lost, just call the shop at +1 512 394 8211.
-Amanda: awesome, see you and your cute new shop on friday! ❤️",31,Female,en_US,Graphic Designer,contact,,,iMessage,iOS 17,iPhone 15,4/20/2024
+Amanda: awesome, see you and your cute new shop on friday! ❤️",31,Female,en_US,Graphic Designer,contact,,,iMessage,iOS 17,iPhone 15,04/20/2024
 8,,,,03/23/2026,en_US_Screenshot_Contact_0008,Robert King,"Robert King: Good morning, Chef Martinez. I am finalizing the menu for the corporate gala next month.
 Chef Martinez: Good morning, Mr. King. I have reviewed your dietary requirements and prepared a preliminary tasting menu.
 Robert King: That is excellent news. Can we arrange a tasting session this Friday?
@@ -71,7 +73,7 @@ Robert King: I will be there at 3 PM. Can you also send a digital copy of the pr
 Chef Martinez: Certainly. Please confirm the best email address to send the PDF.
 Robert King: You may forward it to robertking.corp@gmail.com.
 Chef Martinez: Consider it done. If you need any immediate adjustments, my direct cell is +1 312 847 1029.
-Robert King: I appreciate your prompt assistance. See you Friday.",45,Male,en_US,Event Coordinator,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,4/20/2023
+Robert King: I appreciate your prompt assistance. See you Friday.",45,Male,en_US,Event Coordinator,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,04/20/2023
 9,,,,03/23/2026,en_US_Screenshot_Contact_0009,Kevin O'Connor,"Kevin: is the honda civic still available? 👀
 Brian: yeah still got it. lots of interest though so come see it soon.
 Kevin: i can come by tonight around 7 if you're free.
@@ -82,7 +84,7 @@ Kevin: alright i'll map it. can you send me the carfax report before i head over
 Brian: sure thing, what's your email? 🚗
 Kevin: kevinoconnor77@hotmail.com
 Brian: sent. text me when you arrive at +1 404 291 5830 so i can open the gate.
-Kevin: will do, thanks bro.",27,Male,en_US,Electrician,contact,,,iMessage,iOS 15,iPhone SE,6/7/2023
+Kevin: will do, thanks bro.",27,Male,en_US,Electrician,contact,,,iMessage,iOS 15,iPhone SE,06/07/2023
 10,,,,03/23/2026,en_US_Screenshot_Contact_0010,Laura Bennett,"Laura Bennett: Good morning, Mark. I am checking on the status of the logo design revisions.
 Mark: Hello Laura. The revisions are complete and ready for your review.
 Laura Bennett: That is great to hear. Where have you uploaded the new files?
@@ -112,7 +114,7 @@ Amanda: Thursday works well for me. Shall I come to your office?
 David Chen: Yes, please. Our new address is 1420 Downtown Ave, Suite 4.
 Amanda: I will put it in my calendar. Do you have a direct line in case I get lost?
 David Chen: You can reach my desk at +1 206 554 9182.
-Amanda: Thank you, I will see you on Thursday.",42,Male,en_US,Real Estate Agent,contact,,,WhatsApp,Android 13,Google Pixel 7,3/6/2024
+Amanda: Thank you, I will see you on Thursday.",42,Male,en_US,Real Estate Agent,contact,,,WhatsApp,Android 13,Google Pixel 7,03/06/2024
 13,,,,03/23/2026,en_US_Screenshot_Contact_0014,Robert Hayes,"Robert Hayes: Good afternoon Emily, I am reaching out regarding your recent application.
 Emily: Good afternoon Mr. Hayes. Thank you for getting in touch.
 Robert Hayes: We would like to invite you for a second-round interview next week.
@@ -120,7 +122,7 @@ Emily: That is wonderful news, I would be glad to attend.
 Robert Hayes: Please send your updated portfolio to our recruitment email.
 Emily: I will send it to emilywilliams.hr@hotmail.com right away. Is there a number I should call upon arrival?
 Robert Hayes: Yes, please contact the front desk at +1 312 492 8573 when you arrive.
-Emily: Understood. I look forward to meeting the team again.",50,Male,en_US,HR Manager,contact,,,Messenger,iOS 16,iPhone 14,2/20/2022
+Emily: Understood. I look forward to meeting the team again.",50,Male,en_US,HR Manager,contact,,,Messenger,iOS 16,iPhone 14,02/20/2022
 14,,,,03/23/2026,en_US_Screenshot_Contact_0015,Michael Torres,"Michael Torres: are u still selling that mechanical keyboard? ⌨️
 Jake: yeah I still have it. $50 firm tho
 Michael Torres: sounds fair to me. can I pick it up tomorrow after work?
@@ -129,7 +131,7 @@ Michael Torres: cool, where should I meet u?
 Jake: just come to my place. 847 Maple Street, Apt 2B
 Michael Torres: got it. should I text u when I'm outside?
 Jake: yeah, my number is +1 512 738 1094. just shoot me a msg
-Michael Torres: sweet, see u tomorrow ✌️",25,Male,en_US,Software Engineer,contact,,,Telegram,iOS 15,iPhone 13,4/21/2023
+Michael Torres: sweet, see u tomorrow ✌️",25,Male,en_US,Software Engineer,contact,,,Telegram,iOS 15,iPhone 13,04/21/2023
 15,,,,03/23/2026,en_US_Screenshot_Contact_0016,Ryan O'Connor,"Ryan O'Connor: need that guy's contact for the kettlebells we talked about 🏋️‍♂️
 Sam: oh right, the wholesale guy in chicago?
 Ryan O'Connor: yeah, my current supplier is out of stock for a month
@@ -137,7 +139,7 @@ Sam: his name is tony. email him at tonykettle.99@hotmail.com
 Ryan O'Connor: awesome, does he have a direct line too?
 Sam: yep, u can call him at +1 312 847 2910
 Ryan O'Connor: good looking out bro 🙏
-Sam: np, tell him i sent u and he might waive shipping",29,Male,en_US,Personal Trainer,contact,,,iMessage,iOS 17,iPhone 15,5/10/2022
+Sam: np, tell him i sent u and he might waive shipping",29,Male,en_US,Personal Trainer,contact,,,iMessage,iOS 17,iPhone 15,05/10/2022
 16,,,,03/23/2026,en_US_Screenshot_Contact_0017,Elizabeth Vance,"Elizabeth Vance: Good morning Marcus, I hope you are having a productive week.
 Marcus: Good morning Elizabeth. I am, thank you. How is the Smith case proceeding?
 Elizabeth Vance: We need to bring in the financial forensic expert we discussed last month.
@@ -146,7 +148,7 @@ Elizabeth Vance: Please share them with me so my paralegal can reach out today.
 Marcus: You can email him directly at richard.williams.fin@outlook.com.
 Elizabeth Vance: Thank you. Does he have a primary office phone number as well?
 Marcus: Yes, his office line is +1 212 559 8302.
-Elizabeth Vance: I appreciate the prompt response, I will contact him shortly.",45,Female,en_US,Attorney,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,4/1/2024
+Elizabeth Vance: I appreciate the prompt response, I will contact him shortly.",45,Female,en_US,Attorney,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,04/01/2024
 17,,,,03/23/2026,en_US_Screenshot_Contact_0018,William Sterling,"William Sterling: Good afternoon Brenda, thank you for your continued partnership with our firm.
 Brenda: Good afternoon William. We appreciate your business as well.
 William Sterling: I would like to schedule a tour of your new distribution center for my team.
@@ -155,7 +157,7 @@ William Sterling: Tuesday works perfectly for us. What is the exact address of t
 Brenda: Please navigate to 8500 Industrial Parkway, Building B.
 William Sterling: Noted. Should we contact someone specific upon arrival at the gate?
 Brenda: Yes, please call the site manager at +1 404 821 7394.
-William Sterling: Excellent, we will see you then.",52,Male,en_US,Logistics Director,contact,,,iMessage,iOS 15,iPhone SE,7/3/2023
+William Sterling: Excellent, we will see you then.",52,Male,en_US,Logistics Director,contact,,,iMessage,iOS 15,iPhone SE,07/03/2023
 18,,,,03/23/2026,en_US_Screenshot_Contact_0019,Tyler Reed,"Tyler Reed: ac just completely died at the job site 🥵
 Mike: brutal. do u need me to send over my hvac guy?
 Tyler Reed: yes please, the clients are super annoyed about the heat
@@ -181,7 +183,7 @@ Charles Montgomery: Our headquarters is located at 1200 Corporate Tower, Floor 1
 Mr. Peterson: I will add that to my GPS. Is there visitor parking available?
 Charles Montgomery: Yes, there is a designated lot. If you have issues finding it, call +1 214 739 1058.
 Mr. Peterson: That is very helpful. I will see you on Friday at 9 AM.
-Charles Montgomery: We look forward to assisting you with your portfolio.",48,Male,en_US,Financial Advisor,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,11/1/2021
+Charles Montgomery: We look forward to assisting you with your portfolio.",48,Male,en_US,Financial Advisor,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,11/01/2021
 21,,,,03/23/2026,en_US_Screenshot_Contact_0022,Kevin Park,"Kevin Park: hey do u still know that guy who rents out the red komodo? 🎥
 Jess: yeah my buddy eric! he just upgraded his kit too
 Kevin Park: sick, i need a secondary cam for a music video shoot this weekend
@@ -190,7 +192,7 @@ Kevin Park: how much does he usually charge for a weekend?
 Jess: you'll have to ask him. email him at eric.film.99@gmail.com
 Kevin Park: will do. does he respond pretty quick to emails?
 Jess: usually, but u can also hit his cell at +1 818 502 3914
-Kevin Park: clutch as always. thanks jess!",31,Male,en_US,Videographer,contact,,,Messenger,iOS 16,iPhone 14,9/28/2021
+Kevin Park: clutch as always. thanks jess!",31,Male,en_US,Videographer,contact,,,Messenger,iOS 16,iPhone 14,09/28/2021
 22,,,,03/23/2026,en_US_Screenshot_Contact_0023,Dr. Sarah Lin,"Dr. Sarah Lin: Good afternoon Dean Roberts, I hope this message finds you well.
 Dean Roberts: Good afternoon Dr. Lin. I am doing quite well, thank you.
 Dr. Sarah Lin: I have found an excellent candidate for the upcoming symposium keynote.
@@ -209,7 +211,7 @@ Emma Robinson: lifesaver! does he have an email too just in case?
 Chloe: yep, send your bulk list to marcosfresh.44@gmail.com
 Emma Robinson: sending it right now. do they deliver or do I need to pick up?
 Chloe: they deliver if u order over $100.
-Emma Robinson: perfect, thanks babe! 🍰",27,Female,en_US,Baker,contact,,,iMessage,iOS 17,iPhone 15,7/4/2021
+Emma Robinson: perfect, thanks babe! 🍰",27,Female,en_US,Baker,contact,,,iMessage,iOS 17,iPhone 15,07/04/2021
 24,,,,03/23/2026,en_US_Screenshot_Contact_0025,James Caldwell,"James Caldwell: Good morning Sarah, I hope your week is going well.
 Sarah: Good morning James. It is, thank you. How is the downtown plaza project coming along?
 James Caldwell: We are making progress, but we need to consult a new structural engineer.
@@ -218,7 +220,7 @@ James Caldwell: That would be excellent. Who was the lead engineer on that proje
 Sarah: His name is David Reynolds. You can email him at davidreynolds.eng@outlook.com.
 James Caldwell: Thank you. Do you have the direct phone line to his office?
 Sarah: Yes, his desk number is +1 206 482 1937.
-James Caldwell: I will reach out to him before lunch. I appreciate the recommendation.",45,Male,en_US,Architect,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,6/21/2021
+James Caldwell: I will reach out to him before lunch. I appreciate the recommendation.",45,Male,en_US,Architect,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,06/21/2021
 25,,,,03/23/2026,en_US_Screenshot_Contact_0026,Olivia Bennett,"Olivia Bennett: Good afternoon Mr. Davis, I am finalizing the logistics for the upcoming exhibition.
 Mr. Davis: Good afternoon Olivia. Have you secured a transport company for the sculptures?
 Olivia Bennett: Not yet. The previous company we used is no longer operating in our state.
@@ -227,7 +229,7 @@ Olivia Bennett: That sounds ideal. Do you happen to have their contact informati
 Mr. Davis: Yes, you can reach their dispatch manager at +1 212 684 3915.
 Olivia Bennett: I will call them immediately. Do they require an inventory list via email first?
 Mr. Davis: Usually, yes. Send the manifest to shipping.premiereart@gmail.com.
-Olivia Bennett: Excellent. Thank you for your swift assistance with this matter.",38,Female,en_US,Gallery Director,contact,,,iMessage,iOS 15,iPhone SE,2/24/2022
+Olivia Bennett: Excellent. Thank you for your swift assistance with this matter.",38,Female,en_US,Gallery Director,contact,,,iMessage,iOS 15,iPhone SE,02/24/2022
 26,,,,03/23/2026,en_US_Screenshot_Contact_0027,Lucas Garcia,"Lucas Garcia: u know anyone who has an alternator for a 98 civic? 🚗
 Tony: oh man, those are getting hard to find in good condition
 Lucas Garcia: tell me about it. my customer has been waiting for a week
@@ -255,7 +257,7 @@ Dr. Klein: Please provide the email address for their sales representative.
 Dr. Robert Evans: You can email the order form to elisabeth.medtech@outlook.com.
 Dr. Klein: Thank you. Is there a phone number for billing inquiries?
 Dr. Robert Evans: Yes, the billing department can be reached at +1 617 492 8105.
-Dr. Klein: Excellent work. I will process this immediately.",54,Male,en_US,Research Scientist,contact,,,Messenger,iOS 16,iPhone 14,4/5/2023
+Dr. Klein: Excellent work. I will process this immediately.",54,Male,en_US,Research Scientist,contact,,,Messenger,iOS 16,iPhone 14,04/05/2023
 29,,,,03/23/2026,en_US_Screenshot_Contact_0030,Jake Morrison,"Jake Morrison: dude the leak upstairs ruined the whole ceiling 🤦‍♂️
 Chris: yikes, you need my drywall guy?
 Jake Morrison: yeah desperately, my client is freaking out
@@ -264,7 +266,7 @@ Jake Morrison: sweet. does he have an email to send pictures of the damage?
 Chris: yep just shoot them to aaronsmith92@gmail.com
 Jake Morrison: doing it right now. do u know his hourly rate?
 Chris: not sure but he's super reasonable.
-Jake Morrison: thanks man, owe u one 🍻",32,Male,en_US,Plumber,contact,,,Telegram,iOS 15,iPhone 13,9/8/2024
+Jake Morrison: thanks man, owe u one 🍻",32,Male,en_US,Plumber,contact,,,Telegram,iOS 15,iPhone 13,09/08/2024
 30,,,,03/23/2026,en_US_Screenshot_Contact_0031,Cynthia Vance,"Cynthia Vance: Good morning Mr. Reed, I hope your week is off to a good start.
 Mr. Reed: Good morning Cynthia. Have we finalized the venue for the executive retreat?
 Cynthia Vance: Yes, I have selected the Pine Lodge in Aspen.
@@ -274,7 +276,7 @@ Mr. Reed: I will forward that to the transportation team.
 Cynthia Vance: I also need an authorized signature on their booking form.
 Mr. Reed: Please send the document to my assistant.
 Cynthia Vance: Actually, the venue requested it be sent directly to booking.pineresort@outlook.com.
-Mr. Reed: Understood, I will email them the signed copy this afternoon.",41,Female,en_US,Event Manager,contact,,,iMessage,iOS 17,iPhone 15,2/2/2022
+Mr. Reed: Understood, I will email them the signed copy this afternoon.",41,Female,en_US,Event Manager,contact,,,iMessage,iOS 17,iPhone 15,02/02/2022
 31,,,,03/23/2026,en_US_Screenshot_Contact_0032,Gregory Houseman,"Gregory Houseman: Good afternoon Ms. Albright, I am reviewing the Q3 logistics report.
 Ms. Albright: Good afternoon Gregory. Did you notice the delay with the overseas shipment?
 Gregory Houseman: Yes, which is why we need to source a new freight forwarder immediately.
@@ -292,7 +294,7 @@ Jonathan Hayes: That sounds exactly like what we need. How can I reach them?
 Mr. Brooks: You should email the site manager at robert.cleaningservices@outlook.com.
 Jonathan Hayes: I will send over the floor plans. Do they have a dispatch number?
 Mr. Brooks: Yes, the main dispatch line is +1 713 482 9105.
-Jonathan Hayes: Thank you for your assistance. I will coordinate with them today.",48,Male,en_US,Commercial Real Estate Broker,contact,,,iMessage,iOS 15,iPhone SE,9/11/2021
+Jonathan Hayes: Thank you for your assistance. I will coordinate with them today.",48,Male,en_US,Commercial Real Estate Broker,contact,,,iMessage,iOS 15,iPhone SE,09/11/2021
 33,,,,03/23/2026,en_US_Screenshot_Contact_0034,Oliver Tran,"Oliver Tran: yo are u still selling that 4k monitor? 🖥️
 Marcus: yeah bro, nobody has picked it up yet
 Oliver Tran: i can swing by after my algorithms lecture. how much again?
@@ -301,7 +303,7 @@ Oliver Tran: deal. text me your address
 Marcus: i'm at 4500 Campus Drive, Dorm 4
 Oliver Tran: bet. my phone is acting up so i might have to call u from my friend's phone
 Marcus: all good, just ring me at +1 404 819 2374 when u get here
-Oliver Tran: see u around 4pm ✌️",23,Male,en_US,Computer Science Student,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,9/13/2022
+Oliver Tran: see u around 4pm ✌️",23,Male,en_US,Computer Science Student,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,09/13/2022
 34,,,,03/23/2026,en_US_Screenshot_Contact_0035,Brian Gallagher,"Brian Gallagher: running way behind on the backyard project, my stone supplier bailed 🧱
 Mike: damn that sucks. u need a new connect for limestone pavers?
 Brian Gallagher: desperately. the clients are hosting a party next week
@@ -310,7 +312,7 @@ Brian Gallagher: u are a legend. what's his number?
 Mike: +1 305 682 1943. tell him mike from the golf club sent u
 Brian Gallagher: will do. should i email him the exact square footage first?
 Mike: yeah good call. his email is daniel.stone77@outlook.com
-Brian Gallagher: sending it right now. fingers crossed he can deliver by tuesday!",35,Male,en_US,Landscape Architect,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,9/26/2021
+Brian Gallagher: sending it right now. fingers crossed he can deliver by tuesday!",35,Male,en_US,Landscape Architect,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,09/26/2021
 35,,,,03/23/2026,en_US_Screenshot_Contact_0036,Michelle Chang,"Michelle Chang: Good morning Mr. Kensington, I am preparing for the leadership seminar next week.
 Mr. Kensington: Good morning Michelle. Have the training manuals been printed yet?
 Michelle Chang: Not yet, our in-house printer is malfunctioning today.
@@ -321,7 +323,7 @@ Michelle Chang: Perfect. What is their exact address so I can pick them up?
 Mr. Kensington: They are located at 820 5th Avenue, Ground Floor.
 Michelle Chang: Do you have an email address so I can send the PDF files in advance?
 Mr. Kensington: Send the files to orders.printpro@hotmail.com and call +1 212 558 9301 to confirm receipt.
-Michelle Chang: Thank you, I will handle this right away.",39,Female,en_US,Corporate Trainer,contact,,,Messenger,iOS 16,iPhone 14,9/27/2024
+Michelle Chang: Thank you, I will handle this right away.",39,Female,en_US,Corporate Trainer,contact,,,Messenger,iOS 16,iPhone 14,09/27/2024
 36,,,,03/23/2026,en_US_Screenshot_Contact_0037,James Wilson,"James: Good morning, Mrs. Davis. I hope you are having a pleasant week.
 Sarah: Good morning, James. Yes, thank you. Did you find any new properties?
 James: I have located two new commercial spaces that fit your criteria in downtown Seattle.
@@ -330,7 +332,7 @@ James: The primary location is 1420 5th Ave, Suite 400, Seattle, WA 98101.
 Sarah: Thank you. I would like my partner to review this as well. How can he reach you?
 James: He can email me directly at jameswilson.realtor@outlook.com.
 James: Alternatively, my direct office line is +1 206 456 7812.
-Sarah: Perfect, I will forward him your contact information today.",45,Male,en_US,Real Estate Agent,contact,,,Telegram,iOS 15,iPhone 13,6/5/2022
+Sarah: Perfect, I will forward him your contact information today.",45,Male,en_US,Real Estate Agent,contact,,,Telegram,iOS 15,iPhone 13,06/05/2022
 37,,,,03/23/2026,en_US_Screenshot_Contact_0038,Liam Johnson,"Liam: are we still good for the pipe repair tomorrow afternoon? 🔧
 Mark: yes, still on! what time were you thinking?
 Liam: probably around 2 pm if that works for you.
@@ -340,7 +342,7 @@ Mark: 874 Birchwood Lane, Austin, TX 78704.
 Liam: perfect. if anything changes, hit my cell at +1 512 390 4521.
 Mark: will do. do you do digital invoices?
 Liam: yep, I'll send it to your email. is it markdavis77@hotmail.com?
-Mark: that's the one! see you tomorrow. 👋",30,Male,en_US,Plumber,contact,,,iMessage,iOS 17,iPhone 15,8/23/2023
+Mark: that's the one! see you tomorrow. 👋",30,Male,en_US,Plumber,contact,,,iMessage,iOS 17,iPhone 15,08/23/2023
 38,,,,03/23/2026,en_US_Screenshot_Contact_0039,Emily Chen,"Emily: Good afternoon, David. Have you finalized the catering contract for the gala?
 David: Good afternoon, Emily. I am reviewing the final draft now.
 Emily: Please ensure that the vendor's updated contact information is included in the appendix.
@@ -361,7 +363,7 @@ Mia: cool. I'll tell Jake. does anyone have his number?
 Noah: I think it's +1 305 671 9904.
 Mia: wait, that number bounced. let me just email him.
 Noah: try his personal one, noahandjake.proj@outlook.com is what he used last time.
-Mia: got it, just sent him the address and time! ☕",21,Male,en_US,College Student,contact,,,iMessage,iOS 15,iPhone SE,9/23/2022
+Mia: got it, just sent him the address and time! ☕",21,Male,en_US,College Student,contact,,,iMessage,iOS 15,iPhone SE,09/23/2022
 40,,,,03/23/2026,en_US_Screenshot_Contact_0041,Sophia Carter,"Sophia: Good morning, Mr. Harrison. I have prepared the non-disclosure agreements.
 Robert: Good morning, Sophia. Thank you for handling this so promptly.
 Sophia: How would you like me to deliver the physical copies for signing?
@@ -370,7 +372,7 @@ Sophia: Please confirm the address so I can generate the shipping label.
 Robert: It is 200 W Adams St, Suite 2100, Chicago, IL 60606.
 Sophia: Confirmed. I will also email the digital copies to robertharrison.law@hotmail.com.
 Robert: Perfect. If the courier gets delayed, please call my direct line at +1 312 555 8932.
-Sophia: I have noted your number and will keep you updated on the shipment status.",41,Female,en_US,Corporate Lawyer,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,9/25/2023
+Sophia: I have noted your number and will keep you updated on the shipment status.",41,Female,en_US,Corporate Lawyer,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,09/25/2023
 41,,,,03/23/2026,en_US_Screenshot_Contact_0042,Ethan Wright,"Ethan: man, tax season is stressing me out. 😩
 Lucas: tell me about it. did you find an accountant yet?
 Ethan: no, the guy I used last year retired. you got anyone good?
@@ -380,7 +382,7 @@ Lucas: her name is Rita. you can email her at ritajohnson2023@gmail.com.
 Ethan: awesome, thanks. does she have a website or phone number?
 Lucas: yeah, you can call her office at +1 718 402 1167.
 Ethan: lifesaver! I'm gonna reach out right now. 🙌
-Lucas: no problem bro, tell her I sent you!",28,Male,en_US,Freelance Writer,contact,,,WhatsApp,Android 13,Google Pixel 7,3/14/2025
+Lucas: no problem bro, tell her I sent you!",28,Male,en_US,Freelance Writer,contact,,,WhatsApp,Android 13,Google Pixel 7,03/14/2025
 42,,,,03/23/2026,en_US_Screenshot_Contact_0043,Olivia Brown,"Olivia: Good morning, Michael. Welcome to the team at Horizon Tech.
 Michael: Good morning, Olivia. Thank you, I am very excited to get started.
 Olivia: I need to verify your emergency contact information for your file.
@@ -389,7 +391,7 @@ Olivia: Thank you. What is the best phone number to reach her in case of an emer
 Michael: Her mobile number is +1 617 384 0091.
 Olivia: I also need an alternative email address for her, if possible.
 Michael: Yes, you can use sarahmiller.tech@outlook.com.
-Olivia: All set. I will finalize your onboarding documents this afternoon.",38,Female,en_US,HR Manager,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,6/22/2024
+Olivia: All set. I will finalize your onboarding documents this afternoon.",38,Female,en_US,HR Manager,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,06/22/2024
 43,,,,03/23/2026,en_US_Screenshot_Contact_0044,Jackson Lee,"Jackson: yo, I finally booked the cabin for our trip! 🏕️
 Tyler: nice! where is it located?
 Jackson: it's up in the mountains. 455 Pine Ridge Rd, Boulder, CO 80302.
@@ -399,7 +401,7 @@ Tyler: okay. what if we get lost? signal is terrible up there.
 Jackson: the host said we can call the landline at +1 303 555 7741 if we need help.
 Tyler: smart. forward me the booking confirmation so I have it too.
 Jackson: just sent it to tyler.smith99@hotmail.com. check your spam if you don't see it.
-Tyler: got it! this is gonna be epic. 🏔️",26,Male,en_US,Fitness Trainer,contact,,,Messenger,iOS 16,iPhone 14,3/10/2025
+Tyler: got it! this is gonna be epic. 🏔️",26,Male,en_US,Fitness Trainer,contact,,,Messenger,iOS 16,iPhone 14,03/10/2025
 44,,,,03/23/2026,en_US_Screenshot_Contact_0045,Victoria Perez,"Victoria: Good afternoon, Mr. Thompson. It is time to schedule your annual portfolio review.
 William: Good afternoon, Victoria. I am available next Tuesday morning.
 Victoria: Tuesday at 10:00 AM works perfectly. Would you prefer an in-person meeting or a virtual call?
@@ -409,7 +411,7 @@ William: Please use my secondary address, williamthompson.invest@gmail.com, for 
 Victoria: I have updated your file. Should we get disconnected, I will call your mobile.
 William: Yes, please use +1 214 783 2944.
 Victoria: Excellent. I will forward the agenda and meeting link by the end of the day.
-William: Thank you, Victoria. I look forward to our discussion.",49,Female,en_US,Financial Advisor,contact,,,Telegram,iOS 15,iPhone 13,2/23/2022
+William: Thank you, Victoria. I look forward to our discussion.",49,Female,en_US,Financial Advisor,contact,,,Telegram,iOS 15,iPhone 13,02/23/2022
 45,,,,03/23/2026,en_US_Screenshot_Contact_0046,James Lawson,"James: Good morning Sarah. I am reviewing the vendor contracts for next quarter.
 Sarah: Good morning James. Have you received the updated quote from Apex?
 James: I have not. Could you forward their direct contact details?
@@ -418,7 +420,7 @@ James: Excellent, thank you. Do you happen to have his email address as well?
 Sarah: Yes, you can reach him at apex.sales99@outlook.com.
 James: I appreciate it. I will reach out to him before our 2 PM meeting.
 Sarah: Perfect. Let me know if you need the project files.
-James: I will. Have a productive morning.",35,Male,en_US,Marketing Manager,contact,,,iMessage,iOS 17,iPhone 15,6/15/2024
+James: I will. Have a productive morning.",35,Male,en_US,Marketing Manager,contact,,,iMessage,iOS 17,iPhone 15,06/15/2024
 46,,,,03/23/2026,en_US_Screenshot_Contact_0047,Chloe Martinez,"Chloe: are we still meeting at the studio to sort out the banner? 🎨
 Jake: yeah! i'm bringing the sketches. what was the printing shop's address again?
 Chloe: it's 1420 W Sunset Blvd, Los Angeles.
@@ -427,7 +429,7 @@ Chloe: yep, text Mike at +1 310 554 9281 to let him know we are coming.
 Jake: doing it now. should i email the vector files too?
 Chloe: please do! send them to mikeprint88@gmail.com
 Jake: sent! see you in 20 mins.
-Chloe: perfect, grab me an iced coffee if you pass a cafe ☕️",28,Female,en_US,Graphic Designer,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,3/14/2025
+Chloe: perfect, grab me an iced coffee if you pass a cafe ☕️",28,Female,en_US,Graphic Designer,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,03/14/2025
 47,,,,03/23/2026,en_US_Screenshot_Contact_0048,Robert Chen,"Robert: Good afternoon Emily. I wanted to follow up regarding the portfolio adjustments we discussed.
 Emily: Good afternoon Robert. Thank you for reaching out. I am ready to proceed.
 Robert: Excellent. I will need you to sign the authorization forms.
@@ -436,7 +438,7 @@ Robert: Please email them directly to my secure inbox at robertchen.fa@outlook.c
 Emily: Understood. Is there a direct line to your assistant in case I have questions?
 Robert: Yes, you can reach my office manager at +1 212 731 5940.
 Emily: Thank you for the information. I will process these today.
-Robert: I look forward to receiving them. Have a wonderful day.",42,Male,en_US,Financial Advisor,contact,,,iMessage,iOS 15,iPhone SE,6/15/2022
+Robert: I look forward to receiving them. Have a wonderful day.",42,Male,en_US,Financial Advisor,contact,,,iMessage,iOS 15,iPhone SE,06/15/2022
 48,,,,03/23/2026,en_US_Screenshot_Contact_0049,Maya Johnson,"Maya: which boxes need to go into the rental van first? 📦
 Liam: the heavy ones from the kitchen. did you grab the keys from the landlord?
 Maya: getting them now! what is the new apartment address?
@@ -456,7 +458,7 @@ Kevin: Great. Is there a specific link or number I should use to join?
 Amanda: Yes, the conference line is +1 617 293 4015.
 Kevin: I have noted the number. Should I submit my updated portfolio beforehand?
 Amanda: Please send it to amandadavis.hr@hotmail.com by tomorrow afternoon.
-Kevin: I will ensure it is sent today. Thank you.",31,Female,en_US,HR Coordinator,contact,,,WhatsApp,Android 13,Google Pixel 7,2/11/2024
+Kevin: I will ensure it is sent today. Thank you.",31,Female,en_US,HR Coordinator,contact,,,WhatsApp,Android 13,Google Pixel 7,02/11/2024
 50,,,,03/23/2026,en_US_Screenshot_Contact_0051,Tyler Brooks,"Tyler: still want the vintage guitar amp? 🎸
 Sam: yes! i can swing by after work to pick it up.
 Tyler: awesome, it is all boxed up and ready.
@@ -466,7 +468,7 @@ Sam: sweet. what's the best way to reach you if i can't find parking?
 Tyler: just shoot me a text at +1 512 884 1029.
 Sam: bet. do you take digital payment or just cash?
 Tyler: i take zelle! use my email tylerbrooks88@gmail.com
-Sam: sounds good man, see you around 6.",29,Male,en_US,Mechanic,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,3/18/2023
+Sam: sounds good man, see you around 6.",29,Male,en_US,Mechanic,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,03/18/2023
 51,,,,03/23/2026,en_US_Screenshot_Contact_0052,William Taylor,"William: Good afternoon Jessica. I am reaching out regarding the maintenance request you submitted.
 Jessica: Good afternoon William. Thank you for the prompt response.
 William: The plumbing contractor is available to inspect the pipes tomorrow at 10 AM.
@@ -497,7 +499,7 @@ David: Thank you. Should I submit the revised draft through the student portal?
 Olivia: No, please email the PDF directly to oliviamartinez.edu@gmail.com.
 David: I will do that. May I call you next week if I need further clarification?
 Olivia: Yes, my office telephone number is +1 206 418 5502.
-David: Thank you for your guidance and time.",38,Female,en_US,University Professor,contact,,,iMessage,iOS 17,iPhone 15,3/3/2024
+David: Thank you for your guidance and time.",38,Female,en_US,University Professor,contact,,,iMessage,iOS 17,iPhone 15,03/03/2024
 54,,,,03/23/2026,en_US_Screenshot_Contact_0055,Sophia Lee,"Sophia: is the birthday cake ordered for saturday? 🎂
 Ryan: yes! the bakery confirmed it will be ready by 3 pm.
 Sophia: phew, that's a relief. did you send the invites to the group chat?
@@ -507,13 +509,56 @@ Ryan: i can't find it. what address did you send it from?
 Sophia: from sophialee.photo@outlook.com
 Ryan: ah, it went to my spam folder. found it!
 Sophia: great! tell everyone to text me at +1 404 821 3679 if they get lost.
-Ryan: will do! this party is gonna be epic 🎉",27,Female,en_US,Photographer,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,8/22/2022
-55,,,,,,,,,,,,,,,,,,
-56,,,,,,,,,,,,,,,,,,
-57,,,,,,,,,,,,,,,,,,
-58,,,,,,,,,,,,,,,,,,
-59,,,,,,,,,,,,,,,,,,
-60,,,,,,,,,,,,,,,,,,
+Ryan: will do! this party is gonna be epic 🎉",27,Female,en_US,Photographer,contact,,,iMessage,iOS 17,iPhone 15 Pro Max,08/22/2022
+55,,,,03/23/2026,en_US_Screenshot_Contact_0056,Sarah Jenkins,"Sarah: sent the updated logo files to the shared drive 📁
+Mike: awesome! what email should I tell them to contact you at?
+Sarah: they can reach me at sarahjenkins.des@gmail.com
+Mike: cool, and is your phone number still the same?
+Sarah: nope, changed it last week! it's +1 415 847 2938 now 📱
+Mike: got it. should I give them your home address for the contract?
+Sarah: yeah, 482 greenwich st, san francisco CA 94133
+Mike: perfect, sending it over to the client now 👍",28,Female,en_US,Graphic Designer,contact,,,WhatsApp,Android 13,Samsung Galaxy S23,01/16/2025
+56,,,,03/23/2026,en_US_Screenshot_Contact_0057,Robert Hayes,"Robert: Good morning, Mr. Davis. I have finalized the documents for the property on Elm Street.
+William: Thank you, Robert. Where should I send the signed physical copies?
+Robert: Please mail them to my office at 1024 Corporate Way, Suite 300, Chicago IL 60601.
+William: I will have those shipped out today. Do you have a direct email for the escrow officer?
+Robert: Yes, you can forward the digital receipts to roberthayes892@outlook.com.
+William: Understood. If I have urgent questions this weekend, how should I reach you?
+Robert: My direct mobile line is +1 312 559 8124. I am available until 8 PM.
+William: Excellent. I appreciate your prompt assistance.",45,Male,en_US,Real Estate Agent,contact,,,WhatsApp,Android 13,Google Pixel 7,06/23/2024
+57,,,,03/23/2026,en_US_Screenshot_Contact_0058,Chloe Martinez,"Chloe: need the info for that math tutor u mentioned yesterday 😭
+Sam: oh yeah! he's super helpful, give me a sec
+Sam: his email is davidjohn.999@hotmail.com
+Chloe: thanks! does he prefer email or text to set up a meeting?
+Sam: definitely text. his number is +1 512 394 5821 📲
+Chloe: ur a lifesaver, im gonna fail calc without him
+Sam: haha you'll be fine. just tell him I sent you!
+Chloe: will do! gonna text him right now 🏃‍♀️",22,Female,en_US,College Student,contact,,,Messenger,iOS 16,iPhone 14,01/02/2026
+58,,,,03/23/2026,en_US_Screenshot_Contact_0059,James Wilson,"James: Good afternoon, Sarah. I have completed the security audit for your network.
+Sarah: Good afternoon, James. Thank you for the update. How do we proceed with the software vendor?
+James: You will need to contact their support lead directly to initiate the patch.
+Sarah: Could you provide their contact information?
+James: Certainly. The primary email is jameswilson.it@gmail.com for the ticket system.
+Sarah: Is there a phone number we can call for immediate emergency support?
+James: Yes, their emergency dispatch number is +1 206 748 3920.
+Sarah: Thank you. Do they require any physical documentation mailed?
+James: No, but their billing address is 880 Tech Boulevard, Seattle WA 98109 if needed.",52,Male,en_US,Senior IT Consultant,contact,,,WhatsApp,iOS 17,iPhone 15 Pro Max,09/27/2022
+59,,,,03/23/2026,en_US_Screenshot_Contact_0060,Emily Chen,"Emily: dates for the wedding shoot are confirmed! 📸
+Jessica: yay! so excited. where should I send the deposit check?
+Emily: you can mail it to 3409 maple drive, austin TX 78704
+Jessica: writing it down now! also what email should my planner use to contact u?
+Emily: tell her to use emilychen1993@outlook.com ✨
+Jessica: perfect! and if we need u on the day of, what's the best number?
+Emily: always call me at +1 737 298 4715, I always have my phone on me
+Jessica: awesome, everything is set!",31,Female,en_US,Freelance Photographer,contact,,,Telegram,iOS 15,iPhone 13,02/28/2025
+60,,,,03/23/2026,en_US_Screenshot_Contact_0061,Michael Brooks,"Michael: Good morning, David. Please review the shipment schedule for next month.
+David: Good morning, Michael. I have reviewed it, but I need the contact details for the warehouse supervisor.
+Michael: The new supervisor can be reached via email at michaelbrooks@hotmail.com.
+David: Noted. Does the warehouse have a direct phone line for delivery drivers?
+Michael: Yes, drivers should call +1 305 842 9173 upon arrival at the gate.
+David: Thank you. Has the physical delivery address changed from last year?
+Michael: It remains the same. 5500 Industrial Parkway, Miami FL 33126.
+David: Excellent. I will update our logistics team with this information immediately.",38,Male,en_US,Supply Chain Manager,contact,,,iMessage,iOS 17,iPhone 15,01/09/2023
 61,,,,,,,,,,,,,,,,,,
 62,,,,,,,,,,,,,,,,,,
 63,,,,,,,,,,,,,,,,,,

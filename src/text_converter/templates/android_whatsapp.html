@@ -1,518 +1,862 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="{{ 'dark' if dark_mode else '' }}">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+      :root {
+        --bg: #9dc3ca;
+        --header-bg: rgba(31, 44, 52, 0.8);
+        --header-text: #ffffff;
+        --bubble-sent: rgba(14, 87, 77, 0.7);
+        --bubble-recv: rgba(31, 44, 52, 0.6);
+        --text-sent: #ffffff;
+        --text-recv: #ffffff;
+        --text-sub: rgba(255, 255, 255, 0.2);
+        --input-bg: rgba(18, 27, 34, 0.6);
+        --input-border: rgba(32, 32, 32, 0.15);
+        --input-bar-bg: rgba(31, 44, 52, 0.8);
+      }
 
-    :root {
-      --bg: #9dc3ca;
-      --header-bg: rgba(31, 44, 52, 0.8);
-      --header-text: #ffffff;
-      --bubble-sent: rgba(14, 87, 77, 0.7);
-      --bubble-recv: rgba(31, 44, 52, 0.6);
-      --text-sent: #ffffff;
-      --text-recv: #ffffff;
-      --text-sub: rgba(255, 255, 255, 0.2);
-      --input-bg: rgba(18, 27, 34, 0.6);
-      --input-border: rgba(32, 32, 32, 0.15);
-      --input-bar-bg: rgba(31, 44, 52, 0.8);
-    }
+      html.dark {
+        --bg: #0b141a;
+      }
 
-    html.dark {
-      --bg: #0b141a;
-    }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        overflow: hidden;
+      }
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      background: var(--bg);
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      overflow: hidden;
-    }
+      /* ── Status Bar ── */
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 12px;
+        height: 32px;
+        background: var(--header-bg);
+        backdrop-filter: blur(150px);
+        -webkit-backdrop-filter: blur(150px);
+        color: var(--header-text);
+      }
 
-    /* ── Status Bar ── */
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding: 0 24px 10px;
-      height: 52px;
-      background: var(--header-bg);
-      backdrop-filter: blur(150px);
-      -webkit-backdrop-filter: blur(150px);
-      color: var(--header-text);
-    }
+      .status-time {
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.14px;
+        color: #fff;
+      }
 
-    .status-time {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.14px;
-      color: #fff;
-    }
+      .status-icons {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
 
-    .status-icons {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
+      .status-icons svg {
+        display: block;
+      }
 
-    .status-icons svg {
-      display: block;
-    }
+      /* ── Header ── */
+      .header {
+        display: flex;
+        align-items: center;
+        padding: 16px 12px;
+        background: var(--header-bg);
+        backdrop-filter: blur(150px);
+        -webkit-backdrop-filter: blur(150px);
+        gap: 4px;
+      }
 
-    /* ── Header ── */
-    .header {
-      display: flex;
-      align-items: center;
-      padding: 16px 12px;
-      background: var(--header-bg);
-      backdrop-filter: blur(150px);
-      -webkit-backdrop-filter: blur(150px);
-      gap: 4px;
-    }
+      .back-arrow {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+      }
 
-    .back-arrow {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-    }
+      .business-details {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
 
-    .business-details {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #25d366;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
 
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
-    }
+      .avatar.group {
+        background: #128c7e;
+      }
 
-    .avatar.group {
-      background: #128C7E;
-    }
+      .business-name-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+      }
 
-    .business-name-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      min-width: 0;
-    }
+      .contact-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .contact-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .verified-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
 
-    .verified-icon {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
+      .contact-status {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.75);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .contact-status {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.75);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .header-icons {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
 
-    .header-icons {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
+      /* ── Chat area ── */
+      .chat-area {
+        padding: 5px 4px 75px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        height: calc(100vh - 124px);
+        background: var(--bg);
+      }
 
-    /* ── Chat area ── */
-    .chat-area {
-      padding: 5px 4px 75px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      height: calc(100vh - 116px);
-      background: var(--bg);
-    }
+      /* ── Gesture nav bar ── */
+      .gesture-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 28px;
+        background: var(--input-bar-bg);
+        backdrop-filter: blur(175px);
+        -webkit-backdrop-filter: blur(175px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-    .timestamp-label {
-      align-self: center;
-      background: rgba(225, 245, 254, 0.92);
-      color: #54656f;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      margin: 4px 0 8px;
-    }
+      .gesture-pill {
+        width: 140px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 100px;
+      }
 
-    html.dark .timestamp-label {
-      background: rgba(17, 27, 33, 0.85);
-      color: #8696a0;
-    }
+      .timestamp-label {
+        align-self: center;
+        background: rgba(225, 245, 254, 0.92);
+        color: #54656f;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 6px;
+        margin: 4px 0 8px;
+      }
 
-    /* ── Bubbles ── */
-    .msg-row {
-      display: flex;
-      max-width: 100%;
-      padding: 0 15px 15px;
-    }
+      html.dark .timestamp-label {
+        background: rgba(17, 27, 33, 0.85);
+        color: #8696a0;
+      }
 
-    .msg-row.sent {
-      justify-content: flex-end;
-    }
+      /* ── Bubbles ── */
+      .msg-row {
+        display: flex;
+        max-width: 100%;
+        padding: 0 15px 15px;
+      }
 
-    .msg-row.recv {
-      justify-content: flex-start;
-    }
+      .msg-row.sent {
+        justify-content: flex-end;
+      }
 
-    .msg-row:first-of-type {
-      padding-top: 15px;
-    }
+      .msg-row.recv {
+        justify-content: flex-start;
+      }
 
-    .bubble-wrapper {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-    }
+      .msg-row:first-of-type {
+        padding-top: 15px;
+      }
 
-    .bubble {
-      max-width: 270px;
-      padding: 10px;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: normal;
-      word-wrap: break-word;
-      position: relative;
-      backdrop-filter: blur(125px);
-      -webkit-backdrop-filter: blur(125px);
-    }
+      .bubble-wrapper {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+      }
 
-    .bubble.sent {
-      background: var(--bubble-sent);
-      color: var(--text-sent);
-      border-radius: 16px 0 16px 16px;
-      text-align: right;
-    }
+      .bubble {
+        max-width: 270px;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: normal;
+        word-wrap: break-word;
+        position: relative;
+        backdrop-filter: blur(125px);
+        -webkit-backdrop-filter: blur(125px);
+      }
 
-    .bubble.recv {
-      background: var(--bubble-recv);
-      color: var(--text-recv);
-      border-radius: 0 16px 16px 16px;
-    }
+      .bubble.sent {
+        background: var(--bubble-sent);
+        color: var(--text-sent);
+        border-radius: 16px 0 16px 16px;
+        text-align: right;
+      }
 
-    .sender-label {
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 2px;
-      display: block;
-    }
+      .bubble.recv {
+        background: var(--bubble-recv);
+        color: var(--text-recv);
+        border-radius: 0 16px 16px 16px;
+      }
 
-    .bubble-meta {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 5px;
-      margin-top: 5px;
-      width: 100%;
-    }
+      .sender-label {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 2px;
+        display: block;
+      }
 
-    .bubble-time {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
+      .bubble-meta {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+        width: 100%;
+      }
 
-    .bubble-tick {
-      display: flex;
-      align-items: center;
-    }
+      .bubble-time {
+        font-size: 11px;
+        color: var(--text-sub);
+      }
 
-    /* Tails */
-    .bubble-tail-recv {
-      position: absolute;
-      left: -8px;
-      top: 0;
-      width: 8px;
-      height: 8px;
-      flex-shrink: 0;
-    }
+      .bubble-tick {
+        display: flex;
+        align-items: center;
+      }
 
-    .bubble-tail-sent {
-      position: absolute;
-      right: -8px;
-      top: 0;
-      width: 8px;
-      height: 8px;
-      flex-shrink: 0;
-    }
+      /* Tails */
+      .bubble-tail-recv {
+        position: absolute;
+        left: -8px;
+        top: 0;
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+      }
 
-    /* ── Input bar ── */
-    .input-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      padding: 10px 19px;
-      gap: 15px;
-      background: var(--input-bar-bg);
-      backdrop-filter: blur(175px);
-      -webkit-backdrop-filter: blur(175px);
-      height: 75px;
-    }
+      .bubble-tail-sent {
+        position: absolute;
+        right: -8px;
+        top: 0;
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+      }
 
-    .input-field {
-      flex: 1;
-      background: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 36px;
-      padding: 12px 15px;
-      height: 45px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(150px);
-      -webkit-backdrop-filter: blur(150px);
-    }
+      /* ── Input bar ── */
+      .input-bar {
+        position: fixed;
+        bottom: 28px;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        padding: 10px 19px;
+        gap: 15px;
+        background: var(--input-bar-bg);
+        backdrop-filter: blur(175px);
+        -webkit-backdrop-filter: blur(175px);
+        height: 75px;
+      }
 
-    .input-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+      .input-field {
+        flex: 1;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 36px;
+        padding: 12px 15px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(150px);
+        -webkit-backdrop-filter: blur(150px);
+      }
 
-    .input-placeholder {
-      font-size: 18px;
-      font-weight: 400;
-      color: #9da3a7;
-      white-space: nowrap;
-    }
+      .input-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-    .input-right {
-      display: flex;
-      align-items: center;
-    }
-  </style>
-</head>
+      .input-placeholder {
+        font-size: 18px;
+        font-weight: 400;
+        color: #9da3a7;
+        white-space: nowrap;
+      }
 
-<body>
+      .input-right {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span class="status-time">{{ status_time }}</span>
-    <div class="status-icons">
-      <!-- WiFi + Signal + Battery from Figma node 601:141 -->
-      <svg width="46" height="15" viewBox="0 0 46 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M8.5 0.416666C5.1 0.416666 2.125 1.90417 0 4.24167L8.5 14.5833L17 4.24167C14.875 1.90417 11.9 0.416666 8.5 0.416666Z"
-          fill="white" />
-        <path d="M31.5833 0.416666L17.4167 14.5833H31.5833V0.416666Z" fill="white" />
-        <path
-          d="M43.5 0H40.5V1.5H39C38.4477 1.5 38 2.00368 38 2.625V13.875C38 14.4963 38.4477 15 39 15H45C45.5523 15 46 14.4963 46 13.875V2.625C46 2.00368 45.5523 1.5 45 1.5H43.5V0Z"
-          fill="white" />
-      </svg>
-    </div>
-  </div>
+  <body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-time">{{ status_time }}</span>
+      <div class="status-icons">
+        {% if 'Samsung' in device_name %}
+        <!-- ── Samsung OneUI: wifi | signal bars | vertical battery ── -->
+        <!-- WiFi (Samsung style, split paths for signal level) -->
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M5.47415 5.23251C6.56242 4.78041 7.72948 4.54842 8.90791 4.54996L8.90895 4.54996C11.3877 4.54996 13.6296 5.55631 15.2511 7.18469C15.5628 7.49777 16.0694 7.49885 16.3824 7.18709C16.6955 6.87534 16.6966 6.3688 16.3848 6.05572C14.4754 4.13823 11.8306 2.9501 8.90947 2.94996L8.90999 2.94996L8.90895 3.74996V2.94996L8.90947 2.94996C7.51984 2.94822 6.14362 3.22181 4.86032 3.75494C3.57685 4.28814 2.41176 5.07037 1.43235 6.05644C1.12099 6.36992 1.12271 6.87645 1.43619 7.18781C1.74966 7.49917 2.25619 7.49745 2.56755 7.18397C3.398 6.34787 4.38589 5.68461 5.47415 5.23251Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 4 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M6.57205 8.02621C7.31042 7.71099 8.10511 7.54896 8.90796 7.54996H8.90995C9.71279 7.54896 10.5075 7.71099 11.2459 8.02621C11.9842 8.34144 12.6509 8.80331 13.2055 9.38383C13.5107 9.7033 14.0171 9.71487 14.3366 9.40967C14.656 9.10446 14.6676 8.59806 14.3624 8.27859C13.6582 7.54146 12.8117 6.95498 11.8741 6.55471C10.9368 6.15456 9.92806 5.94883 8.90895 5.94996L8.90995 5.94996L8.90895 6.74996L8.90796 5.94996L8.90895 5.94996C7.88984 5.94883 6.8811 6.15456 5.94383 6.55471C5.00625 6.95498 4.1597 7.54146 3.45549 8.27859C3.15029 8.59806 3.16186 9.10446 3.48133 9.40967C3.80081 9.71487 4.30721 9.7033 4.61241 9.38383C5.16699 8.80331 5.83367 8.34144 6.57205 8.02621Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 3 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M7.69076 10.8122C8.07316 10.6389 8.48822 10.5495 8.90805 10.55L8.90895 10.55C9.79318 10.55 10.586 10.9383 11.1276 11.5556C11.419 11.8877 11.9245 11.9207 12.2566 11.6293C12.5887 11.3379 12.6217 10.8325 12.3303 10.5003C11.498 9.55176 10.2735 8.95009 8.9094 8.94996L8.90985 8.94996L8.90895 9.74996V8.94996H8.9094C8.26132 8.9493 7.62061 9.08736 7.03031 9.35488C6.43988 9.62245 5.91359 10.0133 5.4868 10.5013C5.19591 10.8338 5.22969 11.3392 5.56225 11.6301C5.89481 11.921 6.40021 11.8872 6.6911 11.5547C6.96751 11.2387 7.30837 10.9855 7.69076 10.8122Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 2 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M10 13.2C10 13.7522 9.55228 14.2 9 14.2C8.44772 14.2 8 13.7522 8 13.2C8 12.6477 8.44772 12.2 9 12.2C9.55228 12.2 10 12.6477 10 13.2Z"
+            fill="white"
+          />
+        </svg>
+        <!-- Signal bars (Samsung style, split paths for signal level) -->
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.0001 11.1001C4.49715 11.1001 4.9001 11.503 4.9001 12.0001V14.0001C4.9001 14.4972 4.49715 14.9001 4.0001 14.9001C3.50304 14.9001 3.1001 14.4972 3.1001 14.0001V12.0001C3.1001 11.503 3.50304 11.1001 4.0001 11.1001Z"
+            fill="white"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8.1999 9.2999C8.1999 8.80285 7.79696 8.3999 7.2999 8.3999C6.80285 8.3999 6.3999 8.80285 6.3999 9.2999V13.9999C6.3999 14.497 6.80285 14.8999 7.2999 14.8999C7.79696 14.8999 8.1999 14.497 8.1999 13.9999V9.2999Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 2 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M11.6 6.70005C11.6 6.20299 11.1971 5.80005 10.7 5.80005C10.203 5.80005 9.80005 6.20299 9.80005 6.70005V14C9.80005 14.4971 10.203 14.9 10.7 14.9C11.1971 14.9 11.6 14.4971 11.6 14V6.70005Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 3 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M14.9001 4.0001C14.9001 3.50304 14.4972 3.1001 14.0001 3.1001C13.503 3.1001 13.1001 3.50304 13.1001 4.0001V14.0001C13.1001 14.4972 13.503 14.9001 14.0001 14.9001C14.4972 14.9001 14.9001 14.4972 14.9001 14.0001V4.0001Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 4 else '0.3' }}"
+          />
+        </svg>
 
-  <!-- Header -->
-  <div class="header">
-    <!-- Back arrow — Figma node 601:151 -->
-    <div class="back-arrow">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip_back)">
-          <path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="white" />
-        </g>
-        <defs>
-          <clipPath id="clip_back">
-            <rect width="24" height="24" fill="white" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
+        <span style="font-size: 13px; font-weight: 400; color: white"
+          >{{battery}}%</span
+        >
+        <!-- Vertical battery (Samsung style) -->
+        <svg
+          width="6"
+          height="11"
+          viewBox="0 0 8 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <clipPath id="bat-body">
+              <rect x="0.571" y="5.356" width="6.858" height="9.044" />
+            </clipPath>
+          </defs>
+          <rect
+            x="0.571"
+            y="{{ 14.4 - (9.044 * battery / 100) }}"
+            width="6.858"
+            height="{{ 9.044 * battery / 100 }}"
+            fill="{{ '#ff4444' if battery <= 20 else 'white' }}"
+            clip-path="url(#bat-body)"
+          />
+          <path
+            d="M0.701299 15C0.493507 15 0.324675 14.9407 0.194805 14.8222C0.0649351 14.7037 0 14.563 0 14.4V1.82222C0 1.65926 0.0692648 1.51852 0.207793 1.4C0.346321 1.28148 0.510823 1.22222 0.701299 1.22222H2.33766V0H5.66234V1.22222H7.2987C7.48918 1.22222 7.65368 1.28148 7.79221 1.4C7.93074 1.51852 8 1.65926 8 1.82222V14.4C8 14.563 7.93074 14.7037 7.79221 14.8222C7.65368 14.9407 7.48918 15 7.2987 15H0.701299ZM0.571429 5.35556H7.42857V1.68889H0.571429V5.35556Z"
+            fill="white"
+            fill-opacity="0.4"
+          />
+        </svg>
 
-    <!-- Business details -->
-    <div class="business-details">
-      <div class="avatar {{ 'group' if is_group else '' }}">
-        {% if is_group %}⊕{% else %}{{ contact_name[0] | upper }}{% endif %}
-      </div>
-      <div style="flex:1;min-width:0;">
-        <div class="business-name-row">
-          <span class="contact-name">{{ contact_name }}</span>
-        </div>
-        <div class="contact-status">
-          {% if is_group %}
-          {{ messages | selectattr('role','eq','recv') | map(attribute='display_name') | unique | list | join(', ') |
-          truncate(38, true) }}
-          {% else %} {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <!-- Action buttons — Figma node 601:162 (call + more_vert) -->
-    <div class="header-icons">
-      <svg width="64" height="24" viewBox="0 0 64 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_1_562)">
-          <path d="M20.01 15.38C18.78 15.38 17.59 15.18 16.48 14.82C16.13 14.7 15.74 14.79 15.47 15.06L13.9 17.03C11.07 15.68 8.42 13.13 7.01 10.2L8.96 8.54C9.23 8.26 9.31 7.87 9.2 7.52C8.83 6.41 8.64 5.22 8.64 3.99C8.64 3.45 8.19 3 7.65 3H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21C20.72 21 21 20.37 21 19.82V16.37C21 15.83 20.55 15.38 20.01 15.38Z" fill="white"/>
-          <mask id="mask0_1_562" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="10" y="-2" width="16" height="16">
-            <rect x="10" y="-2" width="16" height="16" fill="#9DA3A7"/>
-          </mask>
-          <g mask="url(#mask0_1_562)">
-            <path d="M17.1167 10.8833V6.88334H13.1167V5.11664H17.1167V1.11664H18.8834V5.11664H22.8834V6.88334H18.8834V10.8833H17.1167Z" fill="white"/>
-          </g>
-        </g>
-        <g clip-path="url(#clip1_1_562)">
-          <path d="M52 8C53.1 8 54 7.1 54 6C54 4.9 53.1 4 52 4C50.9 4 50 4.9 50 6C50 7.1 50.9 8 52 8ZM52 10C50.9 10 50 10.9 50 12C50 13.1 50.9 14 52 14C53.1 14 54 13.1 54 12C54 10.9 53.1 10 52 10ZM52 16C50.9 16 50 16.9 50 18C50 19.1 50.9 20 52 20C53.1 20 54 19.1 54 18C54 16.9 53.1 16 52 16Z" fill="white"/>
-        </g>
-        <defs>
-          <clipPath id="clip0_1_562">
-            <rect width="24" height="24" fill="white"/>
-          </clipPath>
-          <clipPath id="clip1_1_562">
-            <rect width="24" height="24" fill="white" transform="translate(40)"/>
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  </div>
-
-  <!-- Chat area -->
-  <div class="chat-area">
-    <div class="timestamp-label">{{ message_time }}</div>
-
-    {% for msg in messages %}
-    <div class="msg-row {{ msg.role }}">
-      <div class="bubble-wrapper">
-
-        {% if msg.role == 'recv' %}
-        <!-- Recv tail — Figma node I601:172;92:630 -->
-        <svg class="bubble-tail-recv" width="8" height="8" viewBox="0 0 8 8" fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 8V0C8 0 8 0 2.33235 0C-5.22448 0 8 8 8 8Z" fill="#1F2C34" fill-opacity="0.6" />
+        {% else %}
+        <!-- ── Google Pixel ── -->
+        <!-- WiFi (Pixel style) -->
+        <svg
+          width="16"
+          height="13"
+          viewBox="0 0 20 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.84624 11.0769C8.69809 11.0769 7.64384 11.4883 6.81665 12.1748L9.84623 16L12.8758 12.1748C12.0486 11.4883 10.9944 11.0769 9.84624 11.0769Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 1 else '0.3' }}"
+          />
+          <path
+            d="M6.81638 12.1748C7.64357 11.4883 8.69781 11.0769 9.84597 11.0769C10.9941 11.0769 12.0484 11.4883 12.8756 12.1748L15.1477 9.30586C13.7002 8.10448 11.8552 7.38462 9.84597 7.38462C7.8367 7.38462 5.99178 8.10449 4.54419 9.30587L6.81638 12.1748Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 2 else '0.3' }}"
+          />
+          <path
+            d="M4.54441 9.30586C5.99199 8.10449 7.83692 7.38462 9.84619 7.38462C11.8555 7.38462 13.7004 8.10448 15.148 9.30585L17.4201 6.43693C15.3522 4.72069 12.7166 3.69231 9.84619 3.69231C6.9758 3.69231 4.3402 4.72069 2.27222 6.43694L4.54441 9.30586Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 3 else '0.3' }}"
+          />
+          <path
+            d="M19.6923 3.56801C17.0039 1.33689 13.5777 0 9.84615 0C6.11466 0 2.68838 1.33689 0 3.56801L2.27219 6.43694C4.34018 4.72068 6.97578 3.69231 9.84616 3.69231C12.7165 3.69231 15.3521 4.72068 17.4201 6.43693L19.6923 3.56801Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 4 else '0.3' }}"
+          />
+        </svg>
+        <!-- Signal bar (Pixel style) -->
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.5 18V13.5L0 18H4.5Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 1 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.5 18H9V9L4.5 13.5V18Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 2 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M13.5 18V4.5L9 9V18H13.5Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 3 else '0.3' }}"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M18 18V0L13.5 4.5V18H18Z"
+            fill="white"
+            fill-opacity="{{ '1' if wifi_signal >= 4 else '0.3' }}"
+          />
+        </svg>
+        <!-- Battery (Pixel style, vertical, no internal lines) -->
+        <svg
+          width="6"
+          height="14"
+          viewBox="0 0 8 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 6H8V17C8 17.5523 7.55228 18 7 18H1C0.447715 18 0 17.5523 0 17V6Z"
+            fill="{{ '#ff4444' if battery <= 20 else 'white' }}"
+          />
+          <path
+            d="M0 3C0 2.44772 0.447715 2 1 2H7C7.55228 2 8 2.44772 8 3V6H0V3Z"
+            fill="white"
+            fill-opacity="0.3"
+          />
+          <rect x="2" width="4" height="2" fill="white" fill-opacity="0.3" />
         </svg>
         {% endif %}
+      </div>
+    </div>
 
-        <div class="bubble {{ msg.role }}">
-          {% if is_group and msg.role == 'recv' %}
-          <span class="sender-label" style="color:{{ msg.color }}">{{ msg.display_name }}</span>
-          {% endif %}
-          {{ msg.text }}
-          <div class="bubble-meta">
-            <span class="bubble-time">{{ status_time }}</span>
-            {% if msg.role == 'sent' %}
-            <span class="bubble-tick">
-              <!-- Checkmark read — Figma node I601:176;92:681;91:558 -->
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M11.0416 1.00396L4.29834 9.32832L3.7547 10L3.14196 9.39132L0 6.26969L1.09948 5.16208L3.62971 7.67503L9.82827 0.0223555L11.0416 1.00396ZM15.7057 1.02632L8.44223 9.35068L7.89859 9.97358L7.3082 9.39437L6.24632 8.35383L7.3397 7.24012L7.80917 7.70044L14.529 0L15.7057 1.02632Z"
-                  fill="#34B7F1" />
-              </svg>
-            </span>
-            {% endif %}
+    <!-- Header -->
+    <div class="header">
+      <!-- Back arrow — Figma node 601:151 -->
+      <div class="back-arrow">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip_back)">
+            <path
+              d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip_back">
+              <rect width="24" height="24" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Business details -->
+      <div class="business-details">
+        <div class="avatar {{ 'group' if is_group else '' }}">
+          {% if is_group %}⊕{% else %}{{ contact_name[0] | upper }}{% endif %}
+        </div>
+        <div style="flex: 1; min-width: 0">
+          <div class="business-name-row">
+            <span class="contact-name">{{ contact_name }}</span>
+          </div>
+          <div class="contact-status">
+            {% if is_group %} {{ messages | selectattr('role','eq','recv') |
+            map(attribute='display_name') | unique | list | join(', ') |
+            truncate(38, true) }} {% else %} {% endif %}
           </div>
         </div>
-
-        {% if msg.role == 'sent' %}
-        <!-- Sent tail — Figma node I601:176;92:682 -->
-        <svg class="bubble-tail-sent" width="8" height="8" viewBox="0 0 8 8" fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 8V0C0 0 2.38419e-06 0 5.66765 0C13.2245 0 0 8 0 8Z" fill="#0E574D" fill-opacity="0.7" />
-        </svg>
-        {% endif %}
-
       </div>
-    </div>
-    {% endfor %}
-  </div>
 
-  <!-- Input bar -->
-  <div class="input-bar">
-    <div class="input-field">
-      <div class="input-left">
-        <!-- Add icon — Figma node 601:185 -->
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <mask id="mask_add" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-5" y="-5" width="34" height="34">
-            <rect x="-4.78665" y="-4.78666" width="33.5733" height="33.5733" fill="#9DA3A7" />
-          </mask>
-          <g mask="url(#mask_add)">
-            <path d="M10.1433 24V13.8567H0V10.1433H10.1433V0H13.8567V10.1433H24V13.8567H13.8567V24H10.1433Z"
-              fill="#9DA3A7" />
-          </g>
-        </svg>
-        <span class="input-placeholder">
-          {% if lang == 'fr' %}Saisissez un message{% elif lang == 'it' %}Scrivi un messaggio{% elif lang == 'de'
-          %}Nachricht eingeben{% elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{% endif %}
-        </span>
-      </div>
-      <div class="input-right">
-        <!-- Emoji + Camera icons — Figma node 601:189 -->
-        <svg width="56" height="24" viewBox="0 0 56 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip_emoji)">
-            <mask id="mask_emoji" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-2" y="-1" width="24"
-              height="25">
-              <rect x="-2" y="-0.5" width="24" height="24" fill="#D9D9D9" />
+      <!-- Action buttons — Figma node 601:162 (call + more_vert) -->
+      <div class="header-icons">
+        <svg
+          width="64"
+          height="24"
+          viewBox="0 0 64 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_1_562)">
+            <path
+              d="M20.01 15.38C18.78 15.38 17.59 15.18 16.48 14.82C16.13 14.7 15.74 14.79 15.47 15.06L13.9 17.03C11.07 15.68 8.42 13.13 7.01 10.2L8.96 8.54C9.23 8.26 9.31 7.87 9.2 7.52C8.83 6.41 8.64 5.22 8.64 3.99C8.64 3.45 8.19 3 7.65 3H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21C20.72 21 21 20.37 21 19.82V16.37C21 15.83 20.55 15.38 20.01 15.38Z"
+              fill="white"
+            />
+            <mask
+              id="mask0_1_562"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="10"
+              y="-2"
+              width="16"
+              height="16"
+            >
+              <rect x="10" y="-2" width="16" height="16" fill="#9DA3A7" />
             </mask>
-            <g mask="url(#mask_emoji)">
+            <g mask="url(#mask0_1_562)">
               <path
-                d="M9.991 2.5C5.023 2.5 1 6.532 1 11.5C1 16.468 5.023 20.5 9.991 20.5C14.968 20.5 19 16.468 19 11.5C19 6.532 14.968 2.5 9.991 2.5ZM10 18.7C6.022 18.7 2.8 15.478 2.8 11.5C2.8 7.522 6.022 4.3 10 4.3C13.978 4.3 17.2 7.522 17.2 11.5C17.2 15.478 13.978 18.7 10 18.7ZM13.15 10.6C13.897 10.6 14.5 9.997 14.5 9.25C14.5 8.503 13.897 7.9 13.15 7.9C12.403 7.9 11.8 8.503 11.8 9.25C11.8 9.997 12.403 10.6 13.15 10.6ZM6.85 10.6C7.597 10.6 8.2 9.997 8.2 9.25C8.2 8.503 7.597 7.9 6.85 7.9C6.103 7.9 5.5 8.503 5.5 9.25C5.5 9.997 6.103 10.6 6.85 10.6ZM10 16.45C12.097 16.45 13.879 15.136 14.599 13.3H5.401C6.121 15.136 7.903 16.45 10 16.45Z"
-                fill="#87949C" />
+                d="M17.1167 10.8833V6.88334H13.1167V5.11664H17.1167V1.11664H18.8834V5.11664H22.8834V6.88334H18.8834V10.8833H17.1167Z"
+                fill="white"
+              />
             </g>
           </g>
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M39.2885 4.74872L39.6267 4.31443C39.923 3.92075 40.3044 3.59038 40.7518 3.35828C41.2052 3.12309 41.7095 2.99791 42.2263 3.00003H45.7737C46.2905 2.99791 46.7948 3.1231 47.2482 3.35828C47.6956 3.59038 48.077 3.92075 48.3733 4.31443L48.7115 4.74872L48.7166 4.75546H49.8333C50.9945 4.75546 52.0705 5.26612 52.8363 6.11143C53.5971 6.95129 54 8.05807 54 9.18177V16.7938C54 17.9175 53.5971 19.0242 52.8363 19.8641C52.0705 20.7094 50.9945 21.2201 49.8333 21.2201H38.1667C37.0055 21.2201 35.9295 20.7094 35.1637 19.8641C34.4029 19.0242 34 17.9175 34 16.7938V9.18177C34 8.05807 34.4029 6.95129 35.1637 6.11143C35.9295 5.26612 37.0055 4.75546 38.1667 4.75546H39.2834L39.2885 4.74872ZM39.3403 6.42213H38.1667C37.5036 6.42213 36.8677 6.71288 36.3989 7.23041C35.9301 7.74794 35.6667 8.44986 35.6667 9.18177V16.7938C35.6667 17.5257 35.9301 18.2276 36.3989 18.7451C36.8677 19.2627 37.5036 19.5534 38.1667 19.5534H49.8333C50.4964 19.5534 51.1323 19.2627 51.6011 18.7451C52.0699 18.2276 52.3333 17.5257 52.3333 16.7938V9.18177C52.3333 8.44986 52.0699 7.74794 51.6011 7.23041C51.1323 6.71288 50.4964 6.42213 49.8333 6.42213H48.6597C48.4171 6.42145 48.1776 6.36206 47.958 6.24816C47.7385 6.13426 47.5442 5.96862 47.3889 5.76288L47.0486 5.32594C46.8946 5.11857 46.7006 4.95178 46.4807 4.83773C46.2609 4.72367 46.0207 4.66524 45.7778 4.66669H42.2222C41.9793 4.66524 41.7391 4.72367 41.5193 4.83773C41.2994 4.95178 41.1054 5.11857 40.9514 5.32594L40.6111 5.76288C40.4558 5.96862 40.2615 6.13426 40.042 6.24816C39.8224 6.36206 39.5829 6.42145 39.3403 6.42213Z"
-            fill="#87949C" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M43.9191 9.54533C42.2345 9.54533 40.8689 10.9109 40.8689 12.5955C40.8689 14.28 42.2345 15.6457 43.9191 15.6457C45.6037 15.6457 46.9693 14.28 46.9693 12.5955C46.9693 10.9109 45.6037 9.54533 43.9191 9.54533ZM39.2023 12.5955C39.2023 9.99046 41.3141 7.87866 43.9191 7.87866C46.5241 7.87866 48.6359 9.99046 48.6359 12.5955C48.6359 15.2005 46.5241 17.3123 43.9191 17.3123C41.3141 17.3123 39.2023 15.2005 39.2023 12.5955Z"
-            fill="#87949C" />
+          <g clip-path="url(#clip1_1_562)">
+            <path
+              d="M52 8C53.1 8 54 7.1 54 6C54 4.9 53.1 4 52 4C50.9 4 50 4.9 50 6C50 7.1 50.9 8 52 8ZM52 10C50.9 10 50 10.9 50 12C50 13.1 50.9 14 52 14C53.1 14 54 13.1 54 12C54 10.9 53.1 10 52 10ZM52 16C50.9 16 50 16.9 50 18C50 19.1 50.9 20 52 20C53.1 20 54 19.1 54 18C54 16.9 53.1 16 52 16Z"
+              fill="white"
+            />
+          </g>
           <defs>
-            <clipPath id="clip_emoji">
-              <rect width="20" height="20" fill="white" transform="translate(0 2)" />
+            <clipPath id="clip0_1_562">
+              <rect width="24" height="24" fill="white" />
+            </clipPath>
+            <clipPath id="clip1_1_562">
+              <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(40)"
+              />
             </clipPath>
           </defs>
         </svg>
       </div>
     </div>
 
-    <!-- Mic button — Figma node 601:193 -->
-    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"
-      style="flex-shrink:0;">
-      <rect width="45" height="45" rx="22.5" fill="#00927C" fill-opacity="0.6" />
-      <rect x="0.5" y="0.5" width="44" height="44" rx="22" stroke="#00927C" stroke-opacity="0.3" />
-      <g clip-path="url(#clip_mic)">
-        <path
-          d="M22.3563 24.3249C24.1304 24.3249 25.5518 22.8928 25.5518 21.1187L25.5625 14.7062C25.5625 12.9321 24.1304 11.4999 22.3563 11.4999C20.5821 11.4999 19.15 12.9321 19.15 14.7062V21.1187C19.15 22.8928 20.5821 24.3249 22.3563 24.3249ZM28.0206 21.1187C28.0206 24.3249 25.306 26.5693 22.3563 26.5693C19.4065 26.5693 16.6919 24.3249 16.6919 21.1187H14.875C14.875 24.7631 17.782 27.777 21.2875 28.3007V31.8062H23.425V28.3007C26.9305 27.7877 29.8375 24.7738 29.8375 21.1187H28.0206Z"
-          fill="white" />
-      </g>
-      <defs>
-        <clipPath id="clip_mic">
-          <rect width="25.65" height="25.65" fill="white" transform="translate(9.67499 9.67499)" />
-        </clipPath>
-      </defs>
-    </svg>
-  </div>
+    <!-- Chat area -->
+    <div class="chat-area">
+      <div class="timestamp-label">{{ message_time }}</div>
 
-</body>
+      {% for msg in messages %}
+      <div class="msg-row {{ msg.role }}">
+        <div class="bubble-wrapper">
+          {% if msg.role == 'recv' %}
+          <!-- Recv tail — Figma node I601:172;92:630 -->
+          <svg
+            class="bubble-tail-recv"
+            width="8"
+            height="8"
+            viewBox="0 0 8 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 8V0C8 0 8 0 2.33235 0C-5.22448 0 8 8 8 8Z"
+              fill="#1F2C34"
+              fill-opacity="0.6"
+            />
+          </svg>
+          {% endif %}
 
+          <div class="bubble {{ msg.role }}">
+            {% if is_group and msg.role == 'recv' %}
+            <span class="sender-label" style="color:{{ msg.color }}"
+              >{{ msg.display_name }}</span
+            >
+            {% endif %} {{ msg.text }}
+            <div class="bubble-meta">
+              <span class="bubble-time">{{ status_time }}</span>
+              {% if msg.role == 'sent' %}
+              <span class="bubble-tick">
+                <!-- Checkmark read — Figma node I601:176;92:681;91:558 -->
+                <svg
+                  width="16"
+                  height="10"
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.0416 1.00396L4.29834 9.32832L3.7547 10L3.14196 9.39132L0 6.26969L1.09948 5.16208L3.62971 7.67503L9.82827 0.0223555L11.0416 1.00396ZM15.7057 1.02632L8.44223 9.35068L7.89859 9.97358L7.3082 9.39437L6.24632 8.35383L7.3397 7.24012L7.80917 7.70044L14.529 0L15.7057 1.02632Z"
+                    fill="#34B7F1"
+                  />
+                </svg>
+              </span>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if msg.role == 'sent' %}
+          <!-- Sent tail — Figma node I601:176;92:682 -->
+          <svg
+            class="bubble-tail-sent"
+            width="8"
+            height="8"
+            viewBox="0 0 8 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 8V0C0 0 2.38419e-06 0 5.66765 0C13.2245 0 0 8 0 8Z"
+              fill="#0E574D"
+              fill-opacity="0.7"
+            />
+          </svg>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Input bar -->
+    <div class="input-bar">
+      <div class="input-field">
+        <div class="input-left">
+          <!-- Add icon — Figma node 601:185 -->
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask_add"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="-5"
+              y="-5"
+              width="34"
+              height="34"
+            >
+              <rect
+                x="-4.78665"
+                y="-4.78666"
+                width="33.5733"
+                height="33.5733"
+                fill="#9DA3A7"
+              />
+            </mask>
+            <g mask="url(#mask_add)">
+              <path
+                d="M10.1433 24V13.8567H0V10.1433H10.1433V0H13.8567V10.1433H24V13.8567H13.8567V24H10.1433Z"
+                fill="#9DA3A7"
+              />
+            </g>
+          </svg>
+          <span class="input-placeholder">
+            {% if lang == 'fr' %}Saisissez un message{% elif lang == 'it'
+            %}Scrivi un messaggio{% elif lang == 'de' %}Nachricht eingeben{%
+            elif lang == 'es' %}Escribe un mensaje{% else %}Type a message{%
+            endif %}
+          </span>
+        </div>
+        <div class="input-right">
+          <!-- Emoji + Camera icons — Figma node 601:189 -->
+          <svg
+            width="56"
+            height="24"
+            viewBox="0 0 56 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip_emoji)">
+              <mask
+                id="mask_emoji"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="-2"
+                y="-1"
+                width="24"
+                height="25"
+              >
+                <rect x="-2" y="-0.5" width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask_emoji)">
+                <path
+                  d="M9.991 2.5C5.023 2.5 1 6.532 1 11.5C1 16.468 5.023 20.5 9.991 20.5C14.968 20.5 19 16.468 19 11.5C19 6.532 14.968 2.5 9.991 2.5ZM10 18.7C6.022 18.7 2.8 15.478 2.8 11.5C2.8 7.522 6.022 4.3 10 4.3C13.978 4.3 17.2 7.522 17.2 11.5C17.2 15.478 13.978 18.7 10 18.7ZM13.15 10.6C13.897 10.6 14.5 9.997 14.5 9.25C14.5 8.503 13.897 7.9 13.15 7.9C12.403 7.9 11.8 8.503 11.8 9.25C11.8 9.997 12.403 10.6 13.15 10.6ZM6.85 10.6C7.597 10.6 8.2 9.997 8.2 9.25C8.2 8.503 7.597 7.9 6.85 7.9C6.103 7.9 5.5 8.503 5.5 9.25C5.5 9.997 6.103 10.6 6.85 10.6ZM10 16.45C12.097 16.45 13.879 15.136 14.599 13.3H5.401C6.121 15.136 7.903 16.45 10 16.45Z"
+                  fill="#87949C"
+                />
+              </g>
+            </g>
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M39.2885 4.74872L39.6267 4.31443C39.923 3.92075 40.3044 3.59038 40.7518 3.35828C41.2052 3.12309 41.7095 2.99791 42.2263 3.00003H45.7737C46.2905 2.99791 46.7948 3.1231 47.2482 3.35828C47.6956 3.59038 48.077 3.92075 48.3733 4.31443L48.7115 4.74872L48.7166 4.75546H49.8333C50.9945 4.75546 52.0705 5.26612 52.8363 6.11143C53.5971 6.95129 54 8.05807 54 9.18177V16.7938C54 17.9175 53.5971 19.0242 52.8363 19.8641C52.0705 20.7094 50.9945 21.2201 49.8333 21.2201H38.1667C37.0055 21.2201 35.9295 20.7094 35.1637 19.8641C34.4029 19.0242 34 17.9175 34 16.7938V9.18177C34 8.05807 34.4029 6.95129 35.1637 6.11143C35.9295 5.26612 37.0055 4.75546 38.1667 4.75546H39.2834L39.2885 4.74872ZM39.3403 6.42213H38.1667C37.5036 6.42213 36.8677 6.71288 36.3989 7.23041C35.9301 7.74794 35.6667 8.44986 35.6667 9.18177V16.7938C35.6667 17.5257 35.9301 18.2276 36.3989 18.7451C36.8677 19.2627 37.5036 19.5534 38.1667 19.5534H49.8333C50.4964 19.5534 51.1323 19.2627 51.6011 18.7451C52.0699 18.2276 52.3333 17.5257 52.3333 16.7938V9.18177C52.3333 8.44986 52.0699 7.74794 51.6011 7.23041C51.1323 6.71288 50.4964 6.42213 49.8333 6.42213H48.6597C48.4171 6.42145 48.1776 6.36206 47.958 6.24816C47.7385 6.13426 47.5442 5.96862 47.3889 5.76288L47.0486 5.32594C46.8946 5.11857 46.7006 4.95178 46.4807 4.83773C46.2609 4.72367 46.0207 4.66524 45.7778 4.66669H42.2222C41.9793 4.66524 41.7391 4.72367 41.5193 4.83773C41.2994 4.95178 41.1054 5.11857 40.9514 5.32594L40.6111 5.76288C40.4558 5.96862 40.2615 6.13426 40.042 6.24816C39.8224 6.36206 39.5829 6.42145 39.3403 6.42213Z"
+              fill="#87949C"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M43.9191 9.54533C42.2345 9.54533 40.8689 10.9109 40.8689 12.5955C40.8689 14.28 42.2345 15.6457 43.9191 15.6457C45.6037 15.6457 46.9693 14.28 46.9693 12.5955C46.9693 10.9109 45.6037 9.54533 43.9191 9.54533ZM39.2023 12.5955C39.2023 9.99046 41.3141 7.87866 43.9191 7.87866C46.5241 7.87866 48.6359 9.99046 48.6359 12.5955C48.6359 15.2005 46.5241 17.3123 43.9191 17.3123C41.3141 17.3123 39.2023 15.2005 39.2023 12.5955Z"
+              fill="#87949C"
+            />
+            <defs>
+              <clipPath id="clip_emoji">
+                <rect
+                  width="20"
+                  height="20"
+                  fill="white"
+                  transform="translate(0 2)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Mic button — Figma node 601:193 -->
+      <svg
+        width="45"
+        height="45"
+        viewBox="0 0 45 45"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="flex-shrink: 0"
+      >
+        <rect
+          width="45"
+          height="45"
+          rx="22.5"
+          fill="#00927C"
+          fill-opacity="0.6"
+        />
+        <rect
+          x="0.5"
+          y="0.5"
+          width="44"
+          height="44"
+          rx="22"
+          stroke="#00927C"
+          stroke-opacity="0.3"
+        />
+        <g clip-path="url(#clip_mic)">
+          <path
+            d="M22.3563 24.3249C24.1304 24.3249 25.5518 22.8928 25.5518 21.1187L25.5625 14.7062C25.5625 12.9321 24.1304 11.4999 22.3563 11.4999C20.5821 11.4999 19.15 12.9321 19.15 14.7062V21.1187C19.15 22.8928 20.5821 24.3249 22.3563 24.3249ZM28.0206 21.1187C28.0206 24.3249 25.306 26.5693 22.3563 26.5693C19.4065 26.5693 16.6919 24.3249 16.6919 21.1187H14.875C14.875 24.7631 17.782 27.777 21.2875 28.3007V31.8062H23.425V28.3007C26.9305 27.7877 29.8375 24.7738 29.8375 21.1187H28.0206Z"
+            fill="white"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip_mic">
+            <rect
+              width="25.65"
+              height="25.65"
+              fill="white"
+              transform="translate(9.67499 9.67499)"
+            />
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Android gesture navigation bar -->
+    <div class="gesture-bar">
+      <div class="gesture-pill"></div>
+    </div>
+  </body>
 </html>

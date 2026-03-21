@@ -38,6 +38,8 @@ SAMPLE_DATA = {
     "battery": 83,
     "lang": "en",
     "os": "iOS 17",
+    "carrier": "Verizon",
+    "wifi_signal": 3,
     "messages": [
         {"role": "recv", "text": "Hey everyone! Are we still meeting for lunch today?", "display_name": "Sarah Johnson", "color": "#E91E63"},
         {"role": "recv", "text": "Yes! I was thinking we could try that new Thai place on 5th street 🍜", "display_name": "Mike Chen", "color": "#9C27B0"},
@@ -59,8 +61,10 @@ SAMPLE_DATA_1ON1 = {
     "message_time": "Today, 2:03 PM",
     "dark_mode": False,
     "battery": 65,
+    "wifi_signal": 3,
     "lang": "en",
     "os": "iOS 17",
+    "carrier": "AT&T",
     "messages": [
         {"role": "recv", "text": "Did you finish the report?", "display_name": "Alex", "color": "#E91E63"},
         {"role": "sent", "text": "Almost done, just reviewing the numbers", "display_name": "You", "color": "#1976D2"},
@@ -76,18 +80,65 @@ def render_template(template_name: str, data: dict) -> str:
     return template.render(**data)
 
 
-def build_preview_page(template_name: str) -> str:
-    """Build a page showing iOS 17 and iOS 15 variants (group, 1-on-1, dark)."""
-    # iOS 17 variants
-    group17_html  = render_template(template_name, {**SAMPLE_DATA, "os": "iOS 17"})
-    solo17_html   = render_template(template_name, {**SAMPLE_DATA_1ON1, "os": "iOS 17"})
-    dark17_html   = render_template(template_name, {**SAMPLE_DATA_DARK, "os": "iOS 17"})
-    # iOS 15 variants
-    group15_html  = render_template(template_name, {**SAMPLE_DATA, "os": "iOS 15"})
-    solo15_html   = render_template(template_name, {**SAMPLE_DATA_1ON1, "os": "iOS 15"})
+# Maps each template to the exact devices used in chat_to_png.py
+# (device_name, width, height, os)
+TEMPLATE_DEVICES: dict[str, list[tuple[str, int, int, str]]] = {
+    "ios_imessage": [
+        ("iPhone SE",         375, 667, "iOS 15"),
+        ("iPhone 15",         393, 852, "iOS 17"),
+        ("iPhone 15 Pro Max", 430, 932, "iOS 17"),
+    ],
+    "ios_whatsapp": [
+        ("iPhone SE",         375, 667, "iOS 15"),
+        ("iPhone 15 Pro Max", 430, 932, "iOS 17"),
+    ],
+    "android_whatsapp": [
+        ("Samsung Galaxy S23", 360, 800, "Android 13"),
+        ("Google Pixel 7",     412, 915, "Android 13"),
+    ],
+    "messenger": [
+        ("iPhone SE", 375, 667, "iOS 15"),
+        ("iPhone 14", 390, 844, "iOS 16"),
+    ],
+    "telegram": [
+        ("iPhone SE", 375, 667, "iOS 15"),
+        ("iPhone 13", 390, 844, "iOS 15"),
+    ],
+    "android_messenger": [
+        ("Samsung Galaxy S24", 360, 780, "Android 14"),
+    ],
+    "android_telegram": [
+        ("Samsung Galaxy S24", 360, 780, "Android 14"),
+        ("Google Pixel 7",     412, 915, "Android 13"),
+    ],
+}
 
-    def frame(html: str, w: int = 390, h: int = 844) -> str:
+# Fallback for templates not listed above
+_DEFAULT_DEVICES = [
+    ("iPhone 14", 390, 844, "iOS 17"),
+]
+
+
+def build_preview_page(template_name: str) -> str:
+    """Build a page showing the actual devices used for each template."""
+    devices = TEMPLATE_DEVICES.get(template_name, _DEFAULT_DEVICES)
+
+    def frame(html: str, w: int, h: int) -> str:
         return f'<div class="frame"><iframe srcdoc=\'{_escape_srcdoc(html)}\' width="{w}" height="{h}"></iframe></div>'
+
+    sections = ""
+    for device_name, w, h, os_ver in devices:
+        extras = {"os": os_ver, "device_name": device_name}
+        group_html = render_template(template_name, {**SAMPLE_DATA, **extras})
+        solo_html  = render_template(template_name, {**SAMPLE_DATA_1ON1, **extras})
+        dark_html  = render_template(template_name, {**SAMPLE_DATA_DARK, **extras})
+        sections += f"""
+<h2>{device_name} ({w}×{h}) — {os_ver}</h2>
+<div class="row">
+  <div class="variant"><h3>Group (Light)</h3>{frame(group_html, w, h)}</div>
+  <div class="variant"><h3>1-on-1 (Light)</h3>{frame(solo_html, w, h)}</div>
+  <div class="variant"><h3>Group (Dark)</h3>{frame(dark_html, w, h)}</div>
+</div>"""
 
     return f"""<!DOCTYPE html>
 <html>
@@ -97,7 +148,7 @@ def build_preview_page(template_name: str) -> str:
 <style>
   body {{ background: #d0d0d0; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }}
   h1, h2 {{ text-align: center; color: #333; }}
-  h2 {{ margin: 24px 0 8px; font-size: 16px; color: #555; }}
+  h2 {{ margin: 32px 0 8px; font-size: 15px; color: #555; border-top: 1px solid #bbb; padding-top: 20px; }}
   .row {{ display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }}
   .variant {{ text-align: center; }}
   .variant h3 {{ margin-bottom: 6px; color: #555; font-size: 13px; }}
@@ -107,20 +158,8 @@ def build_preview_page(template_name: str) -> str:
 </head>
 <body>
 <h1>{template_name}.html</h1>
-<p style="text-align:center;color:#666;margin-bottom:16px">Refresh after editing</p>
-
-<h2>iOS 17</h2>
-<div class="row">
-  <div class="variant"><h3>Group (Light)</h3>{frame(group17_html, 390, 844)}</div>
-  <div class="variant"><h3>1-on-1 (Light)</h3>{frame(solo17_html, 390, 844)}</div>
-  <div class="variant"><h3>Group (Dark)</h3>{frame(dark17_html, 390, 844)}</div>
-</div>
-
-<h2>iOS 15</h2>
-<div class="row">
-  <div class="variant"><h3>Group (Light)</h3>{frame(group15_html, 375, 667)}</div>
-  <div class="variant"><h3>1-on-1 (Light)</h3>{frame(solo15_html, 375, 667)}</div>
-</div>
+<p style="text-align:center;color:#666;margin-bottom:4px">Refresh after editing</p>
+{sections}
 </body>
 </html>"""
 

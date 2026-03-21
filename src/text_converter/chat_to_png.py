@@ -64,6 +64,8 @@ def _find_device(application: str, os_name: str, device_name: str, seed: int) ->
 
 BATTERY_LEVELS = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 
+US_CARRIERS = ["Verizon", "AT&T", "T-Mobile"]
+
 SPEAKER_COLORS = ["#E91E63", "#9C27B0", "#1976D2", "#00897B", "#E65100", "#5D4037"]
 
 # Country → language code mapping
@@ -237,8 +239,10 @@ async def _worker(
                 raise ValueError("Script rỗng hoặc không đúng định dạng")
 
             dt        = _random_datetime(seed=row_id)
-            dark_mode = random.Random(row_id + 42).random() < 0.3
-            battery   = random.Random(row_id + 1337).choice(BATTERY_LEVELS)
+            dark_mode   = random.Random(row_id + 42).random() < 0.3
+            battery     = random.Random(row_id + 1337).choice(BATTERY_LEVELS)
+            carrier     = random.Random(row_id + 555).choice(US_CARRIERS)
+            wifi_signal = random.Random(row_id + 888).randint(1, 4)
 
             context = await browser.new_context(
                 viewport={"width": device["width"], "height": device["height"]},
@@ -256,6 +260,9 @@ async def _worker(
                 lang=lang,
                 battery=battery,
                 os=device["os"],
+                device_name=device["name"],
+                carrier=carrier,
+                wifi_signal=wifi_signal,
             )
 
             await page.set_content(html, wait_until="domcontentloaded")
