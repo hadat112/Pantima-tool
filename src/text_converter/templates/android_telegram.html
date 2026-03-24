@@ -391,6 +391,37 @@
     <div class="send-btn">🎤</div>
   </div>
 
+  <script>
+    document.querySelectorAll('.bubble').forEach(bubble => {
+      const meta = bubble.querySelector('.bubble-meta');
+      const range = document.createRange();
+      const textNodes = [];
+      const walker = document.createTreeWalker(bubble, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        if (meta && meta.contains(walker.currentNode)) continue;
+        textNodes.push(walker.currentNode);
+      }
+      if (textNodes.length === 0) return;
+      let maxLineWidth = 0;
+      textNodes.forEach(node => {
+        range.selectNodeContents(node);
+        const rects = range.getClientRects();
+        for (const rect of rects) {
+          if (rect.width > maxLineWidth) maxLineWidth = rect.width;
+        }
+      });
+      const senderLabel = bubble.querySelector('.sender-label');
+      if (senderLabel) maxLineWidth = Math.max(maxLineWidth, senderLabel.scrollWidth);
+      const metaWidth = meta ? meta.offsetWidth : 0;
+      const style = getComputedStyle(bubble);
+      const padL = parseFloat(style.paddingLeft) || 0;
+      const padR = parseFloat(style.paddingRight) || 0;
+      const idealWidth = Math.ceil(Math.max(maxLineWidth, metaWidth) + padL + padR + 1);
+      if (idealWidth < bubble.offsetWidth) {
+        bubble.style.width = idealWidth + 'px';
+      }
+    });
+  </script>
 </body>
 
 </html>

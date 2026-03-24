@@ -235,7 +235,6 @@
         background: var(--bubble-sent);
         color: var(--text-sent);
         border-radius: 16px 0 16px 16px;
-        text-align: right;
       }
 
       .bubble.recv {
@@ -252,12 +251,19 @@
       }
 
       .bubble-meta {
-        display: flex;
-        justify-content: flex-end;
+        display: inline-flex;
         align-items: center;
         gap: 5px;
-        margin-top: 5px;
-        width: 100%;
+        float: right;
+        margin-left: 8px;
+        height: 19.2px;
+        line-height: 19.2px;
+      }
+
+      .meta-spacer {
+        display: inline-block;
+        width: 75px;
+        height: 0;
       }
 
       .bubble-time {
@@ -677,7 +683,7 @@
             <span class="sender-label" style="color:{{ msg.color }}"
               >{{ msg.display_name }}</span
             >
-            {% endif %} {{ msg.text }}
+            {% endif %}{{ msg.text }}<span class="meta-spacer"></span>
             <div class="bubble-meta">
               <span class="bubble-time">{{ status_time }}</span>
               {% if msg.role == 'sent' %}
@@ -867,5 +873,43 @@
     <div class="gesture-bar">
       <div class="gesture-pill"></div>
     </div>
+    <script>
+      document.querySelectorAll('.bubble').forEach(bubble => {
+        const meta = bubble.querySelector('.bubble-meta');
+        if (!meta) return;
+        // Use Range API to measure actual rendered text line widths
+        const range = document.createRange();
+        const textNodes = [];
+        const walker = document.createTreeWalker(bubble, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          // Skip text nodes inside bubble-meta
+          if (meta.contains(walker.currentNode)) continue;
+          textNodes.push(walker.currentNode);
+        }
+        if (textNodes.length === 0) return;
+        let maxLineWidth = 0;
+        textNodes.forEach(node => {
+          range.selectNodeContents(node);
+          const rects = range.getClientRects();
+          for (const rect of rects) {
+            if (rect.width > maxLineWidth) maxLineWidth = rect.width;
+          }
+        });
+        // Also check sender-label width
+        const senderLabel = bubble.querySelector('.sender-label');
+        if (senderLabel) {
+          maxLineWidth = Math.max(maxLineWidth, senderLabel.scrollWidth);
+        }
+        const metaWidth = meta.offsetWidth;
+        const style = getComputedStyle(bubble);
+        const padL = parseFloat(style.paddingLeft) || 0;
+        const padR = parseFloat(style.paddingRight) || 0;
+        const idealWidth = Math.max(maxLineWidth, metaWidth) + padL + padR + 2;
+        const currentWidth = bubble.offsetWidth;
+        if (idealWidth < currentWidth) {
+          bubble.style.width = Math.ceil(idealWidth) + 'px';
+        }
+      });
+    </script>
   </body>
 </html>
