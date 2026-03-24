@@ -2650,7 +2650,7 @@
             {% endif %}{% for msg in messages %}{% if msg.role == "sent" %}
             <div class="flex justify-end">
               <div
-                class="max-w-[75%] rounded-[18px] px-3 py-[7.5px] text-[17px] text-white leading-[1.19] tracking-[-0.41px]"
+                class="msg-bubble max-w-[75%] rounded-[18px] px-3 py-[7.5px] text-[17px] text-white leading-[1.19] tracking-[-0.41px]"
                 style="background-color: {{ '#19A3FE' if dark_mode else '#0584FE' }};"
               >
                 {{ msg.text }}
@@ -2678,7 +2678,7 @@
                 </p>
                 {% endif %}
                 <div
-                  class="rounded-[18px] {{ 'text-white' if dark_mode else 'text-black' }} px-3 py-[7.5px] text-[17px] font-normal leading-[1.19] tracking-[-0.41px]"
+                  class="msg-bubble rounded-[18px] {{ 'text-white' if dark_mode else 'text-black' }} px-3 py-[7.5px] text-[17px] font-normal leading-[1.19] tracking-[-0.41px]"
                   style="background-color: {{ 'rgba(255,255,255,0.2)' if dark_mode else 'rgba(0,0,0,0.06)' }};"
                 >
                   {{ msg.text }}
@@ -2780,5 +2780,29 @@
         <!--$--><!--/$-->
       </div>
     </div>
+  <script>
+    document.querySelectorAll('.msg-bubble').forEach(bubble => {
+      const range = document.createRange();
+      const textNodes = [];
+      const walker = document.createTreeWalker(bubble, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      if (textNodes.length === 0) return;
+      let maxLineWidth = 0;
+      textNodes.forEach(node => {
+        range.selectNodeContents(node);
+        const rects = range.getClientRects();
+        for (const rect of rects) {
+          if (rect.width > maxLineWidth) maxLineWidth = rect.width;
+        }
+      });
+      const style = getComputedStyle(bubble);
+      const padL = parseFloat(style.paddingLeft) || 0;
+      const padR = parseFloat(style.paddingRight) || 0;
+      const idealWidth = Math.ceil(maxLineWidth + padL + padR + 1);
+      if (idealWidth < bubble.offsetWidth) {
+        bubble.style.width = idealWidth + 'px';
+      }
+    });
+  </script>
   </body>
 </html>
