@@ -32,6 +32,27 @@ poetry run tc chat from-csv `
 
 ---
 
+## Screenshot
+
+```powershell
+poetry run tc chat from-csv `
+  "data/Screenshot.csv" `
+  output/chat `
+  --script-col "Script" `
+  --id-col "#" `
+  --qa-col "ID QA" `
+  --participant-col "participant" `
+  --filename-col "File" `
+  --country-col "country" `
+  --application-col "application used" `
+  --os-col "OS" `
+  --device-col "device info" `
+  --workers 8 `
+  --done-csv "data/done-data/chat.csv"
+```
+
+---
+
 **Notes:**
 - `` ` `` là ký tự line continuation của PowerShell
 - `--script-col "Script"` — cột chứa nội dung hội thoại
