@@ -339,7 +339,8 @@ def chat_from_csv(
     country_col: str = typer.Option("country", "--country-col", help="Country column for language localisation (EN/FR/IT/DE/ES)"),
     application_col: str = typer.Option("application used", "--application-col", help="Column for application name (iMessage/WhatsApp/Messenger/Telegram)"),
     os_col: str = typer.Option("OS", "--os-col", help="Column for OS info (iOS 17/Android 13/...)"),
-    device_col: str = typer.Option("device info", "--device-col", help="Column for device name (iPhone 15 Pro Max/Samsung Galaxy S23/...)"),
+    device_col: str = typer.Option("device info", "--device-col", help="Column for device name (iPhone 15 Pro Max/Samsung Galaxy S23/... )"),
+    creation_col: str = typer.Option("Creation Date\n(YYYY.MM.DD)", "--creation-col", help="Column for creation date used as message date base (format: YYYY.MM.DD)"),
     templates_dir: Path = typer.Option(None, "--templates-dir",
                                        help="Custom templates directory (default: bundled package templates)"),
     workers: int  = typer.Option(8, "--workers", "-w", min=1, help="Parallel workers (default: 8)"),
@@ -386,6 +387,7 @@ def chat_from_csv(
         application_col=application_col,
         os_col=os_col,
         device_col=device_col,
+        creation_col=creation_col,
     )
 
     if not results:

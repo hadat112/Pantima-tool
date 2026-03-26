@@ -178,9 +178,30 @@ def _random_datetime(seed: int) -> datetime:
         minutes=rng.randint(0, 59),
     )
 
+def _datetime_from_creation(creation_date_str: str, seed: int) -> datetime:
+    """Parse YYYY.MM.DD creation date and attach a seeded random time."""
+    rng = random.Random(seed + 9999)
+    try:
+        base = datetime.strptime(creation_date_str.strip(), "%Y.%m.%d")
+    except (ValueError, AttributeError):
+        return _random_datetime(seed)
+    return base.replace(
+        hour=rng.randint(0, 23),
+        minute=rng.randint(0, 59),
+        second=0,
+        microsecond=0,
+    )
+
 def _fmt_status(dt: datetime) -> str:
     s = dt.strftime("%I:%M").lstrip("0")
     return s or "12:00"
+
+def _fmt_bubble(dt: datetime, lang: str = "en") -> str:
+    """Format bubble time: H:MM AM/PM (no date label)."""
+    hour    = _fmt_status(dt)
+    strings = LANG_STRINGS.get(lang, LANG_STRINGS["en"])
+    period  = strings["am"] if dt.hour < 12 else strings["pm"]
+    return f"{hour} {period}"
 
 def _fmt_message(dt: datetime, lang: str = "en") -> str:
     hour    = _fmt_status(dt)
@@ -238,7 +259,10 @@ async def _worker(
             if not parsed:
                 raise ValueError("Script rỗng hoặc không đúng định dạng")
 
-            dt        = _random_datetime(seed=row_id)
+            dt          = _datetime_from_creation(str(row.get("_creation_date", "")), seed=row_id)
+            # status_time (header clock) uses a separate random time so it differs from message_time
+            rng_status  = random.Random(row_id + 7777)
+            dt_status   = dt.replace(hour=rng_status.randint(0, 23), minute=rng_status.randint(0, 59))
             dark_mode   = random.Random(row_id + 42).random() < 0.3
             battery     = random.Random(row_id + 1337).choice(BATTERY_LEVELS)
             carrier     = random.Random(row_id + 555).choice(US_CARRIERS)
@@ -254,8 +278,9 @@ async def _worker(
                 contact_name=parsed["contact_name"],
                 is_group=parsed["is_group"],
                 messages=parsed["messages"],
-                status_time=_fmt_status(dt),
+                status_time=_fmt_status(dt_status),
                 message_time=_fmt_message(dt, lang=lang),
+                bubble_time=_fmt_bubble(dt, lang=lang),
                 dark_mode=dark_mode,
                 lang=lang,
                 battery=battery,
@@ -356,6 +381,7 @@ def batch_from_csv(
     application_col: str = "application used",
     os_col: str = "OS",
     device_col: str = "device info",
+    creation_col: str = "Creation Date\n(YYYY.MM.DD)",
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -400,6 +426,8 @@ def batch_from_csv(
             row["_os_csv"] = str(r.get(os_col, "")).strip()
         if device_col in df.columns:
             row["_device_csv"] = str(r.get(device_col, "")).strip()
+        if creation_col in df.columns:
+            row["_creation_date"] = str(r.get(creation_col, "")).strip()
         rows.append(row)
 
     # Each run gets its own timestamped subfolder: output/chat/2026-03-13_21-58-00/
