@@ -381,7 +381,7 @@ def batch_from_csv(
     application_col: str = "application used",
     os_col: str = "OS",
     device_col: str = "device info",
-    creation_col: str = "Creation Date\n(YYYY.MM.DD)",
+    creation_col: str = "Creation Date (YYYY.MM.DD)",
 ) -> list[Path]:
     """
     Read CSV, generate PNG screenshots, return list of output Paths.
@@ -394,6 +394,9 @@ def batch_from_csv(
       - export_csv: if set, writes a CSV of successfully processed rows
     """
     df = pd.read_csv(csv_path)
+
+    # Normalise column names: collapse \r\n sequences into a single space
+    df.columns = [c.replace("\r\n", " ").replace("\n", " ") for c in df.columns]
 
     # Filter by accepted status
     if accepted_col and accepted_col in df.columns:

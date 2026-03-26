@@ -26,7 +26,7 @@ poetry run tc chat from-csv `
   --application-col "application used" `
   --os-col "OS" `
   --device-col "device info" `
-  --creation-col "Creation Date`n(YYYY.MM.DD)" `
+  --creation-col "Creation Date (YYYY.MM.DD)" `
   --workers 8 `
   --done-csv "data/done-data/chat.csv"
 ```
@@ -48,6 +48,7 @@ poetry run tc chat from-csv `
   --application-col "application used" `
   --os-col "OS" `
   --device-col "device info" `
+  --creation-col "Creation Date (YYYY.MM.DD)" `
   --workers 8 `
   --done-csv "data/done-data/chat.csv"
 ```
@@ -63,7 +64,7 @@ poetry run tc chat from-csv `
 - `--application-col "application used"` — cột app (iMessage/WhatsApp/Messenger/Telegram)
 - `--os-col "OS"` — cột OS (iOS 17/Android 13/...)
 - `--device-col "device info"` — cột device (iPhone 15 Pro Max/Samsung Galaxy S23/...)
-- `--creation-col "Creation Date`n(YYYY.MM.DD)"` — cột ngày tạo (tên cột có xuống dòng thật giữa `Creation Date` và `(YYYY.MM.DD)`), dùng làm ngày hiển thị timestamp chat; giờ/phút vẫn random theo ID
+- `--creation-col "Creation Date (YYYY.MM.DD)"` — cột ngày tạo, dùng làm ngày hiển thị timestamp chat; giờ/phút vẫn random theo ID
 - `--participant-col "participant"` — cột participant dùng cho done-csv
 - `--done-csv` — append danh sách index đã chạy vào file CSV (format: `index,participant,filename`)
 - Log tự động ghi vào `logs/<filename>.log`
