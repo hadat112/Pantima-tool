@@ -49,14 +49,15 @@ poetry run tc chat from-csv `
   --os-col "OS" `
   --device-col "device info" `
   --creation-col "Creation Date (YYYY.MM.DD)" `
-  --workers 8 `
+  --workers 20 `
   --done-csv "data/done-data/chat.csv"
 ```
 
 ---
 
 **Notes:**
-- `` ` `` là ký tự line continuation của PowerShell
+
+- ``` là ký tự line continuation của PowerShell
 - `--script-col "Script"` — cột chứa nội dung hội thoại
 - `--id-col "Unnamed: 0"` — cột ID dùng làm seed (deterministic device/theme)
 - `--filename-col "File"` — cột chứa tên file output (thay vì auto `{id}_{qa}.png`)
@@ -69,3 +70,4 @@ poetry run tc chat from-csv `
 - `--done-csv` — append danh sách index đã chạy vào file CSV (format: `index,participant,filename`)
 - Log tự động ghi vào `logs/<filename>.log`
 - Output vào subfolder theo timestamp: `output/chat/YYYY-MM-DD_HH-MM-SS/`
+
