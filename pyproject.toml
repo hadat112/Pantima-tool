@@ -10,6 +10,9 @@ requires-python = ">=3.13"
 dependencies = [
     "typer>=0.15.0",
     "rich>=13.0.0",
+    "pandas>=2.0.0",
+    "jinja2>=3.1.0",
+    "playwright>=1.40.0",
 ]
 
 [project.scripts]
@@ -17,20 +20,6 @@ tc = "text_converter.cli:main"
 
 [tool.poetry]
 packages = [{include = "text_converter", from = "src"}]
-
-[tool.poetry.group.audio]
-optional = true
-
-[tool.poetry.group.audio.dependencies]
-faster-whisper = ">=1.1.0"
-
-[tool.poetry.group.chat]
-optional = true
-
-[tool.poetry.group.chat.dependencies]
-playwright = ">=1.40.0"
-jinja2     = ">=3.1.0"
-pandas     = ">=2.0.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
