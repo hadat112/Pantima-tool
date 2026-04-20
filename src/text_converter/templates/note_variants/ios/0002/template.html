@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" class="{{ 'dark' if dark_mode else '' }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --screen-bg: #f5f5f7;
+        --status-fg: #000000;
+        --created-at-text: rgba(60, 60, 67, 0.6);
+        --note-text: #1c1c1e;
+        --glass-fill: rgba(255, 255, 255, 0.72);
+        --glass-border: rgba(60, 60, 67, 0.12);
+        --icon-fg: #1a1a1a;
+        --home-indicator: #000000;
+      }
+
+      .dark {
+        --screen-bg: #000000;
+        --status-fg: #ffffff;
+        --created-at-text: rgba(235, 235, 245, 0.6);
+        --note-text: #ffffff;
+        --glass-fill: rgba(44, 44, 46, 0.8);
+        --glass-border: rgba(235, 235, 245, 0.2);
+        --icon-fg: #f2f2f7;
+        --home-indicator: #ffffff;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        font-family:
+          -apple-system, "SF Pro Text", "SF Pro Display", BlinkMacSystemFont,
+          "Helvetica Neue", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: var(--screen-bg);
+      }
+
+      .screen {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--screen-bg);
+      }
+
+      .status-bar {
+        height: 44px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .status-time {
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.43px;
+        color: var(--status-fg);
+        line-height: 1;
+      }
+
+      .status-icons {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+
+      .status-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .status-icon svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .status-cellular {
+        width: 27px;
+        height: 23px;
+      }
+      .status-wifi {
+        width: 23px;
+        height: 23px;
+      }
+      .status-battery {
+        width: 36px;
+        height: 23px;
+      }
+
+      .top-actions {
+        height: 54px;
+        padding: 0 16px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .action-cluster {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .action-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        border: 0.5px solid var(--glass-border);
+        background: var(--glass-fill);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .action-btn svg {
+        display: block;
+        width: 17px;
+        height: 17px;
+      }
+
+      .action-btn.more svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .created-at {
+        min-height: 22px;
+        padding: 0 20px 4px;
+        color: var(--created-at-text);
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.22;
+        letter-spacing: 0;
+        text-align: center;
+      }
+
+      .content {
+        flex: 1;
+        padding: 0 22px 8px;
+        color: var(--note-text);
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 1.34;
+        letter-spacing: -0.01em;
+        white-space: pre-wrap;
+        overflow: hidden;
+      }
+
+      .footer {
+        height: 78px;
+        position: relative;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .tool-pill {
+        height: 44px;
+        padding: 0 8px;
+        border-radius: 22px;
+        border: 0.5px solid var(--glass-border);
+        background: var(--glass-fill);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .tool-pill .tool,
+      .compose-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .compose-btn {
+        border: 0.5px solid var(--glass-border);
+        background: var(--glass-fill);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      .tool svg,
+      .compose-btn svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      .top-actions .action-btn svg *,
+      .footer .tool-pill svg *,
+      .footer .compose-btn svg * {
+        fill: var(--icon-fg) !important;
+        stroke: var(--icon-fg) !important;
+        fill-opacity: 1 !important;
+        stroke-opacity: 1 !important;
+      }
+
+      .home-bar {
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        transform: translateX(-50%);
+        width: 154px;
+        height: 5px;
+        border-radius: 999px;
+        background: var(--home-indicator);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screen">
+      <div class="status-bar">
+        <span class="status-time">{{ status_time }}</span>
+        <div class="status-icons">
+          <span class="status-icon status-cellular">
+            {% if dark_mode %}{% include "assets/notes_ios/status_cellular_dark.svg" %}{% else %}{% include "assets/notes_ios/status_cellular_light.svg" %}{% endif %}
+          </span>
+          <span class="status-icon status-wifi">
+            {% if dark_mode %}{% include "assets/notes_ios/status_wifi_dark.svg" %}{% else %}{% include "assets/notes_ios/status_wifi_light.svg" %}{% endif %}
+          </span>
+          <span class="status-icon status-battery">
+            {% if dark_mode %}{% include "assets/notes_ios/status_battery_dark.svg" %}{% else %}{% include "assets/notes_ios/status_battery_light.svg" %}{% endif %}
+          </span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="action-cluster">
+          <span class="action-btn">
+            {% if dark_mode %}{% include "assets/notes_ios/nav_back_dark.svg" %}{% else %}{% include "assets/notes_ios/nav_back_light.svg" %}{% endif %}
+          </span>
+        </div>
+
+        <div class="action-cluster">
+          {% if has_ios26_undo_icon %}
+          <span class="action-btn">
+            {% if dark_mode %}{% include "assets/notes_ios/nav_undo_dark.svg" %}{% else %}{% include "assets/notes_ios/nav_undo_light.svg" %}{% endif %}
+          </span>
+          {% endif %}
+          {% if has_ios26_share_icon %}
+          <span class="action-btn">
+            {% if dark_mode %}{% include "assets/notes_ios/nav_share_dark.svg" %}{% else %}{% include "assets/notes_ios/nav_share_light.svg" %}{% endif %}
+          </span>
+          {% endif %}
+          <span class="action-btn more">
+            {% if dark_mode %}{% include "assets/notes_ios/nav_more_dark.svg" %}{% else %}{% include "assets/notes_ios/nav_more_light.svg" %}{% endif %}
+          </span>
+        </div>
+      </div>
+
+      <div class="created-at">{{ created_datetime_display }}</div>
+      <div class="content">{{ note_text }}</div>
+
+      <div class="footer">
+        <div class="tool-pill">
+          <span class="tool">
+            {% if dark_mode %}{% include "assets/notes_ios/toolbar_check_dark.svg" %}{% else %}{% include "assets/notes_ios/toolbar_check_light.svg" %}{% endif %}
+          </span>
+          <span class="tool">
+            {% if dark_mode %}{% include "assets/notes_ios/toolbar_attach_dark.svg" %}{% else %}{% include "assets/notes_ios/toolbar_attach_light.svg" %}{% endif %}
+          </span>
+          <span class="tool">
+            {% if dark_mode %}{% include "assets/notes_ios/toolbar_pen_dark.svg" %}{% else %}{% include "assets/notes_ios/toolbar_pen_light.svg" %}{% endif %}
+          </span>
+        </div>
+
+        <span class="compose-btn">
+          {% if dark_mode %}{% include "assets/notes_ios/nav_compose_dark.svg" %}{% else %}{% include "assets/notes_ios/nav_compose_light.svg" %}{% endif %}
+        </span>
+
+        <div class="home-bar"></div>
+      </div>
+    </div>
+  </body>
+</html>

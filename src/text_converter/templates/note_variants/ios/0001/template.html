@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #f3f3f5;
+        --text: #2e2e31;
+        --muted: #99999f;
+        --line: #e4e4e9;
+        --icon: #1f1f24;
+        --accent: #f2c200;
+        --pill-bg: #f7f7f9;
+        --pill-border: #ececf0;
+        --keyboard-bg: #d1d1d6;
+        --key-bg: #ffffff;
+        --key-text: #1c1c1f;
+        --key-special: #b9bbc1;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Helvetica Neue", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: var(--bg);
+      }
+
+      .screen {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+      }
+
+      .top {
+        padding-top: 6px;
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .status {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #151517;
+      }
+
+      .status-time {
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.2px;
+      }
+
+      .status-right {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+      }
+
+      .signal {
+        width: 16px;
+        height: 12px;
+        display: flex;
+        align-items: flex-end;
+        gap: 1px;
+      }
+
+      .signal i {
+        display: block;
+        width: 2px;
+        border-radius: 1px;
+        background: #171719;
+      }
+
+      .signal i:nth-child(1) { height: 4px; opacity: 0.5; }
+      .signal i:nth-child(2) { height: 6px; opacity: 0.7; }
+      .signal i:nth-child(3) { height: 8px; opacity: 0.85; }
+      .signal i:nth-child(4) { height: 10px; }
+
+      .wifi {
+        position: relative;
+        width: 14px;
+        height: 10px;
+      }
+
+      .wifi::before,
+      .wifi::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1.8px solid transparent;
+        border-top-color: #171719;
+        border-radius: 50%;
+      }
+
+      .wifi::before {
+        top: 1px;
+        width: 12px;
+        height: 8px;
+      }
+
+      .wifi::after {
+        top: 4px;
+        width: 6px;
+        height: 4px;
+      }
+
+      .battery {
+        min-width: 26px;
+        height: 14px;
+        border: 1.2px solid #171719;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        font-size: 10px;
+        font-weight: 700;
+        position: relative;
+      }
+
+      .battery::after {
+        content: "";
+        position: absolute;
+        right: -3px;
+        top: 4px;
+        width: 2px;
+        height: 5px;
+        background: #171719;
+        border-radius: 2px;
+      }
+
+      .nav {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 4px;
+      }
+
+      .left-actions,
+      .right-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: #ededf0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--icon);
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 500;
+      }
+
+      .check-btn {
+        background: var(--accent);
+      }
+
+      .editor {
+        flex: 1;
+        padding: 2px 22px 0;
+        overflow: hidden;
+        color: var(--text);
+      }
+
+      .created-at {
+        text-align: center;
+        color: var(--muted);
+        font-size: 29px;
+        line-height: 1.2;
+        letter-spacing: -0.2px;
+        margin-top: 3px;
+      }
+
+      .note {
+        margin-top: 14px;
+        font-size: 38px;
+        line-height: 1.46;
+        letter-spacing: -0.28px;
+        white-space: pre-wrap;
+        max-height: 50%;
+        overflow: hidden;
+      }
+
+      .table-mock {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        height: 124px;
+        border-collapse: collapse;
+      }
+
+      .table-mock .row {
+        display: flex;
+        height: 33.33%;
+      }
+
+      .table-mock .cell {
+        flex: 1;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .table-mock .cell:last-child {
+        border-right: 0;
+      }
+
+      .table-mock .row:last-child .cell {
+        border-bottom: 0;
+      }
+
+      .caret {
+        margin-top: 28px;
+        width: 3px;
+        height: 50px;
+        border-radius: 999px;
+        background: #ffcf0a;
+      }
+
+      .bottom {
+        margin-top: auto;
+      }
+
+      .input-toolbar-wrap {
+        padding: 0 10px 10px;
+        background: linear-gradient(to bottom, rgba(243, 243, 245, 0), rgba(243, 243, 245, 1) 26%);
+      }
+
+      .input-toolbar {
+        height: 64px;
+        border-radius: 34px;
+        background: var(--pill-bg);
+        border: 1px solid var(--pill-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        color: #16171a;
+      }
+
+      .tool {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        height: 32px;
+        font-size: 24px;
+      }
+
+      .tool.text {
+        font-size: 41px;
+        letter-spacing: -0.7px;
+      }
+
+      .keyboard {
+        background: var(--keyboard-bg);
+        padding: 9px 6px 10px;
+      }
+
+      .k-row {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 7px;
+      }
+
+      .k-key {
+        height: 49px;
+        background: var(--key-bg);
+        border-radius: 8px;
+        color: var(--key-text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        font-weight: 500;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.23);
+      }
+
+      .k-key.l { width: calc((100vw - 70px) / 10); }
+      .k-key.m { width: calc((100vw - 88px) / 9); }
+      .k-key.s { width: calc((100vw - 126px) / 7); }
+      .k-key.space { flex: 1; }
+
+      .k-key.special {
+        background: var(--key-special);
+      }
+
+      .k-row.bottom-row .k-key {
+        height: 50px;
+        font-size: 30px;
+      }
+
+      .k-row.bottom-row .k-key.special {
+        font-size: 26px;
+      }
+
+      .k-row.controls .k-key {
+        height: 48px;
+        font-size: 32px;
+      }
+
+      .k-key.num { width: 64px; font-size: 33px; }
+      .k-key.emoji { width: 48px; font-size: 30px; }
+      .k-key.return { width: 70px; font-size: 37px; }
+      .k-key.shift { width: 56px; }
+      .k-key.delete { width: 56px; }
+
+      .keyboard-footer {
+        margin-top: 8px;
+        height: 34px;
+        padding: 0 28px 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #1d1d21;
+        font-size: 31px;
+      }
+
+      .globe,
+      .mic {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screen">
+      <div class="top">
+        <div class="status">
+          <div class="status-time">{{ status_time }}</div>
+          <div class="status-right">
+            <span class="signal"><i></i><i></i><i></i><i></i></span>
+            <span class="wifi"></span>
+            <span class="battery">{{ battery }}</span>
+          </div>
+        </div>
+
+        <div class="nav">
+          <div class="left-actions">
+            <span class="icon-btn">‹</span>
+          </div>
+          <div class="right-actions">
+            <span class="icon-btn">↶</span>
+            <span class="icon-btn">⇪</span>
+            <span class="icon-btn">⋯</span>
+            <span class="icon-btn check-btn">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor">
+        <div class="created-at">{{ created_datetime_display }}</div>
+        <div class="note">{{ note_text }}</div>
+
+        <div class="table-mock" aria-hidden="true">
+          <div class="row"><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div></div>
+          <div class="row"><div class="cell"></div><div class="cell"></div></div>
+        </div>
+
+        <div class="caret" aria-hidden="true"></div>
+      </div>
+
+      <div class="bottom">
+        <div class="input-toolbar-wrap">
+          <div class="input-toolbar">
+            <span class="tool text">Aa</span>
+            <span class="tool">☷</span>
+            <span class="tool">⌗</span>
+            <span class="tool">⌕</span>
+            <span class="tool">Ⓐ</span>
+            <span class="tool">◖</span>
+          </div>
+        </div>
+
+        <div class="keyboard">
+          <div class="k-row">
+            <span class="k-key l">q</span><span class="k-key l">w</span><span class="k-key l">e</span><span class="k-key l">r</span><span class="k-key l">t</span><span class="k-key l">y</span><span class="k-key l">u</span><span class="k-key l">i</span><span class="k-key l">o</span><span class="k-key l">p</span>
+          </div>
+          <div class="k-row">
+            <span class="k-key m">a</span><span class="k-key m">s</span><span class="k-key m">d</span><span class="k-key m">f</span><span class="k-key m">g</span><span class="k-key m">h</span><span class="k-key m">j</span><span class="k-key m">k</span><span class="k-key m">l</span>
+          </div>
+          <div class="k-row">
+            <span class="k-key special shift">⇧</span>
+            <span class="k-key s">z</span><span class="k-key s">x</span><span class="k-key s">c</span><span class="k-key s">v</span><span class="k-key s">b</span><span class="k-key s">n</span><span class="k-key s">m</span>
+            <span class="k-key special delete">⌫</span>
+          </div>
+          <div class="k-row bottom-row">
+            <span class="k-key special num">123</span>
+            <span class="k-key special emoji">☺</span>
+            <span class="k-key space"></span>
+            <span class="k-key return">↩</span>
+          </div>
+
+          <div class="keyboard-footer">
+            <span class="globe">◉</span>
+            <span class="mic">◡</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

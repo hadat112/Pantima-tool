@@ -66,8 +66,16 @@ Viewport resolution priority:
 4. default fallback (`390x844`)
 
 Platform template selection:
-- iOS hints (`ios`, `iphone`, `ipad`) -> `notes_ios.html`
-- Android hints (`android`, `samsung`, `pixel`, `oneplus`, `xiaomi`, `oppo`, `vivo`) -> `notes_android.html`
+- Platform detection:
+  - iOS hints (`ios`, `iphone`, `ipad`)
+  - Android hints (`android`, `samsung`, `pixel`, `oneplus`, `xiaomi`, `oppo`, `vivo`)
+- Template library (new):
+  - `src/text_converter/templates/note_variants/ios/<number>/template.html`
+  - `src/text_converter/templates/note_variants/android/<number>/template.html`
+  - Rows are assigned in round-robin order per platform across numbered folders.
+- Legacy fallback (kept for compatibility):
+  - iOS -> `notes_ios.html` / `notes_ios26.html`
+  - Android -> `notes_android.html`
 
 Each run writes a timestamped output folder and `metadata.csv`.
 
@@ -100,5 +108,6 @@ Routes:
 - `src/text_converter/note_to_png.py` - Note screenshot pipeline
 - `src/text_converter/templates/notes_ios.html` - iOS template
 - `src/text_converter/templates/notes_android.html` - Android template
+- `src/text_converter/templates/note_variants/` - numbered template library (ios/android)
 - `src/text_converter/templates/assets/notes_ios/` - iOS icon assets
 - `tools/serve_notes_demo.py` - live preview server

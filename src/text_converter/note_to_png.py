@@ -8,14 +8,17 @@ from __future__ import annotations
 import asyncio
 import random
 import re
+import shutil
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
+TEMPLATE_VARIANTS_DIRNAME = "note_variants"
+TEMPLATE_HTML_FILENAME = "template.html"
 
 BATTERY_LEVELS = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 US_CARRIERS = ["Verizon", "AT&T", "T-Mobile"]
@@ -42,6 +45,27 @@ DEVICE_PRESETS = {
     "vivo x200 pro": {"width": 420, "height": 933},
     "vivo v50": {"width": 412, "height": 915},
 }
+
+IOS_DEVICE_SCALES = {
+    "iphone 13": 3,
+    "iphone xs": 3,
+    "iphone 15 promax": 3,
+    "iphone 15 pro max": 3,
+    "iphone se": 2,
+}
+
+CREATED_AT_CANDIDATE_COLUMNS = (
+    "created_at",
+    "createdat",
+    "created at",
+    "created time",
+    "created_time",
+    "creation_date",
+    "creation time",
+    "date_created",
+    "datetime",
+    "timestamp",
+)
 
 
 def _normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -81,6 +105,42 @@ def _resolve_viewport(spec: str, os_name: str, device_name: str) -> dict:
     return {"width": 390, "height": 844}
 
 
+def _is_iphone(device_name: str, os_name: str) -> bool:
+    d = (device_name or "").strip().lower()
+    o = (os_name or "").strip().lower()
+    return "iphone" in d or "ios" in o or "ipad" in d or "ipad" in o
+
+
+def _guess_ios_scale(device_name: str, width: int, height: int) -> int:
+    device_l = (device_name or "").strip().lower()
+    if device_l in IOS_DEVICE_SCALES:
+        return IOS_DEVICE_SCALES[device_l]
+    # If spec looks like native pixels, infer @3x first, then @2x.
+    if width > 900 and height > 1700:
+        return 3
+    if width > 640 and height > 1136:
+        return 2
+    return 3
+
+
+def _resolve_render_metrics(spec: str, os_name: str, device_name: str, platform: str) -> dict:
+    viewport = _resolve_viewport(spec=spec, os_name=os_name, device_name=device_name)
+    width = int(viewport["width"])
+    height = int(viewport["height"])
+    device_scale_factor = 1
+
+    if platform == "ios" and _is_iphone(device_name=device_name, os_name=os_name):
+        if width > 500 or height > 1000:
+            scale = _guess_ios_scale(device_name=device_name, width=width, height=height)
+            width = max(1, width // scale)
+            height = max(1, height // scale)
+            device_scale_factor = scale
+        else:
+            device_scale_factor = _guess_ios_scale(device_name=device_name, width=width, height=height)
+
+    return {"width": width, "height": height, "device_scale_factor": device_scale_factor}
+
+
 def _detect_platform(device_name: str, os_name: str) -> str:
     device_l = (device_name or "").strip().lower()
     os_l = (os_name or "").strip().lower()
@@ -97,6 +157,86 @@ def _detect_platform(device_name: str, os_name: str) -> str:
     return "ios"
 
 
+def _is_ios26(os_name: str) -> bool:
+    os_l = (os_name or "").strip().lower()
+    return bool(re.search(r"\bios\s*26(?:\D|$)", os_l))
+
+
+def _select_template_name(platform: str, os_name: str) -> str:
+    if platform == "ios" and _is_ios26(os_name):
+        return "notes_ios26.html"
+    return "notes_ios.html" if platform == "ios" else "notes_android.html"
+
+
+def _seed_legacy_templates(templates_dir: Path, platform: str, platform_dir: Path) -> None:
+    legacy_templates: list[Path] = []
+    if platform == "ios":
+        legacy_templates = [
+            templates_dir / "notes_ios.html",
+            templates_dir / "notes_ios26.html",
+        ]
+    elif platform == "android":
+        legacy_templates = [templates_dir / "notes_android.html"]
+
+    next_index = 1
+    for src in legacy_templates:
+        if not src.exists():
+            continue
+        dst = platform_dir / f"{next_index:04d}" / TEMPLATE_HTML_FILENAME
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        if not dst.exists():
+            shutil.copyfile(src, dst)
+        next_index += 1
+
+
+def _ensure_template_library(templates_dir: Path) -> None:
+    variants_root = templates_dir / TEMPLATE_VARIANTS_DIRNAME
+    for platform in ("ios", "android"):
+        platform_dir = variants_root / platform
+        platform_dir.mkdir(parents=True, exist_ok=True)
+        has_html = any(platform_dir.glob("*/**/*.html"))
+        if not has_html:
+            _seed_legacy_templates(templates_dir=templates_dir, platform=platform, platform_dir=platform_dir)
+
+
+def _list_platform_templates(templates_dir: Path, platform: str) -> list[str]:
+    platform_dir = templates_dir / TEMPLATE_VARIANTS_DIRNAME / platform
+    if not platform_dir.exists():
+        return []
+
+    collected: list[tuple[int, int, str]] = []
+    for subdir in sorted([p for p in platform_dir.iterdir() if p.is_dir()], key=lambda p: p.name):
+        if not re.fullmatch(r"\d+", subdir.name):
+            continue
+        slot = int(subdir.name)
+
+        preferred = subdir / TEMPLATE_HTML_FILENAME
+        html_file: Path | None = preferred if preferred.exists() else None
+        if html_file is None:
+            html_candidates = sorted(subdir.glob("*.html"))
+            if not html_candidates:
+                continue
+            html_file = html_candidates[0]
+
+        rel = str(html_file.relative_to(templates_dir)).replace("\\", "/")
+        collected.append((slot, 0 if html_file.name == TEMPLATE_HTML_FILENAME else 1, rel))
+
+    collected.sort(key=lambda x: (x[0], x[1], x[2]))
+    return [x[2] for x in collected]
+
+
+def _select_template_name_for_row(
+    templates_dir: Path,
+    platform: str,
+    os_name: str,
+    row_id: int,
+) -> str:
+    platform_templates = _list_platform_templates(templates_dir=templates_dir, platform=platform)
+    if platform_templates:
+        return platform_templates[(row_id - 1) % len(platform_templates)]
+    return _select_template_name(platform=platform, os_name=os_name)
+
+
 def _fmt_status_time(seed: int, platform: str) -> str:
     rng = random.Random(seed + 7777)
     dt = datetime.now().replace(
@@ -111,11 +251,45 @@ def _fmt_status_time(seed: int, platform: str) -> str:
     return s or "12:00"
 
 
+def _format_created_datetime(dt: datetime, ios26_style: bool) -> str:
+    if ios26_style:
+        hh = dt.strftime("%I").lstrip("0") or "12"
+        return f"{dt.day} {dt.strftime('%B %Y at ')}{hh}:{dt.strftime('%M')}{dt.strftime('%p')}"
+    return f"{dt.day} {dt.strftime('%B %Y at %H:%M')}"
+
+
+def _extract_created_datetime(row: dict, seed: int, ios26_style: bool) -> str:
+    normalized_row = {str(k).strip().lower(): v for k, v in row.items()}
+    for key in CREATED_AT_CANDIDATE_COLUMNS:
+        if key not in normalized_row:
+            continue
+        val = str(normalized_row.get(key, "")).strip()
+        if not val or val.lower() == "nan":
+            continue
+        parsed = pd.to_datetime(val, errors="coerce")
+        if pd.notna(parsed):
+            dt = parsed.to_pydatetime()
+            return _format_created_datetime(dt=dt, ios26_style=ios26_style)
+        return val
+
+    # Fallback is deterministic by row id for reproducible renders.
+    base = datetime(2025, 1, 1, 8, 0)
+    rng = random.Random(seed + 12345)
+    dt = base + timedelta(
+        days=rng.randint(0, 720),
+        hours=rng.randint(0, 23),
+        minutes=rng.randint(0, 59),
+    )
+    return _format_created_datetime(dt=dt, ios26_style=ios26_style)
+
+
 async def _worker(
     worker_id: int,
     queue: asyncio.Queue,
     browser,
     jinja_env: Environment,
+    icon_flags: dict,
+    templates_dir: Path,
     output_dir: Path,
     results: list,
 ) -> None:
@@ -133,16 +307,26 @@ async def _worker(
             if not note_text:
                 raise ValueError("Template rỗng")
 
-            viewport = _resolve_viewport(
-                spec=str(row.get("_spec", "")),
-                os_name=str(row.get("_os", "")),
-                device_name=str(row.get("_device", "")),
-            )
             platform = _detect_platform(
                 device_name=str(row.get("_device", "")),
                 os_name=str(row.get("_os", "")),
             )
-            template_name = "notes_ios.html" if platform == "ios" else "notes_android.html"
+            render_metrics = _resolve_render_metrics(
+                spec=str(row.get("_spec", "")),
+                os_name=str(row.get("_os", "")),
+                device_name=str(row.get("_device", "")),
+                platform=platform,
+            )
+            template_name = _select_template_name_for_row(
+                templates_dir=templates_dir,
+                platform=platform,
+                os_name=str(row.get("_os", "")),
+                row_id=row_id,
+            )
+            ios26_style = _is_ios26(str(row.get("_os", "")))
+            created_datetime_display = _extract_created_datetime(
+                row=row, seed=row_id, ios26_style=ios26_style
+            )
             dark_mode = random.Random(row_id + 42).random() < 0.3
             battery = random.Random(row_id + 1337).choice(BATTERY_LEVELS)
             status_time = _fmt_status_time(seed=row_id, platform=platform)
@@ -152,8 +336,8 @@ async def _worker(
             network_type = random.Random(row_id + 666).choice(ANDROID_NETWORK_TYPES)
 
             context = await browser.new_context(
-                viewport={"width": viewport["width"], "height": viewport["height"]},
-                device_scale_factor=1,
+                viewport={"width": render_metrics["width"], "height": render_metrics["height"]},
+                device_scale_factor=render_metrics["device_scale_factor"],
             )
             page = await context.new_page()
 
@@ -169,6 +353,9 @@ async def _worker(
                 wifi_level=wifi_level,
                 wifi_signal=signal_level,
                 network_type=network_type,
+                created_datetime_display=created_datetime_display,
+                has_ios26_undo_icon=icon_flags.get("has_ios26_undo_icon", False),
+                has_ios26_share_icon=icon_flags.get("has_ios26_share_icon", False),
             )
             await page.set_content(html, wait_until="domcontentloaded")
 
@@ -185,11 +372,13 @@ async def _worker(
                 **row,
                 "_output_file": str(filepath),
                 "_status": "ok",
-                "_width": viewport["width"],
-                "_height": viewport["height"],
+                "_width": render_metrics["width"],
+                "_height": render_metrics["height"],
+                "_device_scale_factor": render_metrics["device_scale_factor"],
                 "_battery": battery,
                 "_dark_mode": dark_mode,
                 "_status_time": status_time,
+                "_created_datetime_display": created_datetime_display,
                 "_platform": platform,
                 "_template": template_name,
             })
@@ -197,7 +386,8 @@ async def _worker(
             dark_tag = " 🌙" if dark_mode else ""
             print(
                 f"[W{worker_id:02d}] ✓  {filename}  "
-                f"({platform} {viewport['width']}x{viewport['height']}{dark_tag})"
+                f"({platform} {render_metrics['width']}x{render_metrics['height']} "
+                f"@{render_metrics['device_scale_factor']}x{dark_tag})"
             )
         except Exception as exc:
             results.append({**row, "_output_file": None, "_status": f"error: {exc}"})
@@ -217,7 +407,14 @@ async def _run(
     from playwright.async_api import async_playwright
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    _ensure_template_library(templates_dir=templates_dir)
     jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)), autoescape=False)
+    icon_flags = {
+        "has_ios26_undo_icon": (templates_dir / "assets" / "notes_ios" / "nav_undo_light.svg").exists()
+        and (templates_dir / "assets" / "notes_ios" / "nav_undo_dark.svg").exists(),
+        "has_ios26_share_icon": (templates_dir / "assets" / "notes_ios" / "nav_share_light.svg").exists()
+        and (templates_dir / "assets" / "notes_ios" / "nav_share_dark.svg").exists(),
+    }
 
     queue: asyncio.Queue = asyncio.Queue()
     for row in rows:
@@ -229,7 +426,16 @@ async def _run(
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await asyncio.gather(*[
-            asyncio.create_task(_worker(i + 1, queue, browser, jinja_env, output_dir, results))
+            asyncio.create_task(_worker(
+                i + 1,
+                queue,
+                browser,
+                jinja_env,
+                icon_flags,
+                templates_dir,
+                output_dir,
+                results,
+            ))
             for i in range(num_workers)
         ])
         await browser.close()
@@ -299,7 +505,8 @@ def batch_from_csv(
             writer = csv_mod.writer(f)
             writer.writerow([
                 "index", "filename", "device", "os", "spec", "platform", "template",
-                "width", "height", "battery", "dark_mode", "status_time",
+                "width", "height", "device_scale_factor", "battery", "dark_mode", "status_time",
+                "created_datetime_display",
             ])
             for r in sorted(ok_results, key=lambda x: int(x["_id"])):
                 writer.writerow([
@@ -312,9 +519,11 @@ def batch_from_csv(
                     r.get("_template", ""),
                     r.get("_width", ""),
                     r.get("_height", ""),
+                    r.get("_device_scale_factor", ""),
                     r.get("_battery", ""),
                     r.get("_dark_mode", ""),
                     r.get("_status_time", ""),
+                    r.get("_created_datetime_display", ""),
                 ])
 
     print(f"\n{'─' * 50}")

@@ -12,6 +12,7 @@ from jinja2 import Environment, FileSystemLoader
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES_DIR = ROOT / "src" / "text_converter" / "templates"
+TEMPLATE_VARIANTS_DIR = TEMPLATES_DIR / "note_variants"
 CSV_PATH = ROOT / "data" / "Note Design - Sheet1 (1).csv"
 HOST = "127.0.0.1"
 PORT = 8765
@@ -100,11 +101,52 @@ def detect_platform(device_name: str, os_name: str) -> str:
     return "ios"
 
 
-def render_screen(theme: str, device: str, os_name: str) -> str:
+def is_ios26(os_name: str) -> bool:
+    return bool(re.search(r"\bios\s*26(?:\D|$)", (os_name or "").strip().lower()))
+
+
+def list_variant_templates() -> list[dict[str, str]]:
+    items: list[dict[str, str]] = []
+    if not TEMPLATE_VARIANTS_DIR.exists():
+        return items
+
+    for platform_dir in sorted([p for p in TEMPLATE_VARIANTS_DIR.iterdir() if p.is_dir()], key=lambda p: p.name):
+        platform = platform_dir.name
+        for slot_dir in sorted([p for p in platform_dir.iterdir() if p.is_dir()], key=lambda p: p.name):
+            if not re.fullmatch(r"\d+", slot_dir.name):
+                continue
+            preferred = slot_dir / "template.html"
+            chosen: Path | None = preferred if preferred.exists() else None
+            if chosen is None:
+                candidates = sorted(slot_dir.glob("*.html"))
+                if candidates:
+                    chosen = candidates[0]
+            if chosen is None:
+                continue
+            rel = str(chosen.relative_to(TEMPLATES_DIR)).replace("\\", "/")
+            items.append({
+                "platform": platform,
+                "slot": slot_dir.name,
+                "template": rel,
+            })
+    return items
+
+
+def _default_preview_target(platform: str) -> tuple[str, str]:
+    if platform == "android":
+        return ("Samsung Galaxy S25", "Android 15")
+    return ("iPhone 15 Pro Max", "iOS 26")
+
+
+def render_screen(theme: str, device: str, os_name: str, template_name: str | None = None) -> str:
     dark_mode = theme == "dark"
     device_name = device
     platform = detect_platform(device_name=device_name, os_name=os_name)
-    template_name = "notes_ios.html" if platform == "ios" else "notes_android.html"
+    if not template_name:
+        if platform == "ios" and is_ios26(os_name):
+            template_name = "notes_ios26.html"
+        else:
+            template_name = "notes_ios.html" if platform == "ios" else "notes_android.html"
     status_time = "7:05" if "se" in device.lower() else "9:41"
     note_text = (
         "SE screen check\n- Status bar layout\n- Header spacing\n- Footer alignment"
@@ -117,6 +159,11 @@ def render_screen(theme: str, device: str, os_name: str) -> str:
         dark_mode=dark_mode,
         battery=47 if dark_mode else 83,
         status_time=status_time,
+        created_datetime_display="22 November 2025 at 11:16",
+        has_ios26_undo_icon=(TEMPLATES_DIR / "assets" / "notes_ios" / "nav_undo_light.svg").exists()
+        and (TEMPLATES_DIR / "assets" / "notes_ios" / "nav_undo_dark.svg").exists(),
+        has_ios26_share_icon=(TEMPLATES_DIR / "assets" / "notes_ios" / "nav_share_light.svg").exists()
+        and (TEMPLATES_DIR / "assets" / "notes_ios" / "nav_share_dark.svg").exists(),
         device_name=device_name,
         os_name=os_name,
         carrier="T-Mobile" if "se" in device.lower() else "Verizon",
@@ -184,6 +231,30 @@ def render_index() -> str:
         )
     card_html = "".join(cards)
 
+    template_cards: list[str] = []
+    for item in list_variant_templates():
+        device, os_name = _default_preview_target(item["platform"])
+        q_light = urlencode({
+            "theme": "light",
+            "device": device,
+            "os": os_name,
+            "template": item["template"],
+        })
+        q_dark = urlencode({
+            "theme": "dark",
+            "device": device,
+            "os": os_name,
+            "template": item["template"],
+        })
+        template_cards.append(
+            f'<div class="card template-card">'
+            f'<h3>{escape(item["platform"].upper())} · #{escape(item["slot"])}</h3>'
+            f'<p>{escape(item["template"])}</p>'
+            f'<p><a href="/preview?{q_light}">Light</a> · <a href="/preview?{q_dark}">Dark</a></p>'
+            f"</div>"
+        )
+    template_card_html = "".join(template_cards)
+
     html = """<!doctype html>
 <html>
   <head>
@@ -201,6 +272,11 @@ def render_index() -> str:
       h1 {
         margin: 0 0 8px;
         font-size: 22px;
+      }
+      h2 {
+        margin: 20px 0 10px;
+        font-size: 16px;
+        opacity: 0.95;
       }
       p {
         margin: 0 0 16px;
@@ -235,18 +311,33 @@ def render_index() -> str:
         opacity: 0.8;
         font-size: 13px;
       }
+      .template-card p + p {
+        margin-top: 10px;
+      }
+      .template-card a {
+        color: #9ec1ff;
+        text-decoration: none;
+      }
+      .template-card a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
     <h1>Notes Demo (Live Reload)</h1>
-    <p>Danh sách Device/OS lấy từ CSV. Reload là ăn code template mới nhất.</p>
+    <p>Preview theo từng template trong note_variants và preview theo Device/OS từ CSV.</p>
+    <h2>By Template</h2>
+    <div class="grid">
+      __TEMPLATE_CARDS__
+    </div>
+    <h2>By Device/OS</h2>
     <div class="grid">
       __CARDS__
     </div>
   </body>
 </html>
 """
-    return html.replace("__CARDS__", card_html)
+    return html.replace("__CARDS__", card_html).replace("__TEMPLATE_CARDS__", template_card_html)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -264,9 +355,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         legacy_routes = {
-            "/ios-light-15promax.html": ("light", "iPhone 15 Pro Max", "iOS 18"),
-            "/ios-dark-15promax.html": ("dark", "iPhone 15 Pro Max", "iOS 18"),
+            "/ios-light-15promax.html": ("light", "iPhone 15 Pro Max", "iOS 26"),
+            "/ios-dark-15promax.html": ("dark", "iPhone 15 Pro Max", "iOS 26"),
             "/ios-dark-se.html": ("dark", "iPhone SE", "iOS 17"),
+            "/ios26-light-15promax.html": ("light", "iPhone 15 Pro Max", "iOS 26"),
+            "/ios26-dark-15promax.html": ("dark", "iPhone 15 Pro Max", "iOS 26"),
         }
         if parsed.path == "/":
             self._send_html(render_index())
@@ -279,10 +372,24 @@ class Handler(BaseHTTPRequestHandler):
             q = parse_qs(parsed.query)
             theme = q.get("theme", ["light"])[0]
             device = q.get("device", ["iPhone 15 Pro Max"])[0]
-            os_name = q.get("os", ["iOS 18"])[0]
+            os_name = q.get("os", ["iOS 26"])[0]
+            template_name = q.get("template", [""])[0].strip()
             if theme not in {"light", "dark"}:
                 theme = "light"
-            self._send_html(render_screen(theme=theme, device=device, os_name=os_name))
+            if template_name:
+                candidate = (TEMPLATES_DIR / template_name).resolve()
+                # Only allow templates inside configured templates root.
+                if TEMPLATES_DIR.resolve() not in candidate.parents or not candidate.exists():
+                    self._send_html("<h1>Invalid template path</h1>", code=400)
+                    return
+            self._send_html(
+                render_screen(
+                    theme=theme,
+                    device=device,
+                    os_name=os_name,
+                    template_name=template_name or None,
+                )
+            )
             return
         self._send_html("<h1>404</h1>", code=404)
 
