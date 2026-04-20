@@ -18,6 +18,7 @@
         --accent: #e4af0a;
         --accent-muted: rgba(60, 60, 67, 0.3);
         --note-text: #000000;
+        --created-at-text: rgba(60, 60, 67, 0.6);
         --home-indicator: #000000;
       }
 
@@ -29,6 +30,7 @@
         --accent: #fed702;
         --accent-muted: rgba(235, 235, 245, 0.3);
         --note-text: #ffffff;
+        --created-at-text: rgba(235, 235, 245, 0.6);
         --home-indicator: #ffffff;
       }
 
@@ -79,9 +81,9 @@
       }
 
       .status-time {
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 600;
-        letter-spacing: -0.45px;
+        letter-spacing: -0.43px;
         color: var(--status-fg);
         line-height: 1;
       }
@@ -217,7 +219,7 @@
 
       .content {
         flex: 1;
-        padding: 12px 18px;
+        padding: 4px 18px 12px;
         color: var(--note-text);
         font-size: 26px;
         font-weight: 400;
@@ -225,6 +227,17 @@
         letter-spacing: 0.1px;
         white-space: pre-wrap;
         overflow: hidden;
+      }
+
+      .created-at {
+        min-height: 22px;
+        padding: 6px 18px 2px;
+        color: var(--created-at-text);
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: -0.08px;
+        line-height: 1.23;
+        text-align: center;
       }
 
       .footer {
@@ -371,14 +384,15 @@
         </div>
         <div class="nav-bar">
           <div class="back">
+            {% set _back_label = back_label if back_label is defined else '' %}
             <span class="back-icon">
               {% if dark_mode %}{% include "assets/notes_ios/nav_back_dark.svg"
               %}{% else %}{% include "assets/notes_ios/nav_back_light.svg" %}{%
               endif %}
             </span>
-            <span>All iCloud</span>
+            {% if _back_label %}<span>{{ _back_label }}</span>{% endif %}
           </div>
-          <div class="nav-title">Notes</div>
+          <div class="nav-title"></div>
           <div class="nav-actions">
             <span class="nav-icon nav-more">
               {% if dark_mode %}{% include "assets/notes_ios/nav_more_dark.svg"
@@ -393,6 +407,8 @@
           </div>
         </div>
       </div>
+
+      <div class="created-at">{{ created_datetime_display }}</div>
 
       <div class="content">{{ note_text }}</div>
 
