@@ -226,7 +226,7 @@
         line-height: 1.35;
         letter-spacing: 0.1px;
         white-space: pre-wrap;
-        overflow: hidden;
+        overflow-y: auto;
       }
 
       .created-at {
@@ -412,6 +412,7 @@
 
       <div class="content">{{ note_text }}</div>
 
+      {% if not show_keyboard %}
       <div class="footer">
         <div class="toolbar">
           <div class="tool">
@@ -445,6 +446,9 @@
         </div>
         <div class="home-bar"></div>
       </div>
+      {% endif %}
+
+      {% include "keyboard_ios.html" %}
     </div>
   </body>
 </html>

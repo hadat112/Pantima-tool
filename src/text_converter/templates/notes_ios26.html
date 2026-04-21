@@ -160,7 +160,7 @@
         line-height: 1.34;
         letter-spacing: -0.01em;
         white-space: pre-wrap;
-        overflow: hidden;
+        overflow-y: auto;
       }
 
       .footer {
@@ -272,6 +272,7 @@
       <div class="created-at">{{ created_datetime_display }}</div>
       <div class="content">{{ note_text }}</div>
 
+      {% if not show_keyboard %}
       <div class="footer">
         <div class="tool-pill">
           <span class="tool">
@@ -291,6 +292,9 @@
 
         <div class="home-bar"></div>
       </div>
+      {% endif %}
+
+      {% include "keyboard_ios.html" %}
     </div>
   </body>
 </html>

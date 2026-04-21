@@ -231,9 +231,7 @@ def _select_template_name_for_row(
     os_name: str,
     row_id: int,
 ) -> str:
-    platform_templates = _list_platform_templates(templates_dir=templates_dir, platform=platform)
-    if platform_templates:
-        return platform_templates[(row_id - 1) % len(platform_templates)]
+    # Luôn sử dụng template chính theo yêu cầu của người dùng, bỏ qua note_variants
     return _select_template_name(platform=platform, os_name=os_name)
 
 
@@ -334,6 +332,7 @@ async def _worker(
             wifi_level = random.Random(row_id + 999).randint(1, 3)
             carrier = random.Random(row_id + 555).choice(US_CARRIERS)
             network_type = random.Random(row_id + 666).choice(ANDROID_NETWORK_TYPES)
+            show_keyboard = random.Random(row_id + 777).random() < 0.5
 
             context = await browser.new_context(
                 viewport={"width": render_metrics["width"], "height": render_metrics["height"]},
@@ -344,6 +343,7 @@ async def _worker(
             html = jinja_env.get_template(template_name).render(
                 note_text=note_text,
                 dark_mode=dark_mode,
+                show_keyboard=show_keyboard,
                 battery=battery,
                 status_time=status_time,
                 device_name=str(row.get("_device", "")),

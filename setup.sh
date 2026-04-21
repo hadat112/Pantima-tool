@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# Detect Poetry binary path
 POETRY_BIN="$HOME/.local/bin/poetry"
+if command -v poetry &>/dev/null; then
+    POETRY_BIN="$(command -v poetry)"
+fi
 
 # Detect shell config file
 if [[ "$SHELL" == */zsh ]]; then
@@ -11,7 +15,9 @@ else
 fi
 
 add_to_path() {
+    # Ensure local bin is in current PATH
     export PATH="$HOME/.local/bin:$PATH"
+    
     if ! grep -q 'local/bin' "$SHELL_RC" 2>/dev/null; then
         echo "" >> "$SHELL_RC"
         echo '# Poetry' >> "$SHELL_RC"
@@ -21,9 +27,11 @@ add_to_path() {
 }
 
 install_poetry() {
-    if [[ ! -f "$POETRY_BIN" ]]; then
+    if ! command -v poetry &>/dev/null && [[ ! -f "$POETRY_BIN" ]]; then
         echo "    Installing Poetry..."
-        curl -sSL https://install.python-poetry.org | python3.13 -
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.local/bin:$PATH"
+        POETRY_BIN="$HOME/.local/bin/poetry"
     else
         echo "    Poetry already installed: $($POETRY_BIN --version)"
     fi
@@ -51,7 +59,7 @@ setup_macos() {
         echo "    Installing Python 3.13..."
         brew install python@3.13
     else
-        echo "    Python 3.13 already installed: $(python3.13 --version)"
+        echo "    Python 3.13 đã có: $(python3.13 --version)"
     fi
 
     echo ""
@@ -74,7 +82,7 @@ setup_ubuntu() {
         sudo apt update -q
         sudo apt install -y python3.13 python3.13-venv
     else
-        echo "    Python 3.13 already installed: $(python3.13 --version)"
+        echo "    Python 3.13 đã có: $(python3.13 --version)"
     fi
 
     echo ""
@@ -97,17 +105,21 @@ elif [[ "$OS" == "Linux" ]]; then
     if grep -qi "ubuntu\|debian" /etc/os-release 2>/dev/null; then
         setup_ubuntu
     else
-        echo "Unsupported Linux distro. Please install Python 3.13 and Poetry manually."
+        echo "Hệ điều hành Linux này chưa được hỗ trợ tự động. Vui lòng cài Python 3.13 và Poetry thủ công."
         exit 1
     fi
 else
-    echo "Unsupported OS: $OS"
+    echo "Hệ điều hành không hỗ trợ: $OS"
     exit 1
 fi
 
 echo ""
+echo "==> Synchronizing lock file..."
+"$POETRY_BIN" lock
+
+echo ""
 echo "==> Installing project dependencies..."
-"$POETRY_BIN" install --with chat
+"$POETRY_BIN" install
 
 echo ""
 echo "==> Installing Playwright browser (Chromium)..."
@@ -118,6 +130,6 @@ echo "==> Done. Verifying..."
 "$POETRY_BIN" run tc --help
 
 echo ""
-echo "Ready. Use: poetry run tc <command>"
-echo "  tc chat from-csv data.csv output/png/"
-echo "Note: restart your terminal (or run 'source $SHELL_RC') for PATH to take effect in new sessions."
+echo "Sẵn sàng! Sử dụng lệnh: poetry run tc command"
+echo "Ví dụ: poetry run tc note to-png data.csv output/png/"
+echo "Lưu ý: Hãy khởi động lại Terminal (hoặc chạy 'source $SHELL_RC') để cập nhật PATH."
